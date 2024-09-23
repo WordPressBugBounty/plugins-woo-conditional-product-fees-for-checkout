@@ -1,0 +1,2833 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-02-10 17:30+0530\n"
+"PO-Revision-Date: 2024-07-11 10:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: woocommerce-conditional-product-fees-for-checkout.php:341
+msgid "%1$s requires %2$s to be installed & activated!"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:495
+msgid "%s at %s"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:432
+msgid ""
+"&nbsp;&nbsp;&nbsp;<span>[qty]</span> - total number of items in cart<br>"
+"&nbsp;&nbsp;&nbsp;<span>[cost]</span> - cost of items<br>&nbsp;&nbsp;&nbsp;"
+"<span>[weight]</span> - weight of items<br>&nbsp;&nbsp;&nbsp;<span>[fee "
+"min_fee=20]</span> - Minimum fee to apply<br>&nbsp;&nbsp;&nbsp;<span>[fee "
+"max_fee=20]</span> - Maximum fee to apply<br><br>Below are some examples:<br>"
+"&nbsp;&nbsp;&nbsp;<strong>i.</strong> 10.00 -> To add flat 10.00 fee charge."
+"<br>&nbsp;&nbsp;&nbsp;<strong>ii.</strong> 10.00 * <span>[qty]</span> - To "
+"charge 10.00 per quantity in the cart. It will be 50.00 if the cart has 5 "
+"quantity.<br>&nbsp;&nbsp;&nbsp;<strong>iii.</strong> <span>[fee min_fee=20]"
+"</span> - This means minimum 20 fee charge will be applicable.<br>&nbsp;"
+"&nbsp;&nbsp;<strong>iv.</strong> <span>[fee max_fee=20]</span> - This means "
+"cart subtotal charge greater than max_fee then maximum 20 charge will be "
+"applicable.<br>"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:120
+#| msgid "estimated for %s"
+msgid "(estimated for %s)"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1094
+#: admin/partials/wcpfc-pro-add-new-page.php:1774
+#: admin/partials/wcpfc-pro-add-new-page.php:1947
+#: admin/partials/wcpfc-pro-add-new-page.php:2120
+#: admin/partials/wcpfc-pro-add-new-page.php:2290
+#: admin/partials/wcpfc-pro-add-new-page.php:2463
+#: admin/partials/wcpfc-pro-add-new-page.php:2648
+#: admin/partials/wcpfc-pro-add-new-page.php:2822
+#: admin/partials/wcpfc-pro-add-new-page.php:2990
+#: admin/partials/wcpfc-pro-add-new-page.php:3155
+#: admin/partials/wcpfc-pro-add-new-page.php:3329
+#: admin/partials/wcpfc-pro-add-new-page.php:3555
+msgid "+ Add Rule"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:224
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:299
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:373
+msgid "0.00"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:227
+msgid "1 site"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:225
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:300
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:374
+msgid "10"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:237
+msgid "14-Day money-back guarantee"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:240
+msgid "14-Day Satisfaction Guarantee"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1347
+#: admin/partials/wcpfc-pro-add-new-page.php:1442
+#: admin/partials/wcpfc-pro-add-new-page.php:1469
+msgid ""
+"<p><b style=\"color: red;\">Note: </b> Please enter each city name in a new "
+"line."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1353
+msgid ""
+"<p><b style=\"color: red;\">Note: </b> Please enter each postcode/zip code "
+"in a new line."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:184
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:280
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:354
+msgid ""
+"<p><b style=\"color: red;\">Note: </b>If entered price is more than total "
+"fee price than Message looks like: <b>Fee Name: Curreny Symbole like($) -60."
+"00 Price </b> and if fee minus price is more than total price than it will "
+"set Total Price to Zero(0).</p>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1385
+msgid ""
+"<p><b style=\"color: red;\">Note: </b>Please make sure that when you add "
+"rules in Advanced Fees Price Rules > Cost on Category Section It contains in "
+"above selected category list, otherwise it may not apply proper fees. For "
+"more detail please view our documentation. <a href=\"%s\" target=\"_blank\">"
+"Click Here</a></p>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1361
+#: admin/partials/wcpfc-pro-add-new-page.php:1369
+msgid ""
+"<p><b style=\"color: red;\">Note: </b>Please make sure that when you add "
+"rules in Advanced Fees Price Rules > Cost on Product Section It contains in "
+"above selected product list, otherwise it may not apply proper fees. For "
+"more detail please view our documentation. <a href=\"%s\" target=\"_blank\">"
+"Click Here</a></p>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1422
+msgid ""
+"<p><b style=\"color: red;\">Note: </b>Please make sure that when you add "
+"rules in Advanced Fees Price Rules > Cost on Weight Section It contains in "
+"above entered weight, otherwise it may not apply proper fees. For more "
+"detail please view our documentation. <a href=\"%s\" target=\"_blank\">Click "
+"Here</a></p>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1403
+msgid ""
+"<p><b style=\"color: red;\">Note: </b>This rule will apply when you would "
+"apply coupon on front side. <a href=\"%s\" target=\"_blank\">Click Here</a>"
+"</p>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:429
+msgid ""
+"<strong>Dynamic Charges:</strong> You can enter fixed amount or make it "
+"dynamic using the below short code parameters:"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2364
+msgid ""
+"<strong>We need your support</strong> to keep updating and improving the "
+"plugin. Please <a href=\"%1$s\" target=\"_blank\">help us by leaving a good "
+"review</a> :) Thanks!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1993
+#: admin/partials/wcpfc-pro-add-new-page.php:2167
+#: admin/partials/wcpfc-pro-add-new-page.php:2335
+#: admin/partials/wcpfc-pro-add-new-page.php:2512
+#: admin/partials/wcpfc-pro-add-new-page.php:2696
+#: admin/partials/wcpfc-pro-add-new-page.php:2867
+#: admin/partials/wcpfc-pro-add-new-page.php:3036
+#: admin/partials/wcpfc-pro-add-new-page.php:3203
+#: admin/partials/wcpfc-pro-add-new-page.php:3379
+msgid ""
+"A fixed amount (e.g. 5 / -5) percentage (e.g. 5% / -5%) to add as a fee. "
+"Percentage and minus amount will apply based on the cart subtotal."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1817
+#: admin/partials/wcpfc-pro-add-new-page.php:3594
+msgid ""
+"A fixed amount (e.g. 5 / -5), percentage (e.g. 5% / -5%) to add as a fee. "
+"Percentage and minus amount will apply based on the cart subtotal."
+msgstr ""
+
+#: woocommerce-conditional-product-fees-for-checkout.php:168
+msgid "Activate Plugin"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:915
+#: admin/partials/wcpfc-pro-add-new-page.php:995
+#: admin/partials/wcpfc-pro-add-new-page.php:1076
+msgid "Add a detailed note or description about the optional fee."
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:817
+#: admin/partials/wcpfc_pro_list-page.php:822
+msgid "Add New"
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:813
+msgid "Add New 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:84
+#: admin/partials/wcpfc-global-settings-page.php:190
+msgid "Add your own tooltip text that will apply to the merged fee label."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2040
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2041
+msgid "Advance Conditional Fees"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:125
+msgid "Advanced Extra Fees Rules"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1718
+#: admin/partials/wcpfc-pro-add-new-page.php:3503
+msgid "Advanced Fees Price Rules"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1110
+#: admin/partials/wcpfc-pro-add-new-page.php:1792
+#: admin/partials/wcpfc-pro-add-new-page.php:1968
+#: admin/partials/wcpfc-pro-add-new-page.php:2139
+#: admin/partials/wcpfc-pro-add-new-page.php:2309
+#: admin/partials/wcpfc-pro-add-new-page.php:2484
+#: admin/partials/wcpfc-pro-add-new-page.php:2668
+#: admin/partials/wcpfc-pro-add-new-page.php:2841
+#: admin/partials/wcpfc-pro-add-new-page.php:3010
+#: admin/partials/wcpfc-pro-add-new-page.php:3176
+#: admin/partials/wcpfc-pro-add-new-page.php:3351
+#: admin/partials/wcpfc-pro-add-new-page.php:3570
+msgid "All"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:226
+msgid "All fees have been deleted...!"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:177
+msgid "All fees have been disabled...!"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:127
+msgid "All fees have been enabled...!"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:153
+#: admin/partials/wcpfc-dashboard-setting.php:449
+msgid "All Time"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:156
+#: admin/partials/wcpfc-pro-add-new-page.php:1883
+#: admin/partials/wcpfc-pro-add-new-page.php:2066
+#: admin/partials/wcpfc-pro-add-new-page.php:2234
+#: admin/partials/wcpfc-pro-add-new-page.php:2406
+#: admin/partials/wcpfc-pro-add-new-page.php:2586
+#: admin/partials/wcpfc-pro-add-new-page.php:2765
+#: admin/partials/wcpfc-pro-add-new-page.php:2931
+#: admin/partials/wcpfc-pro-add-new-page.php:3098
+#: admin/partials/wcpfc-pro-add-new-page.php:3270
+#: admin/partials/wcpfc-pro-add-new-page.php:3615
+msgid "Amount"
+msgstr "Menge"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3451
+msgid "amount"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:96
+msgid ""
+"An online store charges shipping fees based on product quantity: 3% for 1-10,"
+" 5% for 11-20, and 7% for 21+ for specific products."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1108
+#: admin/partials/wcpfc-pro-add-new-page.php:1790
+#: admin/partials/wcpfc-pro-add-new-page.php:1966
+#: admin/partials/wcpfc-pro-add-new-page.php:2137
+#: admin/partials/wcpfc-pro-add-new-page.php:2307
+#: admin/partials/wcpfc-pro-add-new-page.php:2482
+#: admin/partials/wcpfc-pro-add-new-page.php:2666
+#: admin/partials/wcpfc-pro-add-new-page.php:2839
+#: admin/partials/wcpfc-pro-add-new-page.php:3008
+#: admin/partials/wcpfc-pro-add-new-page.php:3174
+#: admin/partials/wcpfc-pro-add-new-page.php:3349
+#: admin/partials/wcpfc-pro-add-new-page.php:3569
+msgid "Any One"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:374
+msgid "Apply fee on cart total"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:208
+#: admin/partials/wcpfc-pro-add-new-page.php:1893
+#: admin/partials/wcpfc-pro-add-new-page.php:3619
+msgid "Apply on Products"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:401
+msgid "Apply Per Additional Quantity"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:531
+#: admin/partials/wcpfc-pro-add-new-page.php:564
+#: admin/partials/wcpfc-pro-add-new-page.php:599
+msgid "Apply the fee for the user's first order only."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:307
+msgid ""
+"Are you perhaps looking to offer a discount to your customers instead? Our "
+"\"<strong>Discount Plugin</strong>\" can help you easily and best way to set "
+"up and manage discounts for your products or services. It's a quick and easy "
+"solution that can save you time and hassle."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:691
+#: admin/partials/wcpfc-pro-add-new-page.php:754
+#: admin/partials/wcpfc-pro-add-new-page.php:818
+msgid "As a tooltip, provide short information for this fee to your customers."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:92
+msgid "Astra"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:173
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:274
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:348
+#: admin/partials/wcpfc-pro-add-new-page.php:1190
+#: admin/partials/wcpfc-pro-add-new-page.php:1561
+msgid "Attribute Specific"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:380
+msgid ""
+"Author email does not exist. Please enter valid user email of this site."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:102
+msgid "Be our friend on"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1103
+#: admin/partials/wcpfc-pro-add-new-page.php:1785
+#: admin/partials/wcpfc-pro-add-new-page.php:1960
+#: admin/partials/wcpfc-pro-add-new-page.php:2132
+#: admin/partials/wcpfc-pro-add-new-page.php:2302
+#: admin/partials/wcpfc-pro-add-new-page.php:2476
+#: admin/partials/wcpfc-pro-add-new-page.php:2660
+#: admin/partials/wcpfc-pro-add-new-page.php:2834
+#: admin/partials/wcpfc-pro-add-new-page.php:3002
+#: admin/partials/wcpfc-pro-add-new-page.php:3168
+#: admin/partials/wcpfc-pro-add-new-page.php:3342
+#: admin/partials/wcpfc-pro-add-new-page.php:3566
+msgid "below"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:409
+msgid "Calculate Quantity Based On"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:73
+msgid ""
+"Capability to apply service area-based charges: $5 fee for deliveries within "
+"the town area or a $15 fee for orders shipped to remote areas."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:413
+msgid "Cart Based"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:410
+msgid ""
+"Cart based will apply to the total product's quantity in the cart and "
+"Product based will apply to the specific product's quantity in the cart."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:138
+#: admin/partials/wcpfc-pro-add-new-page.php:1174
+#: admin/partials/wcpfc-pro-add-new-page.php:1545
+msgid "Cart contains category's product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:248
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:322
+#: admin/partials/wcpfc-pro-add-new-page.php:1178
+#: admin/partials/wcpfc-pro-add-new-page.php:1183
+#: admin/partials/wcpfc-pro-add-new-page.php:1549
+#: admin/partials/wcpfc-pro-add-new-page.php:1554
+msgid "Cart contains category's product 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:136
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:246
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:320
+#: admin/partials/wcpfc-pro-add-new-page.php:1168
+#: admin/partials/wcpfc-pro-add-new-page.php:1539
+msgid "Cart contains product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:141
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:250
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:324
+#: admin/partials/wcpfc-pro-add-new-page.php:1188
+#: admin/partials/wcpfc-pro-add-new-page.php:1559
+msgid "Cart contains product's quantity"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:140
+msgid "Cart contains SKU's product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:139
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:249
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:323
+#: admin/partials/wcpfc-pro-add-new-page.php:1187
+#: admin/partials/wcpfc-pro-add-new-page.php:1558
+msgid "Cart contains tag's product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:137
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:247
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:321
+#: admin/partials/wcpfc-pro-add-new-page.php:1169
+#: admin/partials/wcpfc-pro-add-new-page.php:1540
+msgid "Cart contains variable product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:164
+#: admin/partials/wcpfc-pro-add-new-page.php:2903
+msgid "Cart Qty"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:176
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:277
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:351
+#: admin/partials/wcpfc-pro-add-new-page.php:1228
+#: admin/partials/wcpfc-pro-add-new-page.php:1599
+msgid "Cart Specific"
+msgstr "Wagenspezifisch"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:168
+#: admin/partials/wcpfc-pro-add-new-page.php:3240
+msgid "Cart Subtotal"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:146
+msgid "Cart Subtotal (After Discount)"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1238
+#: admin/partials/wcpfc-pro-add-new-page.php:1243
+#: admin/partials/wcpfc-pro-add-new-page.php:1249
+#: admin/partials/wcpfc-pro-add-new-page.php:1609
+#: admin/partials/wcpfc-pro-add-new-page.php:1614
+#: admin/partials/wcpfc-pro-add-new-page.php:1620
+msgid "Cart Subtotal (After Discount) "
+msgstr "Warenkorb Zwischensumme (Nach Rabatt) "
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:257
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:331
+msgid "Cart Subtotal (After Discount) 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:145
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:256
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:330
+msgid "Cart Subtotal (Before Discount)"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1233
+#: admin/partials/wcpfc-pro-add-new-page.php:1604
+msgid "Cart Subtotal (Before Discount) "
+msgstr "Warenkorb Zwischensumme (vor Rabatt) "
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:147
+msgid "Cart Subtotal (Specific products)"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1239
+#: admin/partials/wcpfc-pro-add-new-page.php:1244
+#: admin/partials/wcpfc-pro-add-new-page.php:1250
+#: admin/partials/wcpfc-pro-add-new-page.php:1610
+#: admin/partials/wcpfc-pro-add-new-page.php:1615
+#: admin/partials/wcpfc-pro-add-new-page.php:1621
+msgid "Cart Subtotal (Specific products) "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:258
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:332
+msgid "Cart Subtotal (Specific products) 🔒"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:25
+msgid "Cart Totals"
+msgstr "Einkaufswagen Summen"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:165
+#: admin/partials/wcpfc-pro-add-new-page.php:3072
+msgid "Cart Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2322
+#: admin/partials/wcpfc-pro-add-new-page.php:2497
+#: admin/partials/wcpfc-pro-add-new-page.php:2681
+msgid "Category"
+msgstr "Kategorie"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2455
+msgid "Category Subtotal"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:90
+msgid ""
+"Charge additional percentage fees for a specific range of items added to the "
+"cart by the users."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:54
+msgid ""
+"Charge dynamic fee charges based on the product stock, quantity, cart "
+"subtotal, special products, etc."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:114
+msgid ""
+"Charge extra fees from the customers for choosing a specific payment gateway "
+"based on the order amount."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:153
+msgid ""
+"Check out the advanced features, Simplify fee management, drive more sales, "
+"and boost your revenue by upgrading to premium!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:880
+#: admin/partials/wcpfc-pro-add-new-page.php:957
+#: admin/partials/wcpfc-pro-add-new-page.php:1038
+msgid "Checkbox"
+msgstr ""
+
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:1464
+msgid "choose your option"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:133
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:241
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:315
+#: admin/partials/wcpfc-pro-add-new-page.php:1142
+#: admin/partials/wcpfc-pro-add-new-page.php:1513
+msgid "City"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:226
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:301
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:375
+msgid ""
+"City 1\n"
+"City 2"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:243
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:317
+msgid "City 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:192
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:286
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:360
+#: admin/partials/wcpfc-pro-add-new-page.php:1381
+#: admin/partials/wcpfc-pro-add-new-page.php:1416
+msgid "Click Here"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:170
+msgid "Close"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:279
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:353
+#: admin/partials/wcpfc-pro-add-new-page.php:1203
+#: admin/partials/wcpfc-pro-add-new-page.php:1574
+msgid "Color 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1091
+msgid "Conditional Fee Rule"
+msgstr "Bedingungen"
+
+#: admin/partials/dots-plugin-setup-wizard.php:29
+#: admin/partials/dots-plugin-setup-wizard.php:57
+#: admin/partials/dots-plugin-setup-wizard.php:70
+#: admin/partials/dots-plugin-setup-wizard.php:115
+msgid "Continue"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1735
+#: admin/partials/wcpfc-pro-add-new-page.php:2277
+#: admin/partials/wcpfc-pro-add-new-page.php:2287
+#: admin/partials/wcpfc-pro-add-new-page.php:3518
+msgid "Cost on Category"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1736
+#: admin/partials/wcpfc-pro-add-new-page.php:2450
+#: admin/partials/wcpfc-pro-add-new-page.php:2459
+#: admin/partials/wcpfc-pro-add-new-page.php:3519
+msgid "Cost on Category Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1737
+#: admin/partials/wcpfc-pro-add-new-page.php:2632
+#: admin/partials/wcpfc-pro-add-new-page.php:2644
+#: admin/partials/wcpfc-pro-add-new-page.php:3520
+msgid "Cost on Category Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1732
+#: admin/partials/wcpfc-pro-add-new-page.php:1765
+#: admin/partials/wcpfc-pro-add-new-page.php:1771
+#: admin/partials/wcpfc-pro-add-new-page.php:3515
+#: admin/partials/wcpfc-pro-add-new-page.php:3546
+#: admin/partials/wcpfc-pro-add-new-page.php:3552
+msgid "Cost on Product"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1733
+#: admin/partials/wcpfc-pro-add-new-page.php:1934
+#: admin/partials/wcpfc-pro-add-new-page.php:1943
+#: admin/partials/wcpfc-pro-add-new-page.php:3516
+msgid "Cost on Product Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1734
+#: admin/partials/wcpfc-pro-add-new-page.php:2110
+#: admin/partials/wcpfc-pro-add-new-page.php:2116
+#: admin/partials/wcpfc-pro-add-new-page.php:3517
+msgid "Cost on Product Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1741
+#: admin/partials/wcpfc-pro-add-new-page.php:3315
+#: admin/partials/wcpfc-pro-add-new-page.php:3325
+#: admin/partials/wcpfc-pro-add-new-page.php:3524
+msgid "Cost on Shipping Class Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1738
+#: admin/partials/wcpfc-pro-add-new-page.php:2809
+#: admin/partials/wcpfc-pro-add-new-page.php:2818
+#: admin/partials/wcpfc-pro-add-new-page.php:3521
+msgid "Cost on Total Cart Qty"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1740
+#: admin/partials/wcpfc-pro-add-new-page.php:3142
+#: admin/partials/wcpfc-pro-add-new-page.php:3151
+#: admin/partials/wcpfc-pro-add-new-page.php:3523
+msgid "Cost on Total Cart Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1739
+#: admin/partials/wcpfc-pro-add-new-page.php:2977
+#: admin/partials/wcpfc-pro-add-new-page.php:2986
+#: admin/partials/wcpfc-pro-add-new-page.php:3522
+msgid "Cost on Total Cart Weight"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:131
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:240
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:314
+#: admin/partials/wcpfc-pro-add-new-page.php:1141
+#: admin/partials/wcpfc-pro-add-new-page.php:1512
+msgid "Country"
+msgstr "Land"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:150
+#: admin/partials/wcpfc-pro-add-new-page.php:1260
+#: admin/partials/wcpfc-pro-add-new-page.php:1631
+msgid "Coupon"
+msgstr "Coupon"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:261
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:335
+#: admin/partials/wcpfc-pro-add-new-page.php:1266
+#: admin/partials/wcpfc-pro-add-new-page.php:1273
+#: admin/partials/wcpfc-pro-add-new-page.php:1637
+#: admin/partials/wcpfc-pro-add-new-page.php:1644
+msgid "Coupon 🔒"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:59
+msgid "Create advanced fee rules by product, cart subtotal, and more."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:254
+msgid "Customer Profile Image"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:120
+msgid ""
+"Customize charges based on payment type: 10 fees for payments made through "
+"Cash on Delivery."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:85
+msgid ""
+"Customize charges based on weight: $99 for items weighing between 0.01 - 99."
+"99 and $149 for 100 pounds or more."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:109
+msgid ""
+"Customize country-specific charges for free delivery: $10 charges for the "
+"United States and $21 for Europe."
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:107
+msgid "Dashboard"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1827
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1890
+msgid "Data fetched!"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3135
+msgid "Data has been Exported!"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:71
+msgid "Data has been imported successfully."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3381
+msgid "Data has been Imported!"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:71
+msgid "Date"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:149
+#: admin/partials/wcpfc-dashboard-setting.php:445
+msgid "Day"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:469
+msgid "Day Of The Week"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:888
+#: admin/partials/wcpfc-pro-add-new-page.php:965
+#: admin/partials/wcpfc-pro-add-new-page.php:1046
+msgid "Default Optional Fee Checked"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:163
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:271
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:345
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:369
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:526
+msgid "Delete"
+msgstr "Löschen"
+
+#: admin/partials/dots-upgrade-popup.php:61
+msgid "Develop a revenue strategy by analyzing top fees with pie charts."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:138
+#: admin/partials/dots-upgrade-dashboard.php:141
+msgid ""
+"Develop a revenue-driven strategy by analyzing top fees, including yearly, "
+"monthly, and daily charges, and visualizing pie chart graphs."
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:524
+#| msgid "Disabled"
+msgid "Disable"
+msgstr "Deaktivieren"
+
+#: admin/partials/dots-upgrade-dashboard.php:157
+msgid "Discover Our Top Key Features"
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:638
+msgid "Dismiss this notice."
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:50
+#: admin/partials/wcpfc-global-settings-page.php:156
+msgid "Display all fees in one label"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:90
+msgid "Do the Woo"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:281
+msgid "Do you offer support for the plugin? What’s it like?"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout.php:224
+msgid "Docs"
+msgstr "Dokumente"
+
+#: admin/partials/dots-plugin-setup-wizard.php:119
+msgid "Done"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:881
+#: admin/partials/wcpfc-pro-add-new-page.php:958
+#: admin/partials/wcpfc-pro-add-new-page.php:1039
+msgid "Dropdown"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:370
+msgid "Duplicate"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:646
+#: admin/partials/wcpfc-pro-add-new-page.php:704
+#: admin/partials/wcpfc-pro-add-new-page.php:768
+msgid "Each Weight Rule"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:121
+msgid ""
+"Easily apply a processing fee for cheque payments: a $5 fee per transaction."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:61
+msgid ""
+"Easily apply quantity-based fees to shipping classes: $39 for Bulky items, "
+"$21 for Lightweight items, and more. Easily apply quantity-based fees to "
+"shipping classes: $39 for Bulky items, $21 for Lightweight items, and more."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:72
+msgid ""
+"Easy to apply country-based Fees: $10 for orders shipped to the United "
+"States or $15 for orders shipped to Canada."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:108
+msgid ""
+"Easy to apply dynamic fees for free shipping: $10 box charges for express "
+"free shipping and $21 charge for orders below $199."
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:368
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:525
+#| msgid "Enabled"
+msgid "Enable"
+msgstr "Ermöglichen"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:335
+msgid ""
+"Enable or Disable this fee using this button (This fee will be visible to "
+"customers only if it is enabled)."
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:73
+#: admin/partials/wcpfc-global-settings-page.php:179
+msgid "Enable this if you want to add a tooltip to the merged fee label."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:647
+#: admin/partials/wcpfc-pro-add-new-page.php:706
+#: admin/partials/wcpfc-pro-add-new-page.php:770
+msgid "Enable/Disable additional rules per weight on the cart page."
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:69
+#: admin/partials/wcpfc-pro-add-new-page.php:458
+msgid "End Date"
+msgstr "Enddatum"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:190
+msgid "End time should be after start time."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:133
+msgid ""
+"Enhance fee options with additional charges for top products: Apply a 5% fee "
+"for orders below $1499 and 2% for orders above $1500."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:126
+#: admin/partials/dots-upgrade-dashboard.php:129
+msgid ""
+"Enhance your pricing strategy by adding advanced fee rules based on specific "
+"product or category subtotal ranges."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:356
+msgid "Enter fee title"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:919
+#: admin/partials/wcpfc-pro-add-new-page.php:999
+#: admin/partials/wcpfc-pro-add-new-page.php:1080
+msgid "Enter optional fee description"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:695
+#: admin/partials/wcpfc-pro-add-new-page.php:758
+#: admin/partials/wcpfc-pro-add-new-page.php:822
+msgid "Enter tooltip short description"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:157
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:265
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:339
+#: admin/partials/wcpfc-pro-add-new-page.php:1322
+#: admin/partials/wcpfc-pro-add-new-page.php:1331
+#: admin/partials/wcpfc-pro-add-new-page.php:1692
+msgid "Equal to ( = )"
+msgstr "Gleich (=)"
+
+#: admin/partials/wcpfc_pro_list-page.php:613
+msgid "Error saving Fees."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:245
+msgid "Exactly what we needed!"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:69
+msgid ""
+"Expand your fee configuration options with different locations such as "
+"country, state, postcodes, and city rules."
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:29
+#: admin/partials/wcpfc-import-export-setting.php:88
+msgid "Export"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:163
+#: admin/partials/wcpfc-dashboard-setting.php:458
+msgid "Export CSV"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1757
+msgid "Export Done!"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:24
+#: admin/partials/wcpfc-import-export-setting.php:83
+msgid "Export Settings Data"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:31
+#: admin/partials/wcpfc-import-export-setting.php:92
+msgid ""
+"Export the plugin settings for this site as a .json file. This allows you to "
+"easily import the configuration into another site."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:393
+msgid "Extra Fees"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:277
+msgid "FAQs"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:67
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:325
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:1372
+msgid "Fee"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:381
+#: admin/partials/wcpfc-pro-add-new-page.php:1992
+#: admin/partials/wcpfc-pro-add-new-page.php:2166
+#: admin/partials/wcpfc-pro-add-new-page.php:2511
+#: admin/partials/wcpfc-pro-add-new-page.php:2695
+#: admin/partials/wcpfc-pro-add-new-page.php:3035
+#: admin/partials/wcpfc-pro-add-new-page.php:3202
+msgid "Fee Amount"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1816
+#: admin/partials/wcpfc-pro-add-new-page.php:2334
+#: admin/partials/wcpfc-pro-add-new-page.php:2866
+#: admin/partials/wcpfc-pro-add-new-page.php:3378
+#: admin/partials/wcpfc-pro-add-new-page.php:3593
+msgid "Fee amount"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:323
+msgid "Fee Configuration"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:168
+#: admin/partials/wcpfc-dashboard-setting.php:463
+msgid "Fee Name"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3522
+msgid "Fee rule has been created."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3526
+msgid "Fee rule has been deleted."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3530
+msgid "Fee rule has been disabled."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3528
+msgid "Fee rule has been duplicated."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3532
+msgid "Fee rule has been enabled."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:636
+msgid "Fee rule has been successfully deleted."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:630
+msgid "Fee rule has been successfully saved."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3524
+msgid "Fee rule has been updated."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:350
+msgid "Fee Title"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:651
+msgid "Fee title"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:362
+msgid "Fee Type"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1681
+msgid "Fees data has been updated successfully."
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:157
+#: admin/partials/wcpfc-dashboard-setting.php:193
+msgid "Fees Revenue Graph"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:368
+msgid "Fixed"
+msgstr "Fixed"
+
+#: admin/partials/header/plugin-header.php:23
+#: admin/partials/header/plugin-header.php:27
+msgid "Free"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:101
+msgid "Free Shipping Based Check-Out Fees"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:486
+msgid "Friday"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:513
+msgid "From:"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:40
+msgid ""
+"Get improved features and faster fixes by sharing non-sensitive data via "
+"usage-tracking. This will help us make the plugin more compatible with your "
+"site. No personal data is tracked or stored."
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:125
+msgid "Get Premium"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:231
+#: admin/partials/dots-upgrade-dashboard.php:331
+msgid "Get The Premium Version"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:148
+#: admin/partials/wcpfc-global-settings-page.php:21
+#: admin/partials/wcpfc-global-settings-page.php:112
+msgid "Global Settings"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:228
+msgid "Great for website owners with a single WooCommerce Store"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:161
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:269
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:343
+#: admin/partials/wcpfc-pro-add-new-page.php:1325
+msgid "Greater or Equal to ( >= )"
+msgstr "Größer oder gleich (> =)"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1326
+msgid "Greater than ( > )"
+msgstr "Größer als ( > )"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:162
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:270
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:344
+msgid "Greater then ( > )"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1165
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1166
+msgid "Guest"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:132
+msgid ""
+"Harness the power of charges on popular products: Apply a $19 fee for orders "
+"between $199 and $999, $29 for orders between $1999 and $5999, and $35 for "
+"orders exceeding $6000."
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:79
+msgid "Help"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:39
+msgid "Help us build a better \"Extra Fees\" Plugin!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:18
+msgid "How to Get Started"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:314
+msgid "I have more questions…"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:247
+msgid ""
+"I needed to add a processing fee for credit card payments at checkout. The "
+"<strong>WooCommerce Extra Fees Plugin Pro was a perfect solution</strong>. "
+"Installation was a breeze, and it was up and <strong>running in just a few "
+"clicks!</strong>"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:832
+msgid "If \"Yes\" is selected, this fee will be calculated as taxable."
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:62
+#: admin/partials/wcpfc-global-settings-page.php:168
+msgid "If enabled, it will make this one merged fee calculated as taxable."
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:29
+#: admin/partials/wcpfc-global-settings-page.php:135
+msgid ""
+"If enabled, the main menu of the plugin will be moved to the \"WooCommerce > "
+"Extra Fees\" section."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:889
+#: admin/partials/wcpfc-pro-add-new-page.php:967
+#: admin/partials/wcpfc-pro-add-new-page.php:1048
+msgid ""
+"If enabled, the optional fee will be checked/active by default on the "
+"checkout page."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1901
+#: admin/partials/wcpfc-pro-add-new-page.php:2075
+#: admin/partials/wcpfc-pro-add-new-page.php:2243
+#: admin/partials/wcpfc-pro-add-new-page.php:2415
+#: admin/partials/wcpfc-pro-add-new-page.php:2595
+#: admin/partials/wcpfc-pro-add-new-page.php:2774
+#: admin/partials/wcpfc-pro-add-new-page.php:2940
+#: admin/partials/wcpfc-pro-add-new-page.php:3106
+#: admin/partials/wcpfc-pro-add-new-page.php:3278
+#: admin/partials/wcpfc-pro-add-new-page.php:3460
+msgid ""
+"If entered fee amount is less than cart subtotal it will reflect with minus "
+"sign (EX: $ -10.00) OR If entered fee amount is more than cart subtotal then "
+"the total amount shown as zero (EX: Total: 0): "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:187
+msgid ""
+"If you activate Apply Per Quantity option then Advanced Fees Price Rules "
+"will be disabled and not work."
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:48
+#: admin/partials/wcpfc-import-export-setting.php:114
+msgid "Import"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:20
+#: admin/partials/wcpfc-import-export-setting.php:79
+msgid "Import &amp; Export Settings"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:149
+msgid "Import / Export"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:39
+#: admin/partials/wcpfc-import-export-setting.php:100
+msgid "Import Settings Data"
+msgstr ""
+
+#: admin/partials/wcpfc-import-export-setting.php:51
+#: admin/partials/wcpfc-import-export-setting.php:117
+msgid ""
+"Import the plugin settings from a .json file. This file can be obtained by "
+"exporting the settings on another site using the form above."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:26
+msgid "Increase revenues through additional strategic service costs!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:831
+msgid "Is Amount Taxable ?"
+msgstr "Ist steuerpflichtig?"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:853
+#: admin/partials/wcpfc-pro-add-new-page.php:928
+#: admin/partials/wcpfc-pro-add-new-page.php:1009
+msgid "Is Fee Optional ?"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:81
+msgid ""
+"It is easy to apply charges based on customer types. Set different delivery "
+"charges for consumers, sellers, shop managers, and premium customers."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:84
+msgid ""
+"It is easy to apply the service charge on bulk orders: the vendor charges "
+"$49 for specific product orders exceeding $3000."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:288
+msgid "knowledge base"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:392
+msgid "Last month revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:96
+msgid "Last month revenue 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:314
+msgid "Learn More"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:87
+msgid "LearnWoo"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:159
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:267
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:341
+#: admin/partials/wcpfc-pro-add-new-page.php:1323
+msgid "Less or Equal to ( <= )"
+msgstr "Weniger oder gleich (<=)"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1324
+msgid "Less than ( < )"
+msgstr "Weniger als ( < )"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:160
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:268
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:342
+msgid "Less then ( < )"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:119
+msgid "License"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:171
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:272
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:346
+#: admin/partials/wcpfc-pro-add-new-page.php:1140
+#: admin/partials/wcpfc-pro-add-new-page.php:1511
+msgid "Location Specific"
+msgstr "Standortspezifisch"
+
+#: admin/partials/dots-upgrade-dashboard.php:65
+msgid "Location-Based Conditional Fees"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:110
+msgid "Manage Fees"
+msgstr "Verwalten Sie Produktgebühren"
+
+#: admin/partials/wcpfc-pro-get-started-page.php:30
+msgid "Manage Fees Rules"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:179
+msgid "Max qty should greater then min qty"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:155
+#: admin/partials/wcpfc-pro-add-new-page.php:1875
+#: admin/partials/wcpfc-pro-add-new-page.php:2397
+#: admin/partials/wcpfc-pro-add-new-page.php:2862
+#: admin/partials/wcpfc-pro-add-new-page.php:2922
+#: admin/partials/wcpfc-pro-add-new-page.php:3612
+msgid "Max Quantity"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3442
+msgid "Max quantity"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1812
+#: admin/partials/wcpfc-pro-add-new-page.php:2330
+#: admin/partials/wcpfc-pro-add-new-page.php:3589
+msgid "Max Quantity "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:170
+#: admin/partials/wcpfc-pro-add-new-page.php:1988
+#: admin/partials/wcpfc-pro-add-new-page.php:2056
+#: admin/partials/wcpfc-pro-add-new-page.php:2507
+#: admin/partials/wcpfc-pro-add-new-page.php:2576
+#: admin/partials/wcpfc-pro-add-new-page.php:3198
+#: admin/partials/wcpfc-pro-add-new-page.php:3260
+msgid "Max Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3374
+msgid "Max Subtotal "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:181
+msgid "Max subtotal should greater then min subtotal"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:167
+#: admin/partials/wcpfc-pro-add-new-page.php:2226
+#: admin/partials/wcpfc-pro-add-new-page.php:2757
+#: admin/partials/wcpfc-pro-add-new-page.php:3031
+#: admin/partials/wcpfc-pro-add-new-page.php:3090
+msgid "Max Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2162
+#: admin/partials/wcpfc-pro-add-new-page.php:2691
+msgid "Max Weight "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:180
+msgid "Max weight should greater then min weight"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:94
+msgid "Medium"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:72
+#: admin/partials/wcpfc-global-settings-page.php:178
+msgid "Merge all fee tooltip"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:83
+#: admin/partials/wcpfc-global-settings-page.php:189
+msgid "Merge all fee tooltip text"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:61
+#: admin/partials/wcpfc-global-settings-page.php:167
+msgid "Merge all fee with taxable"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:257
+msgid "Michaël Vorentjes"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:351
+msgid ""
+"Migration Progress (Do not refresh the page until this process complete.)"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:154
+#: admin/partials/wcpfc-pro-add-new-page.php:1867
+#: admin/partials/wcpfc-pro-add-new-page.php:2388
+#: admin/partials/wcpfc-pro-add-new-page.php:2913
+#: admin/partials/wcpfc-pro-add-new-page.php:3609
+msgid "Min Quantity"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3433
+msgid "Min quantity"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1808
+#: admin/partials/wcpfc-pro-add-new-page.php:2326
+#: admin/partials/wcpfc-pro-add-new-page.php:2857
+#: admin/partials/wcpfc-pro-add-new-page.php:3585
+msgid "Min Quantity "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:169
+#: admin/partials/wcpfc-pro-add-new-page.php:2046
+#: admin/partials/wcpfc-pro-add-new-page.php:2566
+#: admin/partials/wcpfc-pro-add-new-page.php:3250
+msgid "Min Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1984
+#: admin/partials/wcpfc-pro-add-new-page.php:2502
+#: admin/partials/wcpfc-pro-add-new-page.php:3193
+#: admin/partials/wcpfc-pro-add-new-page.php:3369
+msgid "Min Subtotal "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:166
+#: admin/partials/wcpfc-pro-add-new-page.php:2218
+#: admin/partials/wcpfc-pro-add-new-page.php:2749
+#: admin/partials/wcpfc-pro-add-new-page.php:3082
+msgid "Min Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2157
+#: admin/partials/wcpfc-pro-add-new-page.php:2686
+#: admin/partials/wcpfc-pro-add-new-page.php:3026
+msgid "Min Weight "
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:482
+msgid "Monday"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:151
+#: admin/partials/wcpfc-dashboard-setting.php:447
+msgid "Month"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:222
+msgid "month"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:28
+#: admin/partials/wcpfc-global-settings-page.php:134
+msgid "Move main menu under WooCommerce > Extra Fees"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:86
+msgid "My Account"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:430
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:491
+msgid "N/A"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:47
+msgid "Never miss an important update"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:167
+#: admin/partials/wcpfc-dashboard-setting.php:462
+#: admin/partials/wcpfc-pro-add-new-page.php:842
+#: admin/partials/wcpfc-pro-add-new-page.php:867
+#: admin/partials/wcpfc-pro-add-new-page.php:943
+#: admin/partials/wcpfc-pro-add-new-page.php:1024
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:1466
+msgid "No"
+msgstr "Nein"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1759
+msgid "No data to export! please setup fees then export."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1829
+msgid "No fee Found! please setup fee to see report."
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:287
+msgid "No fees rule found."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:320
+msgid "No problem, we’re happy to help! Please reach out at %s."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:158
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:266
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:340
+#: admin/partials/wcpfc-pro-add-new-page.php:1327
+#: admin/partials/wcpfc-pro-add-new-page.php:1332
+#: admin/partials/wcpfc-pro-add-new-page.php:1693
+msgid "Not Equal to ( != )"
+msgstr "Nicht gleich (! =)"
+
+#: woocommerce/order/order-details.php:88
+msgid "Note:"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:191
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:281
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:355
+#: admin/partials/wcpfc-pro-add-new-page.php:1378
+#: admin/partials/wcpfc-pro-add-new-page.php:1413
+#: admin/partials/wcpfc-pro-add-new-page.php:1900
+#: admin/partials/wcpfc-pro-add-new-page.php:2074
+#: admin/partials/wcpfc-pro-add-new-page.php:2242
+#: admin/partials/wcpfc-pro-add-new-page.php:2414
+#: admin/partials/wcpfc-pro-add-new-page.php:2594
+#: admin/partials/wcpfc-pro-add-new-page.php:2773
+#: admin/partials/wcpfc-pro-add-new-page.php:2939
+#: admin/partials/wcpfc-pro-add-new-page.php:3105
+#: admin/partials/wcpfc-pro-add-new-page.php:3277
+#: admin/partials/wcpfc-pro-add-new-page.php:3459
+msgid "Note: "
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:416
+msgid "null"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:102
+msgid ""
+"Offer extra charges to your customers based on the order amount if they "
+"select the free shipping option."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:545
+#: admin/partials/wcpfc-pro-add-new-page.php:579
+#: admin/partials/wcpfc-pro-add-new-page.php:614
+msgid ""
+"Once selected it will allow fees on recurring payments as well. %1$s %2$s "
+"%3$sNote: %4$sThis option only works with subscription products."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:306
+msgid "Oops! It looks like you have entered a negative value in the price box."
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:353
+msgid "Open in new tab and download: "
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:48
+msgid ""
+"Opt-in to get email notifications for security & feature updates and to "
+"share some important WooCommerce updates. This will help us make the plugin "
+"more compatible with your version and better at doing what you need it to. "
+"No personal data is tracked or stored."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:914
+#: admin/partials/wcpfc-pro-add-new-page.php:993
+#: admin/partials/wcpfc-pro-add-new-page.php:1074
+msgid "Optional Fee Description"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:899
+#: admin/partials/wcpfc-pro-add-new-page.php:977
+#: admin/partials/wcpfc-pro-add-new-page.php:1058
+msgid "Optional Fee Section Title"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:874
+#: admin/partials/wcpfc-pro-add-new-page.php:950
+#: admin/partials/wcpfc-pro-add-new-page.php:1031
+msgid "Optional Fee Selection Type"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:273
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:1422
+msgid "Optional fee(s)"
+msgstr ""
+
+#: woocommerce/order/order-details.php:43
+msgid "Order details"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2279
+msgid "Order of fee rules has been updated successfully."
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:376
+msgid "Original fee does not exist."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:95
+msgid "Others"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:223
+msgid "Pay $%s today. Renews in 12 months."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:152
+#: admin/partials/wcpfc-pro-add-new-page.php:1284
+#: admin/partials/wcpfc-pro-add-new-page.php:1655
+msgid "Payment Gateway"
+msgstr "Zahlungs-Gateways"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:263
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:337
+#: admin/partials/wcpfc-pro-add-new-page.php:1288
+#: admin/partials/wcpfc-pro-add-new-page.php:1293
+#: admin/partials/wcpfc-pro-add-new-page.php:1659
+#: admin/partials/wcpfc-pro-add-new-page.php:1664
+msgid "Payment Gateway 🔒"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:113
+msgid "Payment Gateway-Based Extra Fees"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:177
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:278
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:352
+#: admin/partials/wcpfc-pro-add-new-page.php:1279
+#: admin/partials/wcpfc-pro-add-new-page.php:1650
+msgid "Payment Specific"
+msgstr "Zahlungsbedingungen"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:369
+msgid "Percentage"
+msgstr "Prozentsatz"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:370
+msgid "Percentage + Fee"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:89
+msgid "Percentage Fees Based On Product Quantity"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:216
+msgid "Personal"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:214
+msgid "Personal Plan"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:185
+msgid ""
+"Please disable Advanced Fees Price Rules if you don't need them because you "
+"have not created a rule there."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:198
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:252
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:326
+msgid "Please enter each city name in a new line."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:199
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:253
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:327
+msgid "Please enter each postcode/zip code in a new line."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:188
+msgid "Please fill some required field in Advanced Fees Price Rules section"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:195
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:283
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:357
+msgid ""
+"Please make sure that when you add rules in Advanced Fees Price Rules > Cost "
+"on Category Section It contains in above selected category list, otherwise "
+"it may not apply proper fees. For more detail please view our documentation. "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:194
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:282
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:356
+msgid ""
+"Please make sure that when you add rules in Advanced Fees Price Rules > Cost "
+"on Product Section It contains in above selected product list, otherwise it "
+"may not apply proper fees. For more detail please view our documentation. "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:193
+msgid ""
+"Please make sure that when you add rules in Advanced Fees Price Rules > Cost "
+"on Weight Section It contains in above entered weight, otherwise it may not "
+"apply proper fees. For more detail please view our documentation. "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3159
+msgid "Please upload a file to import"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3155
+msgid "Please upload a valid .json file"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:35
+msgid "Plugin Tour"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:134
+#: admin/partials/wcpfc-pro-add-new-page.php:1148
+#: admin/partials/wcpfc-pro-add-new-page.php:1519
+msgid "Postcode"
+msgstr "Postleitzahl"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:227
+msgid ""
+"Postcode 1\n"
+"Postcode 2"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:244
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:318
+#: admin/partials/wcpfc-pro-add-new-page.php:1154
+#: admin/partials/wcpfc-pro-add-new-page.php:1161
+#: admin/partials/wcpfc-pro-add-new-page.php:1525
+#: admin/partials/wcpfc-pro-add-new-page.php:1532
+msgid "Postcode 🔒"
+msgstr ""
+
+#. translators: %s: Number of posts.
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:194
+msgctxt "posts"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/partials/dots-upgrade-dashboard.php:117
+msgid ""
+"Power to generate extra revenue by collecting transaction fees for specific "
+"payment gateways."
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:20
+msgid "Pro"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1804
+#: admin/partials/wcpfc-pro-add-new-page.php:1980
+#: admin/partials/wcpfc-pro-add-new-page.php:2152
+#: admin/partials/wcpfc-pro-add-new-page.php:3581
+#: woocommerce/checkout/review-order.php:24
+#: woocommerce/order/order-details.php:49
+msgid "Product"
+msgstr "Produkt"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:414
+msgid "Product Based"
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:807
+msgid "Product Fees"
+msgstr "Produktgebühren"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:172
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:273
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:347
+#: admin/partials/wcpfc-pro-add-new-page.php:1167
+#: admin/partials/wcpfc-pro-add-new-page.php:1538
+msgid "Product Specific"
+msgstr "Produktspezifisch"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1939
+msgid "Product Subtotal"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:148
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:259
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:333
+#: admin/partials/wcpfc-pro-add-new-page.php:1254
+#: admin/partials/wcpfc-pro-add-new-page.php:1625
+msgid "Quantity"
+msgstr "Menge"
+
+#: admin/partials/dots-plugin-setup-wizard.php:64
+#: admin/partials/dots-plugin-setup-wizard.php:66
+msgid "Quick Tour"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:31
+msgid "Read the Setup Guide"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:213
+#: admin/partials/wcpfc-dashboard-setting.php:482
+msgid "Refresh Data"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:39
+#: admin/partials/wcpfc-global-settings-page.php:145
+msgid "Remove fees once a %d%% discount applies."
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:169
+#: admin/partials/wcpfc-dashboard-setting.php:464
+msgid "Revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:162
+#: admin/partials/wcpfc-dashboard-setting.php:457
+msgid "Revenue Breakdown"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:137
+msgid "Revenue Dashboard"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1113
+#: admin/partials/wcpfc-pro-add-new-page.php:1795
+#: admin/partials/wcpfc-pro-add-new-page.php:1971
+#: admin/partials/wcpfc-pro-add-new-page.php:2142
+#: admin/partials/wcpfc-pro-add-new-page.php:2312
+#: admin/partials/wcpfc-pro-add-new-page.php:2487
+#: admin/partials/wcpfc-pro-add-new-page.php:2671
+#: admin/partials/wcpfc-pro-add-new-page.php:2844
+#: admin/partials/wcpfc-pro-add-new-page.php:3013
+#: admin/partials/wcpfc-pro-add-new-page.php:3179
+#: admin/partials/wcpfc-pro-add-new-page.php:3354
+#: admin/partials/wcpfc-pro-add-new-page.php:3573
+msgid "rule match"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:487
+msgid "Saturday"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:215
+msgid "Save Fee"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:94
+#: admin/partials/wcpfc-global-settings-page.php:200
+msgid "Save Settings"
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:834
+msgid "Search"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:86
+msgid "Search Engine"
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:828
+msgid "Search results for &#8220;%s&#8221;"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:212
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:294
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:368
+msgid "Select a category"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2323
+msgid ""
+"Select a category to apply the fee amount when the min/max quantity match."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2498
+msgid ""
+"Select a category to apply the fee amount when the min/max subtotal match."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2682
+msgid ""
+"Select a category to apply the fee amount when the min/max weight match."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:215
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:296
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:370
+msgid "Select a country"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:221
+msgid "Select a coupon"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:222
+msgid "Select a payment gateway"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:211
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:293
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:367
+#: admin/partials/wcpfc-pro-add-new-page.php:3605
+msgid "Select a product"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:218
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:297
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:371
+msgid "Select a product tag"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1805
+#: admin/partials/wcpfc-pro-add-new-page.php:3582
+msgid ""
+"Select a product to apply the fee amount when the min/max quantity match."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1981
+msgid ""
+"Select a product to apply the fee amount when the min/max subtotal match."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2153
+msgid "Select a product to apply the fee amount when the min/max weight match."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:213
+msgid "Select a shipping class"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3365
+msgid ""
+"Select a shipping class to apply the fee amount when the min/max quantity "
+"match."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:223
+msgid "Select a shipping method"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:216
+msgid "Select a state"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:219
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:298
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:372
+msgid "Select a user"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:220
+msgid "Select a user role"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:217
+msgid "Select a zone"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1207
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1208
+msgid "Select All"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:228
+msgid "Select an attribute"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2637
+msgid "Select Category"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:214
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:295
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:369
+msgid "Select day of the week"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:463
+msgid "Select end date"
+msgstr "Enddatum wählen"
+
+#: admin/partials/dots-plugin-setup-wizard.php:84
+msgid "Select One"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:452
+msgid "Select start date"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:471
+msgid ""
+"Select the days on which you want to enable fees on your website. This rule "
+"will match with the current day which is set by WordPress "
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:875
+#: admin/partials/wcpfc-pro-add-new-page.php:952
+#: admin/partials/wcpfc-pro-add-new-page.php:1033
+msgid "Select the display type of the optional fee."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:459
+msgid "Select the End Date on which you want to disable the fee."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:448
+msgid "Select the Start Date on which you want to enable the fee."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:503
+msgid ""
+"Select the time at which you want to enable fees on your website. This rule "
+"will match with the current day which is set by WordPress "
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:78
+msgid ""
+"Set conditional product fees based on user roles such as consumer, seller, "
+"shop manager, premium customer, and more."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:544
+#: admin/partials/wcpfc-pro-add-new-page.php:577
+#: admin/partials/wcpfc-pro-add-new-page.php:612
+msgid "Set fee as recurring payment"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:669
+#: admin/partials/wcpfc-pro-add-new-page.php:730
+#: admin/partials/wcpfc-pro-add-new-page.php:794
+msgid "Set per each weight you want to apply the additional fee."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:658
+#: admin/partials/wcpfc-pro-add-new-page.php:718
+#: admin/partials/wcpfc-pro-add-new-page.php:782
+msgid "Set the amount of the fee which you want to apply per weight."
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:60
+msgid "Set the dynamic fee at checkout based on state, postal code, etc."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:900
+#: admin/partials/wcpfc-pro-add-new-page.php:979
+#: admin/partials/wcpfc-pro-add-new-page.php:1060
+msgid ""
+"Set the optional fee section title that will display before the payment "
+"section on the checkout page. %1$s %2$s %3$sNote: %4$sWe are removing this "
+"field from upcoming update. From now you can change it by use of  "
+"\"wcpfc_optional_fee_text\" filter hook."
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:58
+msgid "Set up unlimited conditional dynamic fees and increase revenue."
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:113
+#: includes/class-woocommerce-conditional-product-fees-for-checkout.php:223
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:183
+msgid "Settings have been saved successfully. Reload in a moment."
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:54 woocommerce/cart/cart-totals.php:55
+msgid "Shipping"
+msgstr "Versand"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:151
+#: admin/partials/wcpfc-pro-add-new-page.php:1261
+#: admin/partials/wcpfc-pro-add-new-page.php:1632
+#: admin/partials/wcpfc-pro-add-new-page.php:3364
+msgid "Shipping Class"
+msgstr "Versandklasse"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:262
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:336
+#: admin/partials/wcpfc-pro-add-new-page.php:1267
+#: admin/partials/wcpfc-pro-add-new-page.php:1274
+#: admin/partials/wcpfc-pro-add-new-page.php:1638
+#: admin/partials/wcpfc-pro-add-new-page.php:1645
+msgid "Shipping Class 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:153
+#: admin/partials/wcpfc-pro-add-new-page.php:1303
+#: admin/partials/wcpfc-pro-add-new-page.php:1674
+msgid "Shipping Method"
+msgstr "Verschiffen-Methode"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:264
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:338
+#: admin/partials/wcpfc-pro-add-new-page.php:1307
+#: admin/partials/wcpfc-pro-add-new-page.php:1312
+#: admin/partials/wcpfc-pro-add-new-page.php:1678
+#: admin/partials/wcpfc-pro-add-new-page.php:1683
+msgid "Shipping Method 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:174
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:275
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:349
+#: admin/partials/wcpfc-pro-add-new-page.php:1298
+#: admin/partials/wcpfc-pro-add-new-page.php:1669
+msgid "Shipping Specific"
+msgstr "Verschiffenspezifisch"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:631
+msgid "Showcase Fee On Checkout Only"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:311
+msgid ""
+"Simply click the link below to learn more about our Discount Plugin and how "
+"it can benefit your business."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:85
+msgid "Social Media"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2537
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2564
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:2579
+msgid "Something went wrong"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:1668
+msgid "Somethng went wrong!"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:308
+msgid "Sorry! your fee %s is not created!"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:68
+#: admin/partials/wcpfc-pro-add-new-page.php:447
+msgid "Start Date"
+msgstr "Anfangsdatum"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:132
+#: admin/partials/wcpfc-pro-add-new-page.php:1147
+#: admin/partials/wcpfc-pro-add-new-page.php:1518
+msgid "State"
+msgstr "Bundesland"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:242
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:316
+#: admin/partials/wcpfc-pro-add-new-page.php:1153
+#: admin/partials/wcpfc-pro-add-new-page.php:1160
+#: admin/partials/wcpfc-pro-add-new-page.php:1524
+#: admin/partials/wcpfc-pro-add-new-page.php:1531
+msgid "State 🔒"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:70
+#: admin/partials/wcpfc-pro-add-new-page.php:334
+msgid "Status"
+msgstr "Status"
+
+#: woocommerce/cart/cart-totals.php:29 woocommerce/cart/cart-totals.php:30
+#: woocommerce/checkout/review-order.php:54
+msgid "Subtotal"
+msgstr "Zwischensumme"
+
+#: admin/partials/header/plugin-header.php:70
+msgid "Suggest"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:481
+msgid "Sunday"
+msgstr ""
+
+#: admin/partials/header/plugin-header.php:67
+#: includes/class-woocommerce-conditional-product-fees-for-checkout.php:225
+msgid "Support"
+msgstr "Unterstützen"
+
+#: admin/partials/dots-upgrade-dashboard.php:289
+msgid "support ticket"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:97
+msgid ""
+"Tailor your fees based on product quantity: $15 for orders with 10 or more "
+"items."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:60
+msgid ""
+"Tailor your pricing to quantity levels with tiered fees: $10 for 1-3 items, "
+"$20 for 4-10 items, and $29 for 10 or more items."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:20
+msgid ""
+"Thank you for choosing our top-rated WooCommerce Extra Fees plugin. Our user-"
+"friendly interface makes it easy to set up different conditional fee rules."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3542
+msgid "The fee rule title already exists. Please create a different title."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:680
+#: admin/partials/wcpfc-pro-add-new-page.php:742
+#: admin/partials/wcpfc-pro-add-new-page.php:806
+msgid ""
+"The weight-based fee will apply in front when the cart weight reach over the "
+"configured here."
+msgstr ""
+
+#: admin/partials/wcpfc_pro_list-page.php:636
+msgid "There is an error with the security check."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3535
+msgid "There was an error with saving data."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3537
+msgid "There was an error with security check."
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:404
+msgid "This month revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:108
+msgid "This month revenue 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:352
+msgid ""
+"This name will be visible to the customer at the time of checkout. This "
+"should convey the purpose of the fee you are applying to the order. For "
+"example \"Deposit Fee\", \"Night Charges\", \"Insurance Fee\", etc."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:632
+msgid "This option will show added fees on checkout page only."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:197
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:285
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:359
+#: admin/partials/wcpfc-pro-add-new-page.php:1414
+msgid "This rule will apply when you would add cart contain product. "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:196
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:284
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:358
+msgid "This rule will apply when you would apply coupon in front side. "
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:142
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:251
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:325
+#: admin/partials/wcpfc-pro-add-new-page.php:1379
+msgid ""
+"This rule will only work if you have selected any one Product Specific "
+"option. "
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:402
+msgid "This will apply fees as per the quantity of products."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:854
+#: admin/partials/wcpfc-pro-add-new-page.php:930
+#: admin/partials/wcpfc-pro-add-new-page.php:1011
+msgid ""
+"This will not apply fee by default. %1$s %2$s %3$sNote: %4$sOnce you select "
+"this optional fee to \"Yes\", It will always show the fee on checkout page "
+"as optional."
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:380
+msgid "This year revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:84
+msgid "This year revenue 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:485
+msgid "Thursday"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:500
+msgid "Time"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:473
+#: admin/partials/wcpfc-pro-add-new-page.php:505
+msgid "Timezone"
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:59
+msgid "Title"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:24
+msgid ""
+"To help you get started, watch the quick tour video on the right. For more "
+"help, explore our help documents or visit our %s for detailed video "
+"tutorials."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:517
+msgid "To:"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:428
+msgid "Today revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:132
+msgid "Today revenue 🔒"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:690
+#: admin/partials/wcpfc-pro-add-new-page.php:752
+#: admin/partials/wcpfc-pro-add-new-page.php:816
+msgid "Tooltip Description"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:190
+#: admin/partials/wcpfc-dashboard-setting.php:472
+msgid "Top 10 Fees"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:139 woocommerce/cart/cart-totals.php:140
+#: woocommerce/checkout/review-order.php:25
+#: woocommerce/checkout/review-order.php:148
+#: woocommerce/order/order-details.php:50
+msgid "Total"
+msgstr "Gesamt"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2814
+#: admin/partials/wcpfc-pro-add-new-page.php:2853
+msgid "Total Cart Qty"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3147
+#: admin/partials/wcpfc-pro-add-new-page.php:3189
+msgid "Total Cart Subtotal"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2982
+#: admin/partials/wcpfc-pro-add-new-page.php:3022
+msgid "Total Cart Weight"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:368
+msgid "Total revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:72
+msgid "Total revenue 🔒"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:144
+msgid ""
+"Track additional revenue: Visualize line charts based on fees and customize "
+"fee amounts based on generated revenue."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:145
+msgid ""
+"Track and optimize top fees: Gain insights into the top 10 revenue-"
+"generating fees and refine your strategy accordingly."
+msgstr ""
+
+#: admin/list-tables/class-wc-conditional-product-fees-table.php:384
+msgid "Trash"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:418
+msgid "Trouble in getting fee details"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:232
+msgid "Trusted by 100,000+ store owners and WP experts!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:483
+msgid "Tuesday"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:56
+msgid ""
+"Unlock a world of possibilities for your WooCommerce store with our Premium "
+"Extra Fees plugin!"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:52
+msgid "Unlock Premium Features Today!"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:48
+msgid "Unlock Premium Features with a %s%% Discount!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:21
+msgid "Update Fee"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:65
+#: admin/partials/header/plugin-header.php:90
+#: admin/partials/header/plugin-header.php:95
+msgid "Upgrade Now"
+msgstr ""
+
+#: admin/partials/dots-upgrade-popup.php:41
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:152
+msgid "Upgrade to Unlock Premium Features"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:3867
+msgid ""
+"Usage limit reached: 10 fee rules created. Upgrade to unlock unlimited "
+"access."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:143
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:254
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:328
+#: admin/partials/wcpfc-pro-add-new-page.php:1209
+#: admin/partials/wcpfc-pro-add-new-page.php:1580
+msgid "User"
+msgstr "Benutzer"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:144
+#: admin/partials/wcpfc-pro-add-new-page.php:1214
+#: admin/partials/wcpfc-pro-add-new-page.php:1585
+msgid "User Role"
+msgstr "Benutzer-Rolle"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:255
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:329
+#: admin/partials/wcpfc-pro-add-new-page.php:1218
+#: admin/partials/wcpfc-pro-add-new-page.php:1223
+#: admin/partials/wcpfc-pro-add-new-page.php:1589
+#: admin/partials/wcpfc-pro-add-new-page.php:1594
+msgid "User Role 🔒"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:77
+msgid "User Role-Based Checkout Fees"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:175
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:276
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:350
+#: admin/partials/wcpfc-pro-add-new-page.php:1208
+#: admin/partials/wcpfc-pro-add-new-page.php:1579
+msgid "User Specific"
+msgstr "Benutzerspezifisch"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:530
+#: admin/partials/wcpfc-pro-add-new-page.php:562
+#: admin/partials/wcpfc-pro-add-new-page.php:597
+msgid "User's First Order"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:268
+msgid "Verified Customer"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:309
+msgid "We have a 14-day money-back guarantee."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:484
+msgid "Wednesday"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:150
+#: admin/partials/wcpfc-dashboard-setting.php:446
+msgid "Week"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:149
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:260
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:334
+#: admin/partials/wcpfc-pro-add-new-page.php:1630
+msgid "Weight"
+msgstr "Weight"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1259
+#: admin/partials/wcpfc-pro-add-new-page.php:1265
+#: admin/partials/wcpfc-pro-add-new-page.php:1272
+#: admin/partials/wcpfc-pro-add-new-page.php:1636
+#: admin/partials/wcpfc-pro-add-new-page.php:1643
+msgid "Weight "
+msgstr "Gewicht"
+
+#: admin/partials/wcpfc-pro-add-new-page.php:679
+#: admin/partials/wcpfc-pro-add-new-page.php:740
+#: admin/partials/wcpfc-pro-add-new-page.php:804
+msgid "Weight - Over"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:668
+#: admin/partials/wcpfc-pro-add-new-page.php:728
+#: admin/partials/wcpfc-pro-add-new-page.php:792
+msgid "Weight - Per Each"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:657
+#: admin/partials/wcpfc-pro-add-new-page.php:716
+#: admin/partials/wcpfc-pro-add-new-page.php:780
+msgid "Weight - Rate"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:19
+msgid "Welcome to Extra Fees Plugin"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:24
+msgid "Welcome! 🤗"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:298
+msgid "What payment methods do you accept?"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:306
+msgid "What’s your refund policy?"
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:51
+#: admin/partials/wcpfc-global-settings-page.php:157
+msgid ""
+"When this option is enabled, all fees will be combined into a single fee."
+msgstr ""
+
+#: admin/partials/wcpfc-global-settings-page.php:40
+#: admin/partials/wcpfc-global-settings-page.php:146
+msgid ""
+"When this option is enabled, the fee will be removed once a %d%% discount "
+"applies to the cart."
+msgstr ""
+
+#: woocommerce-conditional-product-fees-for-checkout.php:337
+msgid "WooCommerce"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:53
+msgid "WooCommerce Dynamic Extra Fees"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:390
+#: admin/partials/header/plugin-header.php:31
+msgid "WooCommerce Extra Fees"
+msgstr ""
+
+#: woocommerce-conditional-product-fees-for-checkout.php:336
+msgid "WooCommerce Extra Fees Plugin"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:82
+msgid "Would you mind telling how did you hear about us?"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:91
+msgid "WP Mayor"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:89
+msgid "WPBeginner"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:93
+msgid "WPExplorer"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:88
+msgid "WPLift"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:152
+#: admin/partials/wcpfc-dashboard-setting.php:448
+msgid "Year"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:838
+#: admin/partials/wcpfc-pro-add-new-page.php:863
+#: admin/partials/wcpfc-pro-add-new-page.php:939
+#: admin/partials/wcpfc-pro-add-new-page.php:1020
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:1465
+msgid "Yes"
+msgstr "Yes"
+
+#: admin/partials/dots-upgrade-dashboard.php:287
+msgid ""
+"Yes! You can read our %s or submit a %s. We are very responsive and strive "
+"to do our best to help you."
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:42
+#: admin/partials/dots-plugin-setup-wizard.php:50
+msgid "Yes, count me in!"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:416
+msgid "Yesterday revenue"
+msgstr ""
+
+#: admin/partials/wcpfc-dashboard-setting.php:120
+msgid "Yesterday revenue 🔒"
+msgstr ""
+
+#: admin/partials/dots-plugin-setup-wizard.php:77
+msgid "You are all set, almost!"
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:241
+msgid ""
+"You are fully protected by our 100% Satisfaction Guarantee. If over the next "
+"14 days you are unhappy with our plugin or have an issue that we are unable "
+"to resolve, we'll happily consider offering a 100% refund of your money."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:422
+msgid "You can add a fee here to be charged for each additional quantity."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:383
+msgid "You can add a fixed/percentage fee based on the selection above."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:363
+msgid "You can apply extra fees as a fixed or percentage price."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:105
+msgid ""
+"You can offer extra charges to your customer based on the order amount for "
+"the free shipping option."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:301
+msgid ""
+"You can pay with your credit card using Stripe checkout. Or your PayPal "
+"account."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2331
+msgid ""
+"You can set a maximum category quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2692
+msgid ""
+"You can set a maximum category weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1813
+#: admin/partials/wcpfc-pro-add-new-page.php:3590
+msgid ""
+"You can set a maximum product quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2163
+msgid ""
+"You can set a maximum product weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3375
+msgid ""
+"You can set a maximum shipping class subtotal per row before the fee amount "
+"is applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2863
+msgid ""
+"You can set a maximum total cart quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1989
+#: admin/partials/wcpfc-pro-add-new-page.php:2508
+#: admin/partials/wcpfc-pro-add-new-page.php:3199
+msgid ""
+"You can set a maximum total cart subtotal per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3032
+msgid ""
+"You can set a maximum total cart weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2327
+msgid ""
+"You can set a minimum category quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2687
+msgid ""
+"You can set a minimum category weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1809
+#: admin/partials/wcpfc-pro-add-new-page.php:3586
+msgid ""
+"You can set a minimum product quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2158
+msgid ""
+"You can set a minimum product weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3370
+msgid ""
+"You can set a minimum shipping class subtotal per row before the fee amount "
+"is applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:2858
+msgid ""
+"You can set a minimum total cart quantity per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1985
+#: admin/partials/wcpfc-pro-add-new-page.php:2503
+#: admin/partials/wcpfc-pro-add-new-page.php:3194
+msgid ""
+"You can set a minimum total cart subtotal per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:3027
+msgid ""
+"You can set a minimum total cart weight per row before the fee amount is "
+"applied."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:66
+msgid ""
+"You can set the shipping charges at checkout based on locational factors "
+"such as country, state, postal code, and zone."
+msgstr ""
+
+#: admin/partials/wcpfc-pro-add-new-page.php:1780
+#: admin/partials/wcpfc-pro-add-new-page.php:1955
+#: admin/partials/wcpfc-pro-add-new-page.php:2127
+#: admin/partials/wcpfc-pro-add-new-page.php:2297
+#: admin/partials/wcpfc-pro-add-new-page.php:2471
+#: admin/partials/wcpfc-pro-add-new-page.php:2655
+#: admin/partials/wcpfc-pro-add-new-page.php:2829
+#: admin/partials/wcpfc-pro-add-new-page.php:2997
+#: admin/partials/wcpfc-pro-add-new-page.php:3163
+#: admin/partials/wcpfc-pro-add-new-page.php:3337
+#: admin/partials/wcpfc-pro-add-new-page.php:3561
+msgid ""
+"You can turn off this button, if you do not need to apply this fee amount."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:93
+msgid ""
+"You have the power to charge percentage fees for special products. Define a "
+"2% fee for high-value product items."
+msgstr ""
+
+#: admin/partials/dots-upgrade-dashboard.php:57
+msgid ""
+"You have the power to create personalized fee rules tailored to your "
+"specific needs. Define rules based on different criteria such as country, "
+"city, state, category, coupon code, and quantity range."
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:186
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:189
+msgid ""
+"You need to select product specific option in Conditional Fee Rules for "
+"product based option"
+msgstr ""
+
+#: includes/class-woocommerce-conditional-product-fees-for-checkout-cli-commands.php:306
+msgid "Your fee with name %s has been created with basic configuration!"
+msgstr ""
+
+#: admin/partials/wcpfc-pro-get-started-page.php:25
+msgid "YouTube channel"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:135
+#: admin/partials/wcpfc-pro-add-new-page.php:1149
+#: admin/partials/wcpfc-pro-add-new-page.php:1520
+msgid "Zone"
+msgstr "Zone"
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:245
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:319
+#: admin/partials/wcpfc-pro-add-new-page.php:1155
+#: admin/partials/wcpfc-pro-add-new-page.php:1162
+#: admin/partials/wcpfc-pro-add-new-page.php:1526
+#: admin/partials/wcpfc-pro-add-new-page.php:1533
+msgid "Zone 🔒"
+msgstr ""
+
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:260
+#: admin/class-woocommerce-conditional-product-fees-for-checkout-admin.php:334
+msgid "🔒"
+msgstr ""

@@ -1,0 +1,57 @@
+<wpml-config>
+    <custom-types>
+        <custom-type translate="1">wc_conditional_fee</custom-type>
+    </custom-types>
+    <custom-fields>
+        <custom-field action="copy">fee_settings_status</custom-field>
+        <custom-field action="copy">fee_settings_product_cost</custom-field>
+        <custom-field action="copy">fee_settings_select_fee_type</custom-field>
+        <custom-field action="translate">fee_settings_tooltip_desc</custom-field>
+        <custom-field action="copy">fee_settings_start_date</custom-field>
+        <custom-field action="copy">fee_settings_end_date</custom-field>
+        <custom-field action="copy">fee_settings_select_taxable</custom-field>
+        <custom-field action="copy">fee_settings_select_optional</custom-field>
+        <custom-field action="copy">fee_settings_optional_type</custom-field>
+        <custom-field action="translate">fee_settings_optional_description</custom-field>
+        <custom-field action="copy">default_optional_checked</custom-field>
+        <custom-field action="copy">first_order_for_user</custom-field>
+        <custom-field action="copy">fee_settings_recurring</custom-field>
+        <custom-field action="copy">fee_show_on_checkout_only</custom-field>
+        <custom-field action="copy">fees_on_cart_total</custom-field>
+        <custom-field action="copy">ds_time_from</custom-field>
+        <custom-field action="copy">ds_time_to</custom-field>
+        <custom-field action="copy">ds_select_day_of_week</custom-field>
+        <custom-field action="copy">product_fees_metabox</custom-field>
+        <custom-field action="copy">fee_chk_qty_price</custom-field>
+        <custom-field action="copy">fee_per_qty</custom-field>
+        <custom-field action="copy">extra_product_cost</custom-field>
+        <custom-field action="copy">ap_rule_status</custom-field>
+        <custom-field action="copy">cost_on_product_status</custom-field>
+        <custom-field action="copy">cost_on_product_weight_status</custom-field>
+        <custom-field action="copy">cost_on_product_subtotal_status</custom-field>
+        <custom-field action="copy">cost_on_category_status</custom-field>
+        <custom-field action="copy">cost_on_category_weight_status</custom-field>
+        <custom-field action="copy">cost_on_category_subtotal_status</custom-field>
+        <custom-field action="copy">cost_on_total_cart_qty_status</custom-field>
+        <custom-field action="copy">cost_on_total_cart_weight_status</custom-field>
+        <custom-field action="copy">cost_on_total_cart_subtotal_status</custom-field>
+        <custom-field action="copy">cost_on_shipping_class_subtotal_status</custom-field>
+        <custom-field action="copy">cost_rule_match</custom-field>
+        <custom-field action="copy">sm_metabox_ap_product</custom-field>
+        <custom-field action="copy">sm_metabox_ap_product_weight</custom-field>
+        <custom-field action="copy">sm_metabox_ap_product_subtotal</custom-field>
+        <custom-field action="copy">sm_metabox_ap_category</custom-field>
+        <custom-field action="copy">sm_metabox_ap_category_weight</custom-field>
+        <custom-field action="copy">sm_metabox_ap_category_subtotal</custom-field>
+        <custom-field action="copy">sm_metabox_ap_total_cart_qty</custom-field>
+        <custom-field action="copy">sm_metabox_ap_total_cart_weight</custom-field>
+        <custom-field action="copy">sm_metabox_ap_total_cart_subtotal</custom-field>
+        <custom-field action="copy">sm_metabox_ap_shipping_class_subtotal</custom-field>
+        <custom-field action="copy">is_allow_custom_weight_base</custom-field>
+        <custom-field action="copy">sm_custom_weight_base_cost</custom-field>
+        <custom-field action="copy">sm_custom_weight_base_per_each</custom-field>
+        <custom-field action="copy">sm_custom_weight_base_over</custom-field>
+        <custom-field action="copy">_wcpfc_fee_revenue</custom-field>
+        <custom-field action="copy">_wcpfc_display_optional_fee_on_checkout</custom-field>
+    </custom-fields>
+</wpml-config>
