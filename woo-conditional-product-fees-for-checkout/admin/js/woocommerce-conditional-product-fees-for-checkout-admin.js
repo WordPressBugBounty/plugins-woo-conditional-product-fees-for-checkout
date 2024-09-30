@@ -402,6 +402,15 @@
 						{ 'name': coditional_vars.user_role_disabled, 'attributes': {'value': 'user_role_disabled'} },
 					]
 				},
+                {
+                    'type': 'optgroup',
+                    'attributes' : {'label' : coditional_vars.purchase_history},
+                    'options': [
+                        {'name' : coditional_vars.last_spent_order, 'attributes': {'value' : 'last_spent_order'}},
+                        {'name' : coditional_vars.total_spent_order, 'attributes': {'value' : 'total_spent_order'}},
+                        {'name' : coditional_vars.spent_order_count, 'attributes': {'value' : 'spent_order_count'}},
+                    ]
+                },
 				{
 					'type': 'optgroup',
 					'attributes': { 'label': coditional_vars.cart_specific },
@@ -546,7 +555,7 @@
 						if ( condition === 'weight' ) {
 							input_extra_class = ' weight-class';
 						}
-						if ( condition === 'cart_total' || condition === 'cart_totalafter' || condition === 'product_qty' || condition === 'cart_specificproduct' ) {
+						if ( condition === 'cart_total' || condition === 'cart_totalafter' || condition === 'product_qty' || condition === 'cart_specificproduct' || condition === 'cart_totalexclude_tax' || condition === 'cart_rowtotal' ) {
 							input_extra_class = ' price-class';
 						}
 
@@ -583,6 +592,8 @@
 						|| condition === 'weight'
 						|| condition === 'cart_totalafter'
 						|| condition === 'cart_specificproduct'
+						|| condition === 'cart_totalexclude_tax'
+						|| condition === 'cart_rowtotal'
 						|| condition === 'product_qty'
 					) {
 						p_node = document.createElement( 'p' );
@@ -990,6 +1001,28 @@
 				$('.wcpfc-section-left .wcpfc-main-table .depend_of_custom_weight_base').show();
 			} else {
 				$('.wcpfc-section-left .wcpfc-main-table .depend_of_custom_weight_base').hide();
+			}
+		});
+
+		// Optional fee hide show rules
+		function taxable_fee_div() {     
+			var flag_init = $('.fee_settings_select_taxable:checked').val();
+			if( 'yes' === flag_init ) {
+				$('.enable_taxable_checked').show();
+			} else {
+				$('.enable_taxable_checked').hide();
+			}
+		}
+		
+		// use setTimeout() to execute
+		setTimeout(taxable_fee_div, 1000);
+		 
+		$(document).on('change', '.fee_settings_select_taxable', function () {
+			var flag = $(this).val();
+			if( 'yes' === flag ) {
+				$('.enable_taxable_checked').show();
+			} else {
+				$('.enable_taxable_checked').hide();
 			}
 		});
 

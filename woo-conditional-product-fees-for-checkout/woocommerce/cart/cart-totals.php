@@ -106,7 +106,7 @@ defined( 'ABSPATH' ) || exit;
                         }
 					}
 					if ( ! empty( $final_fees_label && $final_fees_label_show ) ) {
-						echo '<div class="extra-flate-tool-tip"><div class="tooltip">'. wp_kses_post( $final_fees_label ) .'</div><a><i class="fa fa-question-circle fa-lg"></i></a></div>';
+						echo '<div class="extra-flate-tool-tip"><a data-tooltip="' . esc_attr( wp_strip_all_tags( $final_fees_label ) ) . '"><i class="fa fa-question-circle fa-lg"></i></a></div>';
 					}
 					?>
 					<?php wc_cart_totals_fee_html( $fee ); ?>

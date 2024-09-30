@@ -7,8 +7,8 @@ Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
 Tested up to: 6.5.5
-WC tested up to: 9.0.2
-Stable tag: 4.0.0
+WC tested up to: 9.2.3
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,11 @@ Upgrade to <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees Plugin P
 <li>Tiered and Advanced Rule-Based Extra Fees (Quantity, Subtotal, Weight for Products, Categories, or Total Cart)</li>
 <li>Import & Export Features for Easy Configuration Management</li>
 <li>Consolidated Fee Display with Global Settings</li>
+<li>Display fees on the product detail page.</li>
+<li>Select custom tax class for fees.</li>
+<li>Add purchase history-based fee rules.</li>
+<li>Display optional fees on the cart page.</li>
+<li>Add fees based on cart row quantity.</li>
 </ul>
 
 == 📣 LEARN MORE: Extra Fees Plugin — <a href ="https://bit.ly/3qiftwQ" target="_blank">Try Pro Version Today!</a> == 
@@ -123,7 +128,15 @@ Upgrade to <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees Plugin P
 🔖  <a href ="https://www.thedotstore.com/how-to-charge-extra-fee-in-woocommerce/" target="_blank">How to charge a WooCommerce Extra Fee In WooCommerce</a>
 🔖  <a href ="https://www.thedotstore.com/how-to-charge-extra-fee-dynamically-in-woocommerce-store/" target="_blank">How to charge Extra Fee Dynamically In WooCommerce Store</a>
 🔖  <a href ="https://www.thedotstore.com/how-to-manage-extra-fees-on-your-woocommerce-store/" target="_blank">How to manage Extra Fees on your WooCommerce Store</a>
-
+🔖  <a href ="https://docs.thedotstore.com/article/949-beginners-guide-for-extra-fees" target="_blank">Getting Started with Extra Fees Plugin</a>
+🔖  <a href ="https://docs.thedotstore.com/article/972-how-to-display-extra-fee-on-product-detail-page" target="_blank">How to display the extra fee on the product detail page</a>
+🔖  <a href ="https://docs.thedotstore.com/article/973-how-to-apply-custom-tax-on-extra-fees" target="_blank">How to apply custom tax on extra fees</a>
+🔖  <a href ="https://docs.thedotstore.com/article/974-how-to-show-a-message-based-on-extra-fees-added-to-the-cart" target="_blank">How to show a message based on extra fees added to the cart</a>
+🔖  <a href ="https://docs.thedotstore.com/article/975-how-to-charge-extra-fees-based-on-last-order" target="_blank">How to charge extra fees based on last order</a>
+🔖  <a href ="https://docs.thedotstore.com/article/976-how-to-add-custom-fees-based-on-customer-total-spend" target="_blank">How to add custom fees based on customer total spend</a>
+🔖  <a href ="https://docs.thedotstore.com/article/977-how-to-add-extra-fees-based-on-cart-row-count" target="_blank">How to add extra fees based on cart row count</a>
+🔖  <a href ="https://docs.thedotstore.com/article/978-how-to-enable-optional-fee-on-cart-page" target="_blank">How to enable optional fee on the cart page</a>
+🔖  <a href ="https://docs.thedotstore.com/article/979-how-to-add-extra-fees-from-woocommerce-order" target="_blank">How to add Extra Fees from WooCommerce Order</a>
 
 == 📣 PREMIUM: Extra Fees for WooCommerce — <a href ="https://bit.ly/3qiftwQ" target="_blank">Try Pro Version Today!</a> == 
 
@@ -175,7 +188,7 @@ The manual installation method involves downloading our plugin and uploading it 
 
 <ol>
 <li>Download the plugin file to your computer and unzip it</li>
-<li>Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your</li> <<li>WordPress installation's wp-content/plugins/ directory.</li>
+<li>Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your</li> <li>WordPress installation's wp-content/plugins/ directory.</li>
 <li>Activate the plugin from the Plugins menu within the WordPress admin.</li>
 </ol>
 
@@ -238,6 +251,18 @@ Yes, our plugin is designed to handle complex conditional fees. If there's a spe
 
 Our plugin comes with responsive, top-notch customer support. Users have praised our support for going
 
+= How to display the extra fee on the product detail page? = 
+
+Enable fees display on product details page by configuring "Display Fees in Product Page" under Fee Configuration. Conditional and Advanced Fee Rules will selectively show fees based on product-specific and user-specific conditions.
+
+= Is Cart and Checkout pages are block compatible? =
+
+Both pages are fully compatible with WooCommerce's latest block-based architecture.
+
+= Is it possible to add extra fees to WooCommerce orders in the backend? = 
+
+In the WooCommerce admin, access the order and click "Add Item(s)" to apply a custom fee from the available options in the popup. Fixed amount fees display their price. Taxes are automatically calculated and applied with the fee for seamless backend order management.
+
 
 == Upgrade Notice ==
 
@@ -255,8 +280,19 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 8. 
 9. 
 10. 
+11.
+12.
+13.
 
 == Changelog ==
+= 4.1.1 27-09-2024 =
+* [Bug Fix] Minor quick fix.
+
+= 4.1.0 25-09-2024 =
+* [Bug Fix] - Resolved issue with ordering fees in the backend for smoother fee management
+* [Enhancement] – Improved compatibility with the Table Rate Shipping plugin
+* [Enhancement] – Enhanced compatibility with Cart and Checkout blocks
+
 = 4.0.0 11-07-2024 =
 * [Enhancement] – Plugin UI enhancement
 * [Enhancement] - Compatible with WooCommerce 9.0.x

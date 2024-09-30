@@ -46,6 +46,15 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
 
         const WCPFC_VERSION = WCPFC_PRO_PLUGIN_VERSION;
 
+        /** 
+         * The current instance of the plugin
+         * 
+         * @since   1.0.0
+         * @access  protected
+         * @var     \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro single instance of this plugin 
+         */
+        protected static $instance;
+
         /**
          * Define the core functionality of the plugin.
          *
@@ -168,6 +177,8 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_change_status_from_list_section', $plugin_admin, 'wcpfc_pro_change_status_from_list_section' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_product_fees_conditions_varible_values_product_ajax', $plugin_admin, 'wcpfc_pro_product_fees_conditions_varible_values_product_ajax' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_simple_and_variation_product_list_ajax', $plugin_admin, 'wcpfc_pro_simple_and_variation_product_list_ajax' );
+            // Add custom fee button in add order items
+            $this->loader->add_action( 'woocommerce_order_item_add_line_buttons', $plugin_admin, 'wcpfc_add_custom_fee_button_in_add_order_items' );
             $this->loader->add_filter(
                 'hidden_columns',
                 $plugin_admin,
@@ -408,6 +419,77 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             return $allowed_tags;
         }
 
+        /**
+         * Include template with arguments
+         *
+         * @param string $__template
+         * @param array  $__variables
+         * 
+         * @since   1.0.0
+         * 
+         * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-core-functions.html#source-view.340
+         */
+        public function include_template( $__template, array $__variables = [] ) {
+            $template_file = WCPFC_PLUGIN_BASE_DIR . $__template;
+            if ( file_exists( $template_file ) ) {
+                extract( $__variables );
+                // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+                include $template_file;
+            }
+        }
+
+        /**
+         * Check woocommerce page has block cart and checkout
+         * 
+         * @param string $isBlockPage
+         * 
+         * @return boolean
+         * 
+         * @since 1.0.0
+         */
+        public function is_wc_has_block( $isBlockPage = '' ) {
+            $isBlockCart = WC_Blocks_Utils::has_block_in_page( wc_get_page_id( 'cart' ), 'woocommerce/cart' );
+            $isBlockCheckout = WC_Blocks_Utils::has_block_in_page( wc_get_page_id( 'checkout' ), 'woocommerce/checkout' );
+            if ( empty( $isBlockPage ) ) {
+                return $isBlockCart || $isBlockCheckout;
+            }
+            if ( 'cart' === $isBlockPage ) {
+                return $isBlockCart;
+            }
+            if ( 'checkout' === $isBlockPage ) {
+                return $isBlockCheckout;
+            }
+            return false;
+        }
+
+        /**
+         * Gets the main Woocommerce Conditional Product Fees For Checkout Pro instance.
+         *
+         * Ensures only one instance loaded at one time.
+         *
+         * @see \wcpfc_pro()
+         *
+         * @since 1.0.0
+         *
+         * @return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro
+         */
+        public static function instance() {
+            if ( null === self::$instance ) {
+                self::$instance = new self();
+            }
+            return self::$instance;
+        }
+
     }
 
+}
+/**
+ * Returns the One True Instance of Advance Extra Fee WooCommerce class object.
+ *
+ * @since 1.0.0
+ *
+ * @return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro
+ */
+function wcpfc_pro() {
+    return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro::instance();
 }

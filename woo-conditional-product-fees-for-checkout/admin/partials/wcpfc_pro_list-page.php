@@ -104,7 +104,9 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                         $get_fee_settings_start_date = filter_input( INPUT_POST, 'fee_settings_start_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_fee_settings_end_date = filter_input( INPUT_POST, 'fee_settings_end_date', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_fee_settings_status = filter_input( INPUT_POST, 'fee_settings_status', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+                        $get_display_fees_in_product_page = filter_input( INPUT_POST, 'display_fees_in_product_page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_fee_settings_select_taxable = filter_input( INPUT_POST, 'fee_settings_select_taxable', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+                        $get_fee_settings_taxable_type = filter_input( INPUT_POST, 'fee_settings_taxable_type', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_fee_show_on_checkout_only = filter_input( INPUT_POST, 'fee_show_on_checkout_only', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_fees_on_cart_total = filter_input( INPUT_POST, 'fees_on_cart_total', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
                         $get_ds_time_from = filter_input( INPUT_POST, 'ds_time_from', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
@@ -122,7 +124,9 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                         $fee_settings_start_date = ( isset( $get_fee_settings_start_date ) ? sanitize_text_field( $get_fee_settings_start_date ) : '' );
                         $fee_settings_end_date = ( isset( $get_fee_settings_end_date ) ? sanitize_text_field( $get_fee_settings_end_date ) : '' );
                         $fee_settings_status = ( isset( $get_fee_settings_status ) ? sanitize_text_field( $get_fee_settings_status ) : 'off' );
+                        $display_fees_in_product_page = ( isset( $get_display_fees_in_product_page ) ? sanitize_text_field( $get_display_fees_in_product_page ) : '' );
                         $fee_settings_select_taxable = ( isset( $get_fee_settings_select_taxable ) ? sanitize_text_field( $get_fee_settings_select_taxable ) : '' );
+                        $fee_settings_taxable_type = ( isset( $get_fee_settings_taxable_type ) ? sanitize_text_field( $get_fee_settings_taxable_type ) : '' );
                         $fee_show_on_checkout_only = ( isset( $get_fee_show_on_checkout_only ) ? sanitize_text_field( $get_fee_show_on_checkout_only ) : '' );
                         $fees_on_cart_total = ( isset( $get_fees_on_cart_total ) ? sanitize_text_field( $get_fees_on_cart_total ) : '' );
                         $ds_time_from = ( isset( $get_ds_time_from ) ? sanitize_text_field( $get_ds_time_from ) : '' );
@@ -208,7 +212,9 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                                 update_post_meta( $post_id, 'fee_settings_start_date', $fee_settings_start_date );
                                 update_post_meta( $post_id, 'fee_settings_end_date', $fee_settings_end_date );
                                 update_post_meta( $post_id, 'fee_settings_status', $fee_settings_status );
+                                update_post_meta( $post_id, 'display_fees_in_product_page', $display_fees_in_product_page );
                                 update_post_meta( $post_id, 'fee_settings_select_taxable', $fee_settings_select_taxable );
+                                update_post_meta( $post_id, 'fee_settings_taxable_type', $fee_settings_taxable_type );
                                 update_post_meta( $post_id, 'fee_show_on_checkout_only', $fee_show_on_checkout_only );
                                 update_post_meta( $post_id, 'fees_on_cart_total', $fees_on_cart_total );
                                 update_post_meta( $post_id, 'ds_time_from', $ds_time_from );

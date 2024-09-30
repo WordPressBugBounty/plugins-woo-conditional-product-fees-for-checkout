@@ -130,7 +130,7 @@ header.dots-header{background-color:#fff;border-radius:5px;box-shadow:0 4px 10px
 .wcpfc-section-left .wcpfc-table-tooltip .applyperqty-box .woocommerce-help-tip{right:6px}
 .wcpfc-section-left .wcpfc-table-tooltip .applyperqty-box input[type=checkbox]{margin:0}
 .wcpfc-section-left .wcpfc-table-tooltip table.table-outer tr th label, .wcpfc-section-left .wcpfc-table-tooltip table.table-outer tr td label{display:block;vertical-align:middle;position:relative;}
-.wcpfc-main-table table.table-outer tr.depend_of_custom_weight_base, .wcpfc-main-table table.table-outer tr.enable_optional_checked, .wcpfc-section-left .table-mastersettings tr.wcpffc_merged_fee_settings{background-color:#f5f5f5;display:none;}
+.wcpfc-main-table table.table-outer tr.depend_of_custom_weight_base, .wcpfc-main-table table.table-outer tr.enable_optional_checked, .wcpfc-main-table table.table-outer tr.enable_taxable_checked, .wcpfc-section-left .table-mastersettings tr.wcpffc_merged_fee_settings{background-color:#f5f5f5;display:none;}
 .product-fee-table .forminp .description.wcpfc_dynamic_rules_tooltips{padding:15px 12px;width:95%;}
 .product-fee-table .forminp .description.wcpfc_dynamic_rules_tooltips p{margin:0;position:relative;cursor:pointer;padding-right:40px;}
 .product-fee-table .forminp .description.wcpfc_dynamic_rules_tooltips p:after{content:"\f140";position:absolute;top:-10px;right:0;display:inline-block;font-family:dashicons;font-size:33px;font-weight:600;color:#696969;line-height:normal;}
@@ -164,6 +164,8 @@ header.dots-header{background-color:#fff;border-radius:5px;box-shadow:0 4px 10px
 .fees-pricing-rules .fees_pricing_rules .tabs .tab-link{padding:18px 14px;box-sizing:border-box;text-align:left;}
 .wcpfc-section-left #apm_wrap .sub-title .woocommerce-help-tip{vertical-align:middle;margin-top:-3px}
 .wcpfc-section-left .fees-pricing-rules .woocommerce-help-tip{margin-left:1px;}
+.wcpfc-section-left #apm_wrap .sub-title .calculate_n_combination{margin-left:10px;font-size:15px;line-height:normal;display:inline-block;}
+.wcpfc-section-left #apm_wrap .sub-title .calculate_n_combination input{margin-right:2px;}
 
 .wcpfc-section-left #apm_wrap .advance_pricing_rule_box tr th:last-child a{opacity:0;visibility:hidden;}
 .wcpfc-section-left #apm_wrap .advance_pricing_rule_box tr th,.wcpfc-section-left #apm_wrap .advance_pricing_rule_box tr td{padding:15px 20px;vertical-align:middle;}

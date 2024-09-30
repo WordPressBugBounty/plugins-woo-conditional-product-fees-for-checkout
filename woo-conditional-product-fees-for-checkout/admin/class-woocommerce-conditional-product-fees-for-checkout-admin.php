@@ -45,6 +45,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
     public function __construct( $plugin_name, $version ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . '/admin/class-woocommerce-conditional-product-fees.php';
     }
 
     /**
@@ -1350,52 +1351,63 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      */
     public function wcpfc_pro_conditional_fee_sorting() {
         check_ajax_referer( 'sorting_conditional_fee_action', 'sorting_conditional_fee' );
+        global $wpdb;
         $post_type = self::wcpfc_post_type;
-        $getPaged = filter_input( INPUT_POST, 'paged', FILTER_SANITIZE_NUMBER_INT );
         $getListingArray = filter_input(
             INPUT_POST,
             'listing',
             FILTER_SANITIZE_NUMBER_INT,
             FILTER_REQUIRE_ARRAY
         );
-        $paged = ( !empty( $getPaged ) ? $getPaged : 1 );
-        $listinbgArray = ( !empty( $getListingArray ) ? array_map( 'intval', wp_unslash( $getListingArray ) ) : array() );
+        $listingArray = ( !empty( $getListingArray ) ? array_map( 'intval', wp_unslash( $getListingArray ) ) : array() );
         $results = new WP_Query(array(
             'post_type'      => $post_type,
             'post_status'    => array('publish', 'draft'),
             'fields'         => 'ids',
-            'orderby'        => array(
-                'menu_order' => 'ASC',
-                'post_date'  => 'DESC',
-            ),
+            'orderby'        => 'menu_order',
+            'order'          => 'ASC',
             'posts_per_page' => -1,
         ));
-        //Create the list of ID's
+        // Original post IDs
         $objects_ids = array();
         if ( isset( $results->posts ) && !empty( $results->posts ) ) {
             foreach ( $results->posts as $result ) {
                 $objects_ids[] = (int) $result;
             }
         }
-        //Here we switch order
-        $per_page = get_user_option( 'chk_fees_per_page' );
-        $edit_start_at = $paged * $per_page - $per_page;
-        $index = 0;
-        for ($i = $edit_start_at; $i < $edit_start_at + $per_page; $i++) {
-            if ( !isset( $objects_ids[$i] ) ) {
-                break;
+        // Let's directly replace the content of $objects_ids with the updated order from $listingArray
+        if ( !empty( $listingArray ) ) {
+            // Ensure that the number of items match between $listingArray and $objects_ids
+            if ( count( $listingArray ) === count( $objects_ids ) ) {
+                $objects_ids = $listingArray;
+                // Replace the entire $objects_ids array with the new order
+            } else {
+                // If they don't match, only update up to the matching count to avoid index issues
+                for ($i = 0; $i < min( count( $listingArray ), count( $objects_ids ) ); $i++) {
+                    $objects_ids[$i] = $listingArray[$i];
+                    // Update each item in $objects_ids
+                }
             }
-            $objects_ids[$i] = (int) $listinbgArray[$index];
-            $index++;
         }
-        //Update the menu_order within database
+        // Update the menu_order within the database using $wpdb directly
         if ( isset( $objects_ids ) && !empty( $objects_ids ) ) {
             foreach ( $objects_ids as $menu_order => $id ) {
-                $data = array(
-                    'menu_order' => $menu_order,
-                    'ID'         => $id,
+                $wpdb->update(
+                    //phpcs:ignore
+                    $wpdb->posts,
+                    array(
+                        'menu_order' => (int) $menu_order,
+                    ),
+                    // Set the new menu_order
+                    array(
+                        'ID' => (int) $id,
+                    ),
+                    // Where ID matches
+                    array('%d'),
+                    // Format for the menu_order
+                    array('%d')
                 );
-                wp_update_post( $data );
+                // Clean cache
                 clean_post_cache( $id );
             }
         }
@@ -2194,7 +2206,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
     /**
      * Upgrade to pro fee rules limit
      * 
-     * @since 4.0.0
+     * @since 4.1.0
      * 
      */
     public function wcpfc_set_upgrade_to_pro_limit() {
@@ -2463,6 +2475,22 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 }
             }
         }
+    }
+
+    /**
+     * Display a custom button to add a fee to the WooCommerce order items table.
+     *
+     * @return void
+     */
+    public function wcpfc_add_custom_fee_button_in_add_order_items() {
+        ?>
+			<button type="button" class="button" onclick="window.location.href='<?php 
+        echo esc_url( admin_url( 'admin.php?page=wcpfc-upgrade-dashboard' ) );
+        ?>'">
+				<?php 
+        esc_html_e( 'Add Custom Fee 🔒', 'woocommerce-conditional-product-fees-for-checkout' );
+        ?>
+			</button> <?php 
     }
 
 }

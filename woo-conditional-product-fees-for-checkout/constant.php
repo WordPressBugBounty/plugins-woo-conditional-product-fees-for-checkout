@@ -14,7 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 // define constant for plugin
 if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
-    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.0.0' );
+    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.1.1' );
 }
 if ( !defined( 'WCPFC_PRO_PLUGIN_URL' ) ) {
     define( 'WCPFC_PRO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -38,4 +38,10 @@ if ( !defined( 'WCPFC_PRO_PLUGIN_NAME' ) ) {
 }
 if ( !defined( 'WCPFC_STORE_URL' ) ) {
     define( 'WCPFC_STORE_URL', 'https://www.thedotstore.com/' );
+}
+/**
+ * The function is used to dynamically generate the base path of the directory containing the main plugin file.
+ */
+if ( !defined( 'WCPFC_PLUGIN_BASE_DIR' ) ) {
+    define( 'WCPFC_PLUGIN_BASE_DIR', plugin_dir_path( __FILE__ ) );
 }
