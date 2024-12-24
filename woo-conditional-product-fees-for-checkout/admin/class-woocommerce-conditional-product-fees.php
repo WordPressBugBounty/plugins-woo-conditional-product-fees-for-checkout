@@ -27,6 +27,9 @@ class Woocommerce_Conditional_Product_Fees {
 	/** @var string fee (post) slug */
 	protected $slug = '';
 
+    /** @var string fee (post_status) */
+    protected $status = '';
+
     /** @var string fee type post meta key name */
 	protected $fee_type_meta = 'fee_settings_select_fee_type';
     protected $fees_on_cart_total_meta = 'fees_on_cart_total';

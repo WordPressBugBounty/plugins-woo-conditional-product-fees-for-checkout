@@ -216,8 +216,6 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
     /**
      * Check all conditional rule validation and return the result.
      * 
-     * @return boolen
-     * 
      * @since 1.0.0
      */
     public function is_fee_passed_conditional_rule_validation( $fees_id ) {

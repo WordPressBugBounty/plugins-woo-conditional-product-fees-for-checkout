@@ -324,7 +324,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
                             <a href="' . wp_nonce_url( $editurl, 'edit_' . $item->ID, '_wpnonce' ) . '" class="row-title">' . esc_html( $item->post_title ) . '</a>
                         </strong>';
 
-			echo wp_kses( $method_name, self::$wcpfc_object->allowed_html_tags() );
+			return wp_kses( $method_name, self::$wcpfc_object->allowed_html_tags() );
 		}
 
 		/**
@@ -508,7 +508,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 		 */
         public function column_icl_translations( $item ){
 			global $sitepress;
-			$language_column = new WPML_Custom_Columns($sitepress);
+			$language_column = new WPML_Custom_Columns($sitepress); // @phpstan-ignore-line
 			return $language_column->add_content_for_posts_management_column( 'icl_translations', $item->ID );
 		}
 
@@ -546,8 +546,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 			}
 
 			$deletenonce = wp_verify_nonce( $delete_nonce, 'bulk-shippingmethods' );
-
-			if ( ! isset( $deletenonce ) && 1 !== $deletenonce ) {
+			if ( ! empty( $deletenonce ) && 1 !== $deletenonce ) {
 				return;
 			}
 

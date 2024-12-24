@@ -351,6 +351,12 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         }
         // inlcude screen options
         add_action( "load-{$get_hook}", array($this, "wcpfc_screen_options") );
+        //Remove footer WP version
+        $get_page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $page = ( !empty( $get_page ) ? sanitize_text_field( $get_page ) : '' );
+        if ( !empty( $page ) && false !== strpos( $page, 'wcpfc' ) ) {
+            remove_filter( 'update_footer', 'core_update_footer' );
+        }
     }
 
     /**
@@ -1175,6 +1181,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $post_value = ( isset( $request_value ) ? sanitize_text_field( $request_value ) : '' );
         $baselang_product_ids = array();
         function wcpfc_posts_where(  $where, $wp_query  ) {
+            // @phpstan-ignore-line
             global $wpdb;
             $search_term = $wp_query->get( 'search_pro_title' );
             if ( isset( $search_term ) ) {
@@ -1261,6 +1268,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $baselang_simple_product_ids = array();
         $baselang_variation_product_ids = array();
         function wcpfc_posts_where(  $where, $wp_query  ) {
+            // @phpstan-ignore-line
             global $wpdb;
             $search_term = $wp_query->get( 'search_pro_title' );
             if ( !empty( $search_term ) ) {
@@ -1435,6 +1443,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $post_value = ( isset( $request_value ) ? sanitize_text_field( $request_value ) : '' );
         $baselang_product_ids = array();
         function wcpfc_posts_wheres(  $where, $wp_query  ) {
+            // @phpstan-ignore-line
             global $wpdb;
             $search_term = $wp_query->get( 'search_pro_title' );
             if ( isset( $search_term ) ) {
@@ -1919,7 +1928,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      * @param string $message
      * @param string $tab
      *
-     * @return bool
      * @since 1.0.0
      *
      */
@@ -1967,6 +1975,14 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
     /**
      * This function will return our plugin edit base language post link (not wordpress edit post link which cause "not allow to edit" error)
      * 
+     * NOTE: If WPML String Translation plugin activate and WPML basic plan activated then only post edit page with language parameter will work. 
+     * and Advanced editor will not work as per WPML plan feature.
+     * 
+     * NOTE: If we have saved post translation in basic plan then it will open as edit page with language parameter. even if user has CMS plan. 
+     * They must to remove that translated post and then after it will open in advanced editor.
+     * 
+     * @reference https://wpml.org/purchase/
+     * 
      * @param string $link
      * @param int    $post_id
      * @param string $lang
@@ -1987,13 +2003,44 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             return $link;
         }
         global $wpml_tm_translation_status, $wpml_post_translations, $sitepress;
-        $post_translations = $sitepress->post_translations();
-        $status = $wpml_tm_translation_status->filter_translation_status( null, $trid, $lang );
+        $status_helper = wpml_get_post_status_helper();
+        // @phpstan-ignore-line
+        $status = $status_helper->get_status( false, $trid, $lang );
         //status 10 means edit translated post
+        $source_language = $wpml_post_translations->get_element_lang_code( $post_id );
         $correct_id = $wpml_post_translations->element_id_in( $post_id, $lang );
-        $source_lang = $post_translations->get_source_lang_code( $correct_id );
+        // If String Translation plugin is not activated then return original link with needed parameters
+        if ( !$wpml_tm_translation_status ) {
+            if ( $status && $correct_id ) {
+                // Edit link make
+                $lang_code = $wpml_post_translations->get_element_lang_code( $correct_id );
+                $edit_method_url = add_query_arg( array(
+                    'page'   => 'wcpfc-pro-list',
+                    'action' => 'edit',
+                    'id'     => $correct_id,
+                    'lang'   => $lang_code,
+                ), admin_url( 'admin.php' ) );
+                $link = wp_nonce_url( $edit_method_url, 'edit_' . $correct_id, '_wpnonce' );
+            } else {
+                // Create link make
+                $edit_method_url = add_query_arg( array(
+                    'page'        => 'wcpfc-pro-list',
+                    'action'      => 'edit',
+                    'lang'        => $lang,
+                    'post_type'   => get_post_type( $post_id ),
+                    'trid'        => $trid,
+                    'source_lang' => $source_language,
+                ), admin_url( 'admin.php' ) );
+                $link = wp_nonce_url( $edit_method_url, 'edit_' . $correct_id, '_wpnonce' );
+            }
+            return $link;
+        }
+        // If String Translation plugin is activated then return original link with needed parameters to open advanced editor
+        $post_translations = $sitepress->post_translations();
+        $source_lang = $post_translations->get_source_lang_code( $post_id );
         if ( self::wcpfc_post_type === get_post_type( $post_id ) && empty( $source_lang ) ) {
-            if ( !in_array( $status, array(0, 2), true ) && $status && $correct_id ) {
+            // Status number -> 0 - Not translated, 2 - Translation is in progress, 3 - Need update
+            if ( !in_array( $status, array(0, 2, 3), true ) && $status && $correct_id ) {
                 $edit_method_url = add_query_arg( array(
                     'page'   => 'wcpfc-pro-list',
                     'action' => 'edit',
@@ -2013,7 +2060,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      * @param array     $data_fields
      * @param object    $job
      *
-     * @return string
      * @since    3.9.2
      * @author   SJ
      * 

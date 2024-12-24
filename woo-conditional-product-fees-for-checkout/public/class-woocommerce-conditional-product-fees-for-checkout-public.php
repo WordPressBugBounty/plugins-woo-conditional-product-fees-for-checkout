@@ -415,6 +415,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         $language_information = apply_filters( 'wpml_post_language_details', null, $fees_id );
                     } else {
                         $language_information = wpml_get_language_information( $fees_id );
+                        // @phpstan-ignore-line
                     }
                     if ( is_array( $language_information ) && isset( $language_information['language_code'] ) ) {
                         $post_id_language_code = $language_information['language_code'];
@@ -868,7 +869,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
     /**
      * Store fees revenue data for tracking and anylysis
      *
-     * @return boolean true
      * @since 3.7.0
      *
      */
@@ -2360,6 +2360,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         if ( isset( $a->menu_order ) && isset( $b->menu_order ) ) {
             return ( $a->menu_order < $b->menu_order ? -1 : 1 );
         }
+        return 0;
     }
 
     /**

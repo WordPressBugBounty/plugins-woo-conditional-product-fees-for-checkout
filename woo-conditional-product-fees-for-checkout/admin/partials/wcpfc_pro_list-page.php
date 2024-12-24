@@ -76,7 +76,6 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
          *
          * @param int $method_id
          *
-         * @return bool false when nonce is not verified, $zone id, $zone_type is blank, Country also blank, Postcode field also blank, saving error when form submit
          * @uses dpad_sm_count_method()
          *
          * @since    3.5
