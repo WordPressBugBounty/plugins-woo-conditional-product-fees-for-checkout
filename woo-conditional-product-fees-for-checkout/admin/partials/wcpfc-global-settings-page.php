@@ -44,9 +44,11 @@ function wcpfc_free_global_settings_content() {
                     <th class="table-whattodo fr-1">
                         <label for="chk_enable_coupon_fee">
                             <?php 
+    /* translators: %d: 100 as number of percentage discount */
     echo sprintf( esc_html__( 'Remove fees once a %d%% discount applies.', 'woocommerce-conditional-product-fees-for-checkout' ), 100 );
     ?>
                             <?php 
+    /* translators: %d: 100 as number of percentage discount */
     echo wp_kses( wc_help_tip( sprintf( esc_html__( 'When this option is enabled, the fee will be removed once a %d%% discount applies to the cart.', 'woocommerce-conditional-product-fees-for-checkout' ), 100 ) ), array(
         'span' => $allowed_tooltip_html,
     ) );

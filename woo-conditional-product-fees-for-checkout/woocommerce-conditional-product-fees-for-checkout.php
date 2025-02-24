@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name:         WooCommerce Extra Fees Plugin
+ * Plugin Name:         Extra Fees for WooCommerce
  * Plugin URI:          https://www.thedotstore.com/woocommerce-conditional-product-fees-checkout/
  * Description:         With this plugin, you can create and manage complex fee rules in WooCommerce store without the help of a developer.
- * Version:             4.1.2
+ * Version:             4.2.0
  * Author:              theDotstore
  * Author URI:          https://www.thedotstore.com/
  * License:             GPL-2.0+
@@ -14,8 +14,8 @@
  * Requires Plugins:    woocommerce
  *
  * WC requires at least:4.5
- * WP tested up to:     6.7.1
- * WC tested up to:     9.5.1
+ * WP tested up to:     6.7.2
+ * WC tested up to:     9.6.2
  * Requires PHP:        7.2
  * Requires at least:   5.0
  */
@@ -294,6 +294,7 @@ if ( !function_exists( 'wcpfc_plugin_admin_notice_required_plugin' ) ) {
         ?>
         <div class="error">
             <p><?php 
+        /* translators: %1$s: Required plugin name, %2$s: WooCommerce plugin name with a link */
         echo sprintf( esc_html__( '%1$s requires %2$s to be installed & activated!', 'woocommerce-conditional-product-fees-for-checkout' ), '<strong>' . esc_html( $vpe_plugin ) . '</strong>', '<a href="' . esc_url( 'https://wordpress.org/plugins/woocommerce/' ) . '" target="_blank"><strong>' . esc_html( $wc_plugin ) . '</strong></a>' );
         ?></p>
         </div>

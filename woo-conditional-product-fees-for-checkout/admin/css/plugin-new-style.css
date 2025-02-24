@@ -126,7 +126,7 @@ header.dots-header{background-color:#fff;border-radius:5px;box-shadow:0 4px 10px
 .wcpfc-section-left .wcpfc-table-tooltip .woocommerce-help-tip{position:absolute;top:50%;right:-30px;transform:translateY(-50%);margin:0;}
 .wcpfc-section-left .wcpfc-table-tooltip table.table-outer tr td{padding:16px 10px;width:calc(100% - 285px);}
 .wcpfc-section-left .wcpfc-table-tooltip .applyperqty-box{display:inline-block;position:relative;padding:10px 24px 10px 0;width:-webkit-max-content;width:-moz-max-content;width:max-content;}
-.wcpfc-section-left .wcpfc-table-tooltip table.table-outer .applyperqty-box label{vertical-align:middle;display:inline-block;min-width:270px;}
+.wcpfc-section-left .wcpfc-table-tooltip table.table-outer .applyperqty-box label{vertical-align:middle;display:inline-block;min-width:305px;}
 .wcpfc-section-left .wcpfc-table-tooltip .applyperqty-box .woocommerce-help-tip{right:6px}
 .wcpfc-section-left .wcpfc-table-tooltip .applyperqty-box input[type=checkbox]{margin:0}
 .wcpfc-section-left .wcpfc-table-tooltip table.table-outer tr th label, .wcpfc-section-left .wcpfc-table-tooltip table.table-outer tr td label{display:block;vertical-align:middle;position:relative;}

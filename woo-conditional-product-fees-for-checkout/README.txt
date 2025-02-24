@@ -1,4 +1,4 @@
-=== Extra Fees Plugin for WooCommerce ===
+=== Extra Fees for WooCommerce ===
 Contributors: dots,kakshak,dency,jariwalasagar
 Donate link: http://thedotstore.com/
 Author: Thedotstore
@@ -6,9 +6,9 @@ Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.7.1
-WC tested up to: 9.5.1
-Stable tag: 4.1.2
+Tested up to: 6.7.2
+WC tested up to: 9.6.2
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,6 +293,19 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.2.0 - 24-02-2024 =
+* [New] - Compatible with CURCY - Multi-Currency for WooCommerce plugin
+* [New] - Added filter for fee-based orders on the admin order page
+* [New] - Moved variable product condition to the free version
+* [Bug Fix] - Limited the fee decimal with WooCommerce decimal configuration
+* [Bug Fix] - Fee not saved when CTX Feed Plugin is activated
+* [Enhancement] - Special character (accent marks) support added to city condition
+* [Enhancement] - Multiple options can be selected at the same time in the Select2 dropdown
+* [Enhancement] - Minor bug fixes
+* [Enhancement] - Updated Freemius to 2.11.0
+* [Enhancement] - Compatible with WooCommerce 9.6.x
+* [Enhancement] - Compatible with WordPress 6.7.x
+
 = 4.1.2 - 24-12-2024 =
 * [Enhancement] - Compatibility with WPML 4.7
 * [Enhancement] - Freemius update to 2.10.1

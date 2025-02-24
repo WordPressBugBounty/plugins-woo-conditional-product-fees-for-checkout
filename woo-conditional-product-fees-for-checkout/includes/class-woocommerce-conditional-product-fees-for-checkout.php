@@ -233,6 +233,34 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                     10
                 );
             }
+            $this->loader->add_action(
+                'woocommerce_order_list_table_restrict_manage_orders',
+                $plugin_admin,
+                'wcpfc_order_filter',
+                25,
+                2
+            );
+            $this->loader->add_action(
+                'restrict_manage_posts',
+                $plugin_admin,
+                'wcpfc_order_filter',
+                25,
+                2
+            );
+            $this->loader->add_action( 'wp_ajax_wcpfc_json_search_fees', $plugin_admin, 'wcpfc_json_search_fees' );
+            $this->loader->add_action(
+                'woocommerce_orders_table_query_clauses',
+                $plugin_admin,
+                'wcpfc_hpos_order_filter_wherefor_fees',
+                25
+            );
+            $this->loader->add_filter(
+                'posts_where',
+                $plugin_admin,
+                'wcpfc_classic_cpt_order_filter_wherefor_fees',
+                99,
+                2
+            );
         }
 
         /**
@@ -246,7 +274,13 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             $plugin_public = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public($this->get_plugin_name(), $this->get_version());
             $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wcpfc_public_enqueue_styles' );
             $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wcpfc_public_enqueue_scripts' );
-            $this->loader->add_action( 'woocommerce_cart_calculate_fees', $plugin_public, 'wcpfc_pro_conditional_fee_add_to_cart' );
+            $this->loader->add_action(
+                'woocommerce_cart_calculate_fees',
+                $plugin_public,
+                'wcpfc_pro_conditional_fee_add_to_cart',
+                10,
+                1
+            );
             $this->loader->add_action(
                 'woocommerce_checkout_create_order',
                 $plugin_public,
@@ -261,6 +295,8 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                 1,
                 3
             );
+            // This shortcode can be use to display fee details on the product page
+            add_shortcode( 'wcpfc_product_fee_details', array($plugin_public, 'wcpfc_pro_conditional_fee_single_product__premium_only') );
         }
 
         /**
@@ -490,6 +526,9 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
  *
  * @return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro
  */
-function wcpfc_pro() {
-    return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro::instance();
+if ( !function_exists( 'wcpfc_pro' ) ) {
+    function wcpfc_pro() {
+        return \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro::instance();
+    }
+
 }

@@ -50,15 +50,8 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                     self::wcpfc_sj_save_method();
                     self::wcpfc_sj_add_extra_fee_form();
                 } elseif ( 'edit' === $action ) {
-                    if ( isset( $get_wcpfc_add ) && !empty( $get_wcpfc_add ) ) {
-                        $getnonce = wp_verify_nonce( $get_wcpfc_add, 'edit_' . $post_id_request );
-                        if ( isset( $getnonce ) && 1 === $getnonce ) {
-                            self::wcpfc_sj_save_method( $post_id_request );
-                            self::wcpfc_sj_edit_method();
-                        } else {
-                            self::$admin_object->wcpfc_updated_message( 'nonce_check', "" );
-                        }
-                    }
+                    self::wcpfc_sj_save_method( $post_id_request );
+                    self::wcpfc_sj_edit_method();
                 } elseif ( 'delete' === $action ) {
                     self::wcpfc_sj_delete_method( $post_id_request );
                 } elseif ( 'duplicate' === $action ) {
@@ -232,11 +225,10 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                             $message = 'saved';
                         }
                         wp_safe_redirect( add_query_arg( array(
-                            'page'     => 'wcpfc-pro-list',
-                            'action'   => 'edit',
-                            'id'       => $post_id,
-                            '_wpnonce' => wp_create_nonce( 'edit_' . $post_id ),
-                            'message'  => $message,
+                            'page'    => 'wcpfc-pro-list',
+                            'action'  => 'edit',
+                            'id'      => $post_id,
+                            'message' => $message,
                         ), $admin_url ) );
                         exit;
                     }
@@ -353,12 +345,10 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                         }
                     }
                 }
-                $wcpfcnonce = wp_create_nonce( 'edit_' . $new_post_id );
                 wp_safe_redirect( add_query_arg( array(
-                    'page'     => 'wcpfc-pro-list',
-                    'id'       => $new_post_id,
-                    'action'   => 'edit',
-                    '_wpnonce' => esc_attr( $wcpfcnonce ),
+                    'page'   => 'wcpfc-pro-list',
+                    'id'     => $new_post_id,
+                    'action' => 'edit',
                 ), admin_url( 'admin.php' ) ) );
                 exit;
             } else {
@@ -446,6 +436,7 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
             }
             $request_s = filter_input( INPUT_GET, 's', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             if ( isset( $request_s ) && !empty( $request_s ) ) {
+                /* translators: %s: searched term */
                 echo sprintf( '<span class="subtitle">' . esc_html__( 'Search results for &#8220;%s&#8221;', 'woocommerce-conditional-product-fees-for-checkout' ) . '</span>', esc_html( $request_s ) );
             }
             wp_nonce_field( 'sorting_conditional_fee_action', 'sorting_conditional_fee' );

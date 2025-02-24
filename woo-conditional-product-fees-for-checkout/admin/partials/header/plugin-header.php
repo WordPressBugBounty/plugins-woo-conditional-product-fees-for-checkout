@@ -45,16 +45,16 @@ echo esc_url( WCPFC_PRO_PLUGIN_URL . 'admin/images/wc-conditional-product-fees.p
                     </div>
                     <div class="plugin-name">
                         <div class="title"><?php 
-esc_html_e( $plugin_name, 'woocommerce-conditional-product-fees-for-checkout' );
+echo esc_html( $plugin_name );
 ?></div>
                     </div>
                     <span class="version-label <?php 
 echo esc_attr( $plugin_slug );
 ?>"><?php 
-esc_html_e( $version_label, 'woocommerce-conditional-product-fees-for-checkout' );
+echo esc_html( $version_label );
 ?></span>
                     <span class="version-number"><?php 
-echo esc_html_e( $plugin_version, 'woocommerce-conditional-product-fees-for-checkout' );
+echo esc_html( $plugin_version );
 ?></span>
                 </div>
                 <div class="dots-header-right">

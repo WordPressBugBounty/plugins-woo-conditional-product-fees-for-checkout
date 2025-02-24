@@ -306,8 +306,10 @@ class DS_Command_Line {
                 'product_fees_conditions_values' => array()
             );
             update_post_meta( $post_id, 'product_fees_metabox', $feesArray );
+            /* translators: %s Fee name. */
             WP_CLI::success( sprintf( esc_html__("Your fee with name %s has been created with basic configuration!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) ); // @phpstan-ignore-line
         } else {
+            /* translators: %s Fee name. */
             WP_CLI::error( sprintf( esc_html__("Sorry! your fee %s is not created!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) ); // @phpstan-ignore-line
         }
     }
@@ -416,7 +418,8 @@ class DS_Command_Line {
                     update_post_meta( $new_post_id, $meta_key, $meta_value );
                 }
             }
-            WP_CLI::success( esc_html__( 'Your fee(#'.$new_post_id.') has been cloned with disable mode.', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+            /* translators: %d new fee ID. */
+            WP_CLI::success( sprintf( esc_html__( 'Your fee(#%d) has been cloned with disable mode.', 'woocommerce-conditional-product-fees-for-checkout' ), intval( $new_post_id ) ) ); // @phpstan-ignore-line
         } else {
             WP_CLI::error( esc_html__( 'Trouble in getting fee details', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
         }

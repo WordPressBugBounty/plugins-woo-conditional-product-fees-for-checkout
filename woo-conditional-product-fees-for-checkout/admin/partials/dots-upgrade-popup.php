@@ -45,7 +45,10 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
                     <?php 
                     if ( ! empty( $discount_number ) ) {
                         ?>
-                        <h3 class="pro-feature-title"><?php echo sprintf( esc_html__( 'Unlock Premium Features with a %s%% Discount!', 'woocommerce-conditional-product-fees-for-checkout' ), esc_html( $discount_number ) ); ?></h3>
+                        <h3 class="pro-feature-title"><?php 
+                        /* translators: %d: number of percentage discount */
+                        echo sprintf( esc_html__( 'Unlock Premium Features with a %s%% Discount!', 'woocommerce-conditional-product-fees-for-checkout' ), esc_html( $discount_number ) ); 
+                        ?></h3>
                         <?php
                     } else {
                         ?>

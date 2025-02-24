@@ -313,7 +313,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      * @uses     wcpfc_pro_calculate_advance_pricing_rule_fees()
      *
      */
-    public function wcpfc_pro_conditional_fee_add_to_cart() {
+    public function wcpfc_pro_conditional_fee_add_to_cart( $cart ) {
         global $woocommerce_wpml, $sitepress, $woocommerce;
         $wcpfc_checkout_data = filter_input(
             INPUT_POST,
@@ -351,7 +351,11 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         if ( wcpffc_fs()->is__premium_only() && wcpffc_fs()->can_use_premium_code() ) {
             $variation_cart_products_array = $this->wcpfc_pro_get_var_name__premium_only( $sitepress, $default_lang );
         }
-        $cart_sub_total = WC()->cart->cart_contents_total;
+        /**
+         * We have commented below line because we are already getting cart object in function parameter.and that give us updated price of cart subtotal.
+         * and WC()->cart->cart_contents_total is not giving updated price of cart subtotal.
+         */
+        $cart_sub_total = $cart->cart_contents_total;
         $total_fee = 0;
         $chk_enable_custom_fun = get_option( 'chk_enable_custom_fun' );
         $getFeesOptional = '';
@@ -398,6 +402,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         // Query end for tax calculation based on the selected class from products
         if ( isset( $get_all_fees ) && !empty( $get_all_fees ) ) {
             foreach ( $get_all_fees as $fees ) {
+                // For Old version plugin compatibility, we have to check object here.
+                $fees = ( is_object( $fees ) && isset( $fees->ID ) ? $fees->ID : $fees );
                 if ( !empty( $sitepress ) ) {
                     $fees_id = apply_filters(
                         'wpml_object_id',
@@ -432,6 +438,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                     $final_passed = array();
                     $cart_based_qty = 0;
                     $cart_based_weight = 0;
+                    $cart_items_based_count = count( $items );
                     $apply_rule_for_optional = false;
                     $display_optional_fee_on_checkout = 'on';
                     if ( in_array( $fees_id, $optional_fee_array, true ) ) {
@@ -451,22 +458,20 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         }
                     }
                     $fee_title = get_the_title( $fees_id );
-                    $title = ( !empty( $fee_title ) ? __( $fee_title, 'woocommerce-conditional-product-fees-for-checkout' ) : __( 'Fee', 'woocommerce-conditional-product-fees-for-checkout' ) );
+                    $title = ( !empty( $fee_title ) ? esc_html( $fee_title, 'woocommerce-conditional-product-fees-for-checkout' ) : esc_html( 'Fee', 'woocommerce-conditional-product-fees-for-checkout' ) );
                     $getFeesCostOriginal = get_post_meta( $fees_id, 'fee_settings_product_cost', true );
                     $getFeeType = get_post_meta( $fees_id, 'fee_settings_select_fee_type', true );
                     if ( isset( $woocommerce_wpml ) && !empty( $woocommerce_wpml->multi_currency ) ) {
-                        if ( isset( $getFeeType ) && !empty( $getFeeType ) && 'fixed' === $getFeeType ) {
+                        if ( !empty( $getFeeType ) && 'fixed' === $getFeeType ) {
                             $getFeesCost = $woocommerce_wpml->multi_currency->prices->convert_price_amount( $getFeesCostOriginal );
                         } else {
                             $getFeesCost = $getFeesCostOriginal;
                         }
                     } else {
                         if ( 'both' === $getFeeType ) {
+                            // Refetch it here because 'wcpfc_evaluate_cost__premium_only' function above make it sum.
                             $getFeesCost = get_post_meta( $fees_id, 'fee_settings_product_cost', true );
                         } else {
-                            if ( class_exists( 'WOOMULTI_CURRENCY_Data' ) && 'percentage' !== $getFeeType ) {
-                                $getFeesCostOriginal = $this->wcpfc_pro_convert_currency( $getFeesCostOriginal );
-                            }
                             $getFeesCost = $getFeesCostOriginal;
                         }
                     }
@@ -493,9 +498,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $newamount = explode( '+', $getFeesCost );
                             if ( is_numeric( $newamount[0] ) && is_numeric( $newamount[1] ) ) {
                                 $peramount = $cart_sub_total * $newamount[0] / 100;
-                                if ( class_exists( 'WOOMULTI_CURRENCY_Data' ) ) {
-                                    $newamount[1] = $this->wcpfc_pro_convert_currency( $newamount[1] );
-                                }
+                                $newamount[1] = $this->wcpfc_pro_convert_currency( $newamount[1] );
                                 $fees_cost = $peramount + $newamount[1];
                             }
                         } else {
@@ -720,6 +723,10 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                 }
                                 $fees_cost = $nc_total_fee;
                             }
+                            // Curcy converison apply globally
+                            if ( 'fixed' === $getFeeType ) {
+                                $fees_cost = $this->wcpfc_pro_convert_currency( $fees_cost );
+                            }
                             $fees_cost = $this->wcpfc_pro_price_format( $fees_cost );
                             $fee_show_on_checkout_only = ( get_post_meta( $fees_id, 'fee_show_on_checkout_only', true ) ? get_post_meta( $fees_id, 'fee_show_on_checkout_only', true ) : '' );
                             $today = strtolower( gmdate( "D" ) );
@@ -735,6 +742,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                             $cart_coupon = ( isset( $woocommerce->cart->coupons ) && !empty( $woocommerce->cart->coupons ) ? $woocommerce->cart->coupons : array() );
                                             $get_cart_subtotal = $woocommerce->cart->get_cart_subtotal();
                                         }
+                                        $my = 1;
                                         if ( !empty( $cart_coupon ) && is_array( $cart_coupon ) ) {
                                             foreach ( $cart_coupon as $coupon ) {
                                                 $coupon_type = $coupon->get_discount_type();
@@ -749,7 +757,9 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                     } else {
                                                         if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                             if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                                $woocommerce->cart->add_fee(
+                                                                // Note: We are using the function cart object to add the fee to apply fee
+                                                                // in subscription after disacount coupon applied
+                                                                $cart->add_fee(
                                                                     $title,
                                                                     $fees_cost,
                                                                     $texable,
@@ -771,7 +781,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                 } else {
                                                     if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                         if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                            $woocommerce->cart->add_fee(
+                                                            $cart->add_fee(
                                                                 $title,
                                                                 $fees_cost,
                                                                 $texable,
@@ -783,7 +793,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                             } else {
                                                 if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                     if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                        $woocommerce->cart->add_fee(
+                                                        $cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -804,7 +814,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                             } else {
                                                 if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                     if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                        $woocommerce->cart->add_fee(
+                                                        $cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -816,7 +826,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                         } else {
                                             if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                 if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                    $woocommerce->cart->add_fee(
+                                                    $cart->add_fee(
                                                         $title,
                                                         $fees_cost,
                                                         $texable,
@@ -824,7 +834,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                     );
                                                 } else {
                                                     if ( !is_cart() && !empty( $fee_show_on_checkout_only ) ) {
-                                                        $woocommerce->cart->add_fee(
+                                                        $cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -854,7 +864,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                     $fee_title = apply_filters( 'wcpfc_all_fee_title', 'Fees' );
                     // Fetch the tax class type for the merged fee
                     $taxClassType = get_option( 'merge_fee_settings_taxable_type' );
-                    $woocommerce->cart->add_fee(
+                    $cart->add_fee(
                         wp_kses_post( $fee_title, 'woocommerce-conditional-product-fees-for-checkout' ),
                         $total_fee,
                         $chk_enable_all_fee_tax,
@@ -1061,7 +1071,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $product_id_lan = $value['product_id'];
                                 }
                                 $_product = wc_get_product( $product_id_lan );
-                                $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
                                     $site_product_id = apply_filters(
                                         'wpml_object_id',
@@ -1100,7 +1110,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $product_id_lan = $value['product_id'];
                                 }
                                 $_product = wc_get_product( $product_id_lan );
-                                $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
                                     $site_product_id = apply_filters(
                                         'wpml_object_id',
@@ -1153,7 +1163,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $product_id_lan = $value['product_id'];
                                 }
                                 $_product = wc_get_product( $product_id_lan );
-                                $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
                                     $site_product_id = apply_filters(
                                         'wpml_object_id',
@@ -1187,7 +1197,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $product_id_lan = $value['product_id'];
                                 }
                                 $_product = wc_get_product( $product_id_lan );
-                                $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
                                     $site_product_id = apply_filters(
                                         'wpml_object_id',
@@ -1251,7 +1261,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $product_id = $value['product_id'];
                         }
                         $_product = wc_get_product( $product_id );
-                        $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                        $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                         $cart_value_array[] = $value;
                         $term_ids = wp_get_post_terms( $value['product_id'], 'product_cat', array(
                             'fields' => 'ids',
@@ -1327,7 +1337,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $product_id = $value['product_id'];
                         }
                         $_product = wc_get_product( $product_id );
-                        $line_item_subtotal = (float) $value['line_subtotal'] + (float) $value['line_subtotal_tax'];
+                        $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                         $cart_value_array[] = $value;
                         $tag_ids = wp_get_post_terms( $value['product_id'], 'product_tag', array(
                             'fields' => 'ids',
@@ -1452,6 +1462,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         foreach ( $city_array as $key => $city ) {
             if ( !empty( $city['product_fees_conditions_values'] ) ) {
                 $citystr = str_replace( PHP_EOL, "<br/>", $city['product_fees_conditions_values'] );
+                $citystr = html_entity_decode( $citystr );
                 $city_val_array = explode( '<br/>', $citystr );
                 $city_val_array = array_map( 'trim', $city_val_array );
                 if ( 'is_equal_to' === $city['product_fees_conditions_is'] ) {
@@ -1696,9 +1707,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         $is_passed = array();
         foreach ( $cart_total_array as $key => $cart_total ) {
             settype( $cart_total['product_fees_conditions_values'], 'float' );
-            if ( class_exists( 'WOOMULTI_CURRENCY_Data' ) ) {
-                $cart_total['product_fees_conditions_values'] = $this->wcpfc_pro_convert_currency( $cart_total['product_fees_conditions_values'] );
-            }
+            // Currency conversion by CURCY plugin
+            $cart_total['product_fees_conditions_values'] = $this->wcpfc_pro_convert_currency( $cart_total['product_fees_conditions_values'] );
             if ( 'is_equal_to' === $cart_total['product_fees_conditions_is'] ) {
                 if ( $cart_total['product_fees_conditions_values'] >= 0 || !empty( $cart_total['product_fees_conditions_values'] ) ) {
                     if ( $cart_total['product_fees_conditions_values'] === $new_total ) {
@@ -2301,6 +2311,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      */
     public function wcpfc_pro_price_format( $price ) {
         $price = floatval( $price );
+        // We must to round off the price to selected decimal places to avoid floating point issues
+        $price = round( $price, wc_get_price_decimals() );
         return $price;
     }
 
@@ -2415,16 +2427,28 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         return $result;
     }
 
+    /**
+     * Convert currency based on multi currency - CURCY Plugin
+     * 
+     * @param float $amount
+     * 
+     * @return float $amount
+     * 
+     * @since 4.2.0
+     */
     public function wcpfc_pro_convert_currency( $amount ) {
-        $multiCurrencySettings = ( class_exists( 'WOOMULTI_CURRENCY_Data' ) ? WOOMULTI_CURRENCY_Data::get_ins() : null );
+        $multiCurrencySettings = ( class_exists( 'WOOMULTI_CURRENCY_F_Data' ) ? WOOMULTI_CURRENCY_F_Data::get_ins() : null );
         if ( $multiCurrencySettings ) {
-            $currentCurrency = $multiCurrencySettings->get_current_currency();
+            $currentCurrency = ( $multiCurrencySettings->get_current_currency() ? $multiCurrencySettings->get_current_currency() : $multiCurrencySettings->get_default_currency() );
             if ( $currentCurrency ) {
-                $wmcCurrencies = $multiCurrencySettings->get_list_currencies();
-                $currentCurrencyRate = floatval( $wmcCurrencies[$currentCurrency]['rate'] );
+                $all_currencies = $multiCurrencySettings->get_list_currencies();
+                $currentCurrencyRate = floatval( $all_currencies[$currentCurrency]['rate'] );
+                $currentCurrencyRate = ( !empty( $all_currencies ) && is_array( $all_currencies ) && isset( $all_currencies[$currentCurrency] ) && isset( $all_currencies[$currentCurrency]['rate'] ) ? floatval( $all_currencies[$currentCurrency]['rate'] ) : 1 );
                 $amount *= $currentCurrencyRate;
             }
         }
+        // Put 3 as round off to get more accurate value
+        $amount = round( $amount, 3 );
         return $amount;
     }
 

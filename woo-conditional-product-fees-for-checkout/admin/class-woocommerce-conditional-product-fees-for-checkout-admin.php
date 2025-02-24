@@ -232,7 +232,13 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'cart_specific'                            => esc_html__( 'Cart Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'payment_specific'                         => esc_html__( 'Payment Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'attribute_list_disabled'                  => esc_html__( 'Color 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
-                'warning_msg1'                             => sprintf( __( '<p><b style="color: red;">Note: </b>If entered price is more than total fee price than Message looks like: <b>Fee Name: Curreny Symbole like($) -60.00 Price </b> and if fee minus price is more than total price than it will set Total Price to Zero(0).</p>', 'woocommerce-conditional-product-fees-for-checkout' ) ),
+                'warning_msg1'                             => sprintf(
+                    '<p><strong style="color: red;">%s</strong> %s <strong>%s</strong> %s</p>',
+                    esc_html__( 'Note:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                    esc_html__( 'If the entered price exceeds the total fee price, the message will be displayed as:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                    esc_html__( 'Fee Name: Currency Symbol (e.g., $) -60.00 Price', 'woocommerce-conditional-product-fees-for-checkout' ),
+                    esc_html__( 'If the fee minus price exceeds the total price, it will be set to zero (0).', 'woocommerce-conditional-product-fees-for-checkout' )
+                ),
                 'note'                                     => esc_html__( 'Note: ', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_product_msg'                => esc_html__( 'Please make sure that when you add rules in Advanced Fees Price Rules > Cost on Product Section It contains in above selected product list, otherwise it may not apply proper fees. For more detail please view our documentation. ', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_category_msg'               => esc_html__( 'Please make sure that when you add rules in Advanced Fees Price Rules > Cost on Category Section It contains in above selected category list, otherwise it may not apply proper fees. For more detail please view our documentation. ', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -255,6 +261,25 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'select_integer_number'                    => esc_html__( '10', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_city'                              => esc_html__( "City 1\nCity 2", 'woocommerce-conditional-product-fees-for-checkout' ),
             ) );
+        }
+        // Get the current screen object
+        $screen = get_current_screen();
+        // order admin side JS
+        if ( $screen && strpos( $screen->id, 'woocommerce_page_wc-orders' ) !== false || $screen && 'shop_order' === $screen->post_type ) {
+            // Enqueue the custom admin script
+            wp_enqueue_script(
+                'wc-custom-fees-search',
+                plugin_dir_url( __FILE__ ) . 'js/wcpffc-order-admin-fee-search.js',
+                array('jquery'),
+                '1.0.0',
+                true
+            );
+            $localized_data = array(
+                'ajax_url'        => admin_url( 'admin-ajax.php' ),
+                'fee_filter_none' => wp_create_nonce( 'wcpfc_fee_filter_none' ),
+            );
+            // Pass the combined data to the script
+            wp_localize_script( 'wc-custom-fees-search', 'wc_custom_fees_search_params', $localized_data );
         }
     }
 
@@ -286,7 +311,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $get_hook = add_submenu_page(
             $parent_menu,
             $main_menu_title,
-            __( $main_menu_title, 'woocommerce-conditional-product-fees-for-checkout' ),
+            $main_menu_title,
             'manage_options',
             'wcpfc-pro-list',
             array($this, 'wcpfc_pro_fee_list_page')
@@ -773,7 +798,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             'hierarchical' => true,
             'hide_empty'   => false,
         );
-        $get_all_categories = get_terms( 'product_cat', $args );
+        $get_all_categories = get_terms( $args );
         $html = '<select rel-id="' . esc_attr( $count ) . '" name="fees[product_fees_conditions_values][value_' . esc_attr( $count ) . '][]" class="wcpfc_select product_fees_conditions_values multiselect2" multiple="multiple">';
         if ( isset( $get_all_categories ) && !empty( $get_all_categories ) ) {
             foreach ( $get_all_categories as $get_all_category ) {
@@ -826,12 +851,12 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $default_lang = $this->wcpfc_pro_get_default_langugae_with_sitpress();
         $filter_tags = [];
         $args = array(
-            'taxonomy'     => 'product_cat',
+            'taxonomy'     => 'product_tag',
             'orderby'      => 'name',
             'hierarchical' => true,
             'hide_empty'   => false,
         );
-        $get_all_tags = get_terms( 'product_tag', $args );
+        $get_all_tags = get_terms( $args );
         $html = '<select rel-id="' . esc_attr( $count ) . '" name="fees[product_fees_conditions_values][value_' . esc_attr( $count ) . '][]" class="wcpfc_select product_fees_conditions_values multiselect2" multiple="multiple">';
         if ( isset( $get_all_tags ) && !empty( $get_all_tags ) ) {
             foreach ( $get_all_tags as $get_all_tag ) {
@@ -1514,6 +1539,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
     public function wcpfc_pro_admin_footer_review() {
         $url = '';
         $url = esc_url( 'https://wordpress.org/plugins/woo-conditional-product-fees-for-checkout/#reviews' );
+        /* translators: %1$s: plugin review link */
         $html = sprintf( wp_kses( __( '<strong>We need your support</strong> to keep updating and improving the plugin. Please <a href="%1$s" target="_blank">help us by leaving a good review</a> :) Thanks!', 'woocommerce-conditional-product-fees-for-checkout' ), array(
             'strong' => array(),
             'a'      => array(
@@ -2537,6 +2563,123 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         esc_html_e( 'Add Custom Fee 🔒', 'woocommerce-conditional-product-fees-for-checkout' );
         ?>
 			</button> <?php 
+    }
+
+    /**
+     * Add custom field in order filter
+     * 
+     * @since 4.2.0
+     * 
+     */
+    function wcpfc_order_filter( $post_type, $which ) {
+        if ( 'shop_order' !== $post_type ) {
+            return;
+        }
+        $wcpfc_fee_filter = filter_input( INPUT_GET, 'wcpfc_fee_filter', FILTER_VALIDATE_INT );
+        $wcpfc_fee_filter = ( !empty( $wcpfc_fee_filter ) ? absint( $wcpfc_fee_filter ) : '' );
+        $wcpfc_fee_title = '';
+        if ( !empty( $wcpfc_fee_filter ) ) {
+            $wcpfc_fee_title = sprintf( 
+                /* translators: 1: fee title, 2 fee id */
+                esc_html__( '%1$s (#%2$s)', 'woocommerce-conditional-product-fees-for-checkout' ),
+                get_the_title( $wcpfc_fee_filter ),
+                $wcpfc_fee_filter
+             );
+        }
+        ?>
+			<select class="wc-fee-search" name="wcpfc_fee_filter" data-placeholder="<?php 
+        esc_attr_e( 'Filter by Fee title', 'woocommerce-conditional-product-fees-for-checkout' );
+        ?>" data-allow_clear="true">
+                <option value="<?php 
+        echo esc_attr( $wcpfc_fee_filter );
+        ?>" selected="selected"><?php 
+        echo esc_html( htmlspecialchars( wp_kses_post( $wcpfc_fee_title ) ) );
+        ?></option>
+			</select>
+		<?php 
+    }
+
+    /**
+     * Search for fees and return json.
+     */
+    public static function wcpfc_json_search_fees() {
+        ob_start();
+        check_ajax_referer( 'wcpfc_fee_filter_none', 'security' );
+        if ( !current_user_can( 'edit_shop_orders' ) ) {
+            wp_die( -1 );
+        }
+        $term = filter_input( INPUT_GET, 'term', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $term = ( !empty( $term ) ? sanitize_text_field( wc_clean( wp_unslash( $term ) ) ) : '' );
+        $limit = 0;
+        if ( empty( $term ) ) {
+            wp_die();
+        }
+        $ids = array();
+        // Usernames can be numeric so we first check that no users was found by ID before searching for numeric username, this prevents performance issues with ID lookups.
+        if ( empty( $ids ) ) {
+            global $wpdb;
+            // phpcs:disable
+            $ids = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_title LIKE %s AND post_type = %s", '%' . $wpdb->esc_like( $term ) . '%', self::wcpfc_post_type ), ARRAY_N );
+            // phpcs:enable
+        }
+        $found_fees = array();
+        foreach ( $ids as $id ) {
+            $fee_id = absint( $id[0] );
+            $found_fees[$fee_id] = sprintf( 
+                /* translators: 1: fee title, 2 fee id */
+                esc_html__( '%1$s (#%2$s)', 'woocommerce-conditional-product-fees-for-checkout' ),
+                get_the_title( $fee_id ),
+                $fee_id
+             );
+        }
+        wp_send_json( apply_filters( 'woocommerce_json_search_found_customers', $found_fees ) );
+    }
+
+    /**
+     * Filter orders by fee title for HPOS
+     */
+    public function wcpfc_hpos_order_filter_wherefor_fees( $clauses ) {
+        global $wpdb;
+        $selected_fee_id = filter_input( INPUT_GET, 'wcpfc_fee_filter', FILTER_SANITIZE_NUMBER_INT );
+        $selected_fee_id = ( !empty( $selected_fee_id ) ? absint( $selected_fee_id ) : 0 );
+        if ( !$selected_fee_id ) {
+            return $clauses;
+        }
+        // Get the fee name (post title)
+        $selected_fee_name = get_the_title( $selected_fee_id );
+        if ( !$selected_fee_name ) {
+            return $clauses;
+            // Return early if no fee name found
+        }
+        $clauses['where'] .= $wpdb->prepare( "\n        AND %s\n        IN (\n            SELECT items.order_item_name\n            FROM {$wpdb->prefix}woocommerce_order_items as items\n            WHERE items.order_item_type = 'fee'\n            AND {$wpdb->prefix}wc_orders.id = items.order_id\n        )\n        ", $selected_fee_name );
+        return $clauses;
+    }
+
+    /**
+     * Filter orders by fee title for Classic CPT-based orders
+     * 
+     * @param string $where
+     * @param WP_Query $query
+     * 
+     * @return string
+     * 
+     * @since 4.2.0
+     */
+    public function wcpfc_classic_cpt_order_filter_wherefor_fees( $where, $query ) {
+        global $wpdb;
+        $selected_fee_id = filter_input( INPUT_GET, 'wcpfc_fee_filter', FILTER_SANITIZE_NUMBER_INT );
+        $selected_fee_id = ( !empty( $selected_fee_id ) ? absint( $selected_fee_id ) : 0 );
+        if ( !$selected_fee_id ) {
+            return $where;
+        }
+        // Get the fee name (post title)
+        $selected_fee_name = get_the_title( $selected_fee_id );
+        if ( !$selected_fee_name ) {
+            return $where;
+            // Return early if no fee name found
+        }
+        $where .= $wpdb->prepare( " AND %s\n        IN (\n            SELECT items.order_item_name\n            FROM {$wpdb->prefix}woocommerce_order_items as items\n            WHERE items.order_item_type = 'fee'\n            AND {$wpdb->posts}.ID = items.order_id\n        )", $selected_fee_name );
+        return $where;
     }
 
 }

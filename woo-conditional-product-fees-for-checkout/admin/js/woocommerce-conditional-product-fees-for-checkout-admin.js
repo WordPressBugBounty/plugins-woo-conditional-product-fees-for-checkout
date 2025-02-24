@@ -1,6 +1,8 @@
 (function( $ ) {
 	'use strict';
-	$( '.multiselect2' ).select2();
+	$( '.multiselect2' ).select2({
+        closeOnSelect: false,
+    });
 
 	function allowSpeicalCharacter( str ) {
 		return str.replace( '&#8211;', '–' ).replace( '&gt;', '>' ).replace( '&lt;', '<' ).replace( '&#197;', 'Å' );
@@ -10,6 +12,7 @@
 		$( '.product_fees_conditions_values_product' ).each( function() {
 			$( '.product_fees_conditions_values_product' ).select2( {
 				placeholder: coditional_vars.select_product,
+                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -52,6 +55,7 @@
 		$( '.product_fees_conditions_values_var_product' ).each( function() {
 			$( '.product_fees_conditions_values_var_product' ).select2( {
 				placeholder: coditional_vars.select_product,
+                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -122,6 +126,7 @@
 					},
 					cache: true
 				},
+                closeOnSelect: false,
 				minimumInputLength: 3,
 				placeholder: coditional_vars.select_product,
 			} );
@@ -132,6 +137,7 @@
 		$( '.product_fees_conditions_values_user' ).each( function() {
 			$( '.product_fees_conditions_values_user' ).select2( {
 				placeholder: coditional_vars.select_user,
+                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -224,9 +230,12 @@
   	}, 2000);
 	
 	$( window ).on( 'load', function() {
-		$( '.multiselect2' ).select2();
+		$( '.multiselect2' ).select2({
+            closeOnSelect: false,
+        });
 		$( '.product_fees_conditions_values_country' ).select2({
-			placeholder: coditional_vars.select_country
+			placeholder: coditional_vars.select_country,
+            closeOnSelect: false
 		});
 
 		$( 'a[href="admin.php?page=wcpfc-pro-list"]' ).parents().addClass( 'current wp-has-current-submenu' );
@@ -465,7 +474,7 @@
 			$( '.fees_on_cart_total_wrap' ).show();
 		}
 
-		$( 'body' ).on( 'change', '.product_fees_conditions_condition', function() {
+		$( 'body' ).on( 'change', '.product_fees_conditions_condition, .arcmt_select', function() {
 			let selectedOption = $(this).find(':selected').val();
             if( selectedOption.includes('_disabled') ){
                 $(this).find(':selected').prop('selected', false);
@@ -652,7 +661,8 @@
 
 					let selectCoundition = coditional_vars['select_' + condition];
 					$( '.multiselect2_' + count + '_' + condition ).select2({
-						placeholder: selectCoundition
+						placeholder: selectCoundition,
+                        closeOnSelect: false
 					});
 
 					productFilter();
@@ -1069,7 +1079,8 @@
 		}
 
 		$('#ds_select_day_of_week').select2({
-			placeholder: coditional_vars.select_days
+			placeholder: coditional_vars.select_days,
+            closeOnSelect: false
 		});
 
 	    /** tiptip js implementation */
