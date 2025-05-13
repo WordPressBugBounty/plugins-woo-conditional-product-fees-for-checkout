@@ -6,9 +6,9 @@ Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.7.2
-WC tested up to: 9.6.2
-Stable tag: 4.2.0
+Tested up to: 6.8.1
+WC tested up to: 9.8.5
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,6 +293,12 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.3.0 - 13-05-2025 =
+* [Enhancement] - Minor bug fixes
+* [Enhancement] - List out our other free plugins on getting started page
+* [Enhancement] - Compatible with WooCommerce 9.8.x
+* [Enhancement] - Compatible with WordPress 6.8.x
+
 = 4.2.0 - 24-02-2024 =
 * [New] - Compatible with CURCY - Multi-Currency for WooCommerce plugin
 * [New] - Added filter for fee-based orders on the admin order page

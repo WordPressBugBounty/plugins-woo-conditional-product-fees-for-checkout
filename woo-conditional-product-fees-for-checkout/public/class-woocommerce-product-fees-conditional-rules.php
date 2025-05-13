@@ -49,6 +49,12 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
     /** @var array product specific variable */
     private $variable_product_array = array();
 
+    /** @var array brand specific variable */
+    private $brand_array = array();
+
+    /** @var array wlf_location specific variable */
+    private $wlf_location_array = array();
+
     /** @var array category specific variable */
     private $category_array = array();
 
@@ -155,6 +161,12 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
                 }
                 if ( array_search( 'variableproduct', $value, true ) ) {
                     $this->variable_product_array[$key] = $value;
+                }
+                if ( array_search( 'brand', $value, true ) ) {
+                    $this->brand_array[$key] = $value;
+                }
+                if ( array_search( 'wlf_location', $value, true ) ) {
+                    $this->wlf_location_array[$key] = $value;
                 }
                 if ( array_search( 'category', $value, true ) ) {
                     $this->category_array[$key] = $value;
@@ -273,9 +285,27 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
                 $is_passed['has_fee_based_on_variable_prd'] = false;
             }
         }
+        // Check if is brand exist
+        if ( isset( $this->brand_array ) && !empty( $this->brand_array ) && is_array( $this->brand_array ) ) {
+            $brand_passed = wcpfc_pro_public()->wcpfc_pro_match_brand_rule__premium_only( $cart_product_ids_array, $this->brand_array, $this->cost_rule_match );
+            if ( 'yes' === $brand_passed ) {
+                $is_passed['has_fee_based_on_brand'] = true;
+            } else {
+                $is_passed['has_fee_based_on_brand'] = false;
+            }
+        }
+        // Check if is wlf_location exist (Custom Support #104847 - Location based fee)
+        if ( isset( $this->wlf_location_array ) && !empty( $this->wlf_location_array ) && is_array( $this->wlf_location_array ) ) {
+            $wlf_location_passed = wcpfc_pro_public()->wcpfc_pro_match_wlf_location_rule__premium_only( $cart_product_ids_array, $this->wlf_location_array, $this->cost_rule_match );
+            if ( 'yes' === $wlf_location_passed ) {
+                $is_passed['has_fee_based_on_wlf_location'] = true;
+            } else {
+                $is_passed['has_fee_based_on_wlf_location'] = false;
+            }
+        }
         // Check if is category exist
         if ( isset( $this->category_array ) && !empty( $this->category_array ) && is_array( $this->category_array ) ) {
-            $category_passed = wcpfc_pro_public()->wcpfc_pro_match_category_rule( $cart_product_ids_array, $this->category_array, $this->cost_rule_match );
+            $category_passed = wcpfc_pro_public()->wcpfc_pro_match_category_rule__premium_only( $cart_product_ids_array, $this->category_array, $this->cost_rule_match );
             if ( 'yes' === $category_passed ) {
                 $is_passed['has_fee_based_on_category'] = true;
             } else {

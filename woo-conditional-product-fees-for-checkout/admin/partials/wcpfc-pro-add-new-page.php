@@ -10,6 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 require_once plugin_dir_path( __FILE__ ) . 'header/plugin-header.php';
+global $ds_analytics;
 $wcpfc_admin_object = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin('', '');
 $wcpfc_object = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro('', '');
 $allowed_tooltip_html = wp_kses_allowed_html( 'post' )['span'];
@@ -211,6 +212,8 @@ esc_html_e( 'Apply fee on cart total', 'woocommerce-conditional-product-fees-for
 								</span>
 							</td>
 						</tr>
+                        <?php 
+?>
 						<tr valign="top">
 							<th class="titledesc" scope="row">
 		                        <label for="fee_settings_product_cost">
@@ -996,6 +999,13 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
                                                 <?php 
         ?>
                                                 	<option value="<?php 
+        echo esc_attr( ( 'brand' === $fees_conditions ? 'brand' : 'brand_disabled' ) );
+        ?>" <?php 
+        echo ( 'brand' === $fees_conditions ? 'selected' : '' );
+        ?>><?php 
+        esc_html_e( 'Cart contains brand\'s product 🔒', 'woocommerce-conditional-product-fees-for-checkout' );
+        ?></option>
+                                                	<option value="<?php 
         echo esc_attr( ( 'category' === $fees_conditions ? 'category' : 'category_disabled' ) );
         ?>" <?php 
         echo ( 'category' === $fees_conditions ? 'selected' : '' );
@@ -1014,6 +1024,8 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
         ?>><?php 
         esc_html_e( 'Cart contains product\'s quantity', 'woocommerce-conditional-product-fees-for-checkout' );
         ?></option>
+                                                <?php 
+        ?>
                                             </optgroup>
                                             <optgroup label="<?php 
         esc_attr_e( 'Attribute Specific', 'woocommerce-conditional-product-fees-for-checkout' );
@@ -1237,8 +1249,6 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
             $html .= $wcpfc_admin_object->wcpfc_pro_get_product_list( $i, $condtion_value, 'edit' );
         } elseif ( 'variableproduct' === $fees_conditions ) {
             $html .= $wcpfc_admin_object->wcpfc_pro_get_varible_product_list( $i, $condtion_value, 'edit' );
-        } elseif ( 'category' === $fees_conditions ) {
-            $html .= $wcpfc_admin_object->wcpfc_pro_get_category_list( $i, $condtion_value );
         } elseif ( 'tag' === $fees_conditions ) {
             $html .= $wcpfc_admin_object->wcpfc_pro_get_tag_list( $i, $condtion_value );
         } elseif ( 'product_qty' === $fees_conditions ) {
@@ -1308,6 +1318,9 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
     ?></option>
                                             <?php 
     ?>
+                                            	<option value="brand_disabled"><?php 
+    esc_html_e( 'Cart contains brand\'s product 🔒', 'woocommerce-conditional-product-fees-for-checkout' );
+    ?></option>
                                             	<option value="category_disabled"><?php 
     esc_html_e( 'Cart contains category\'s product 🔒', 'woocommerce-conditional-product-fees-for-checkout' );
     ?></option>
@@ -1319,6 +1332,8 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
                                             <option value="product_qty"><?php 
     esc_html_e( 'Cart contains product\'s quantity', 'woocommerce-conditional-product-fees-for-checkout' );
     ?></option>
+                                            <?php 
+    ?>
                                         </optgroup>
                                         <optgroup label="<?php 
     esc_attr_e( 'Attribute Specific', 'woocommerce-conditional-product-fees-for-checkout' );
@@ -1361,6 +1376,23 @@ if ( isset( $productFeesArray ) && !empty( $productFeesArray ) ) {
     ?>
                                         </optgroup>
 											<?php 
+    ?>
+                                                 <optgroup label="<?php 
+    esc_attr_e( 'Purchase History', 'woocommerce-conditional-product-fees-for-checkout' );
+    ?>">
+                                                    <option value="total_spent_order_disabled"><?php 
+    esc_html_e( 'Total order spent (all time)', 'woocommerce-conditional-product-fees-for-checkout' );
+    echo esc_html( ' 🔒' );
+    ?></option>
+                                                    <option value="spent_order_count_disabled"><?php 
+    esc_html_e( 'Number of orders (all time)', 'woocommerce-conditional-product-fees-for-checkout' );
+    echo esc_html( ' 🔒' );
+    ?></option>
+                                                    <option value="last_spent_order_disabled"><?php 
+    esc_html_e( 'Last order spent', 'woocommerce-conditional-product-fees-for-checkout' );
+    echo esc_html( ' 🔒' );
+    ?></option>
+                                                </optgroup><?php 
     ?>
                                         <optgroup label="<?php 
     esc_attr_e( 'Cart Specific', 'woocommerce-conditional-product-fees-for-checkout' );

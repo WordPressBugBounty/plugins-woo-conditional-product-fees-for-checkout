@@ -14,6 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * @subpackage Woocommerce_Conditional_Product_Fees_For_Checkout_Pro/includes
  * @author     Multidots <inquiry@multidots.in>
  */
+use DotStore\ConditionalExtraFees;
 if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) {
     class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro {
         /**
@@ -145,7 +146,7 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
         private function set_locale() {
             $plugin_i18n = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_i18n();
             $plugin_i18n->set_domain( $this->get_plugin_name() );
-            $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+            $this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
         }
 
         /**

@@ -137,13 +137,23 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
          * between the defined hooks and the functions defined in this
          * class.
          */
+        wp_register_script(
+            'jquery-tiptip',
+            WC()->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip.min.js',
+            ['jquery'],
+            WC_VERSION,
+            true
+        );
         wp_enqueue_script(
             $this->plugin_name,
             plugin_dir_url( __FILE__ ) . 'js/woocommerce-conditional-product-fees-for-checkout-public.js',
-            array('jquery'),
+            array('jquery', 'jquery-tiptip'),
             $this->version,
             false
         );
+        wp_localize_script( $this->plugin_name, 'wcpfc_public_vars', array(
+            'fee_tooltip_data' => $this->wcpfc_all_fee_tooltip_data(),
+        ) );
     }
 
     /**
@@ -290,7 +300,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      * @uses     wcpfc_pro_match_zone_rules__premium_only()
      * @uses     wcpfc_pro_match_variable_products_rule()
      * @uses     wcpfc_pro_match_simple_products_rule()
-     * @uses     wcpfc_pro_match_category_rule()
+     * @uses     wcpfc_pro_match_category_rule__premium_only()
      * @uses     wcpfc_pro_match_tag_rule()
      * @uses 	 wcpfc_pro_match_product_qty_rule()
      * @uses     wcpfc_pro_match_user_rule()
@@ -348,9 +358,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         $cart_array = $this->wcpfc_pro_get_cart();
         $cart_main_product_ids_array = $this->wcpfc_pro_get_main_prd_id( $sitepress, $default_lang );
         $cart_product_ids_array = $this->wcpfc_pro_get_prd_var_id( $sitepress, $default_lang );
-        if ( wcpffc_fs()->is__premium_only() && wcpffc_fs()->can_use_premium_code() ) {
-            $variation_cart_products_array = $this->wcpfc_pro_get_var_name__premium_only( $sitepress, $default_lang );
-        }
         /**
          * We have commented below line because we are already getting cart object in function parameter.and that give us updated price of cart subtotal.
          * and WC()->cart->cart_contents_total is not giving updated price of cart subtotal.
@@ -514,7 +521,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         $cart_total_array = array();
                         $quantity_array = array();
                         $variableproduct_array = array();
-                        $category_array = array();
                         $product_qty_array = array();
                         foreach ( $get_condition_array as $key => $value ) {
                             if ( array_search( 'country', $value, true ) ) {
@@ -528,9 +534,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             }
                             if ( array_search( 'variableproduct', $value, true ) ) {
                                 $variableproduct_array[$key] = $value;
-                            }
-                            if ( array_search( 'category', $value, true ) ) {
-                                $category_array[$key] = $value;
                             }
                             if ( array_search( 'tag', $value, true ) ) {
                                 $tag_array[$key] = $value;
@@ -581,15 +584,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $is_passed['has_fee_based_on_variable_prd'] = 'yes';
                                 } else {
                                     $is_passed['has_fee_based_on_variable_prd'] = 'no';
-                                }
-                            }
-                            //Check if is Category exist
-                            if ( isset( $category_array ) && !empty( $category_array ) && is_array( $category_array ) && !empty( $cart_main_product_ids_array ) ) {
-                                $category_passed = $this->wcpfc_pro_match_category_rule( $cart_main_product_ids_array, $category_array, $general_rule_match );
-                                if ( 'yes' === $category_passed ) {
-                                    $is_passed['has_fee_based_on_category'] = 'yes';
-                                } else {
-                                    $is_passed['has_fee_based_on_category'] = 'no';
                                 }
                             }
                             //Check if is tag exist
@@ -732,6 +726,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $today = strtolower( gmdate( "D" ) );
                             $ds_select_day_of_week = ( get_post_meta( $fees_id, 'ds_select_day_of_week', true ) ? get_post_meta( $fees_id, 'ds_select_day_of_week', true ) : array() );
                             if ( ($currentDate >= $feeStartDate || '' === $feeStartDate) && ($currentDate <= $feeEndDate || '' === $feeEndDate) && ($local_nowtimestamp >= $feeStartTime || '' === $feeStartTime) && ($local_nowtimestamp <= $feeEndTime || '' === $feeEndTime) && (in_array( $today, $ds_select_day_of_week, true ) || empty( $ds_select_day_of_week )) ) {
+                                $fee_is_recurring = 'off';
                                 if ( '' !== $fees_cost ) {
                                     $chk_enable_coupon_fee = get_option( 'chk_enable_coupon_fee' );
                                     if ( 'on' === $chk_enable_coupon_fee ) {
@@ -757,9 +752,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                     } else {
                                                         if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                             if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                                // Note: We are using the function cart object to add the fee to apply fee
-                                                                // in subscription after disacount coupon applied
-                                                                $cart->add_fee(
+                                                                WC()->cart->add_fee(
                                                                     $title,
                                                                     $fees_cost,
                                                                     $texable,
@@ -781,7 +774,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                 } else {
                                                     if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                         if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                            $cart->add_fee(
+                                                            WC()->cart->add_fee(
                                                                 $title,
                                                                 $fees_cost,
                                                                 $texable,
@@ -793,7 +786,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                             } else {
                                                 if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                     if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                        $cart->add_fee(
+                                                        WC()->cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -814,7 +807,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                             } else {
                                                 if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                     if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                        $cart->add_fee(
+                                                        WC()->cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -826,7 +819,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                         } else {
                                             if ( 'yes' !== $getFeesOptional || $apply_rule_for_optional ) {
                                                 if ( is_checkout() || empty( $fee_show_on_checkout_only ) ) {
-                                                    $cart->add_fee(
+                                                    WC()->cart->add_fee(
                                                         $title,
                                                         $fees_cost,
                                                         $texable,
@@ -834,7 +827,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                     );
                                                 } else {
                                                     if ( !is_cart() && !empty( $fee_show_on_checkout_only ) ) {
-                                                        $cart->add_fee(
+                                                        WC()->cart->add_fee(
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
@@ -864,7 +857,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                     $fee_title = apply_filters( 'wcpfc_all_fee_title', 'Fees' );
                     // Fetch the tax class type for the merged fee
                     $taxClassType = get_option( 'merge_fee_settings_taxable_type' );
-                    $cart->add_fee(
+                    WC()->cart->add_fee(
                         wp_kses_post( $fee_title, 'woocommerce-conditional-product-fees-for-checkout' ),
                         $total_fee,
                         $chk_enable_all_fee_tax,
@@ -1032,6 +1025,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      * @param float  $products_based_subtotal
      * @param string $sitepress
      * @param string $default_lang
+     * @param string $general_rule_match
      *
      * @return array $products_based_qty, $products_based_subtotal
      * @since 1.3.3
@@ -1047,86 +1041,37 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         $products_based_qty,
         $products_based_subtotal,
         $sitepress,
-        $default_lang
+        $default_lang,
+        $general_rule_match
     ) {
-        $productFeesArray = get_post_meta( $fees_id, 'product_fees_metabox', true );
         $all_rule_check = array();
+        $productFeesArray = get_post_meta( $fees_id, 'product_fees_metabox', true );
         if ( !empty( $productFeesArray ) ) {
             foreach ( $productFeesArray as $condition ) {
-                if ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ) {
-                    $condition['product_fees_conditions_values'] = array_map( 'intval', $condition['product_fees_conditions_values'] );
-                } else {
-                    $condition['product_fees_conditions_values'] = '';
-                }
+                // Product Condition
                 if ( array_search( 'product', $condition, true ) ) {
-                    $site_product_id = '';
                     $cart_final_products_array = array();
-                    // Product Condition Start
-                    if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
                             foreach ( $cart_array as $value ) {
-                                if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                                    $product_id_lan = $value['variation_id'];
-                                } else {
-                                    $product_id_lan = $value['product_id'];
-                                }
+                                $product_id_lan = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
                                 $_product = wc_get_product( $product_id_lan );
                                 $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
-                                    $site_product_id = apply_filters(
+                                    $product_id_lan = apply_filters(
                                         'wpml_object_id',
                                         $product_id_lan,
                                         'product',
                                         true,
                                         $default_lang
                                     );
-                                } else {
-                                    $site_product_id = $product_id_lan;
                                 }
                                 if ( false === strpos( $_product->get_type(), 'bundle' ) ) {
-                                    if ( in_array( $site_product_id, $condition['product_fees_conditions_values'], true ) ) {
+                                    if ( in_array( $product_id_lan, $condition_value, true ) ) {
                                         $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
-                                        if ( array_key_exists( $site_product_id, $cart_final_products_array ) ) {
-                                            $product_data_explode = explode( "||", $cart_final_products_array[$site_product_id] );
-                                            $cart_product_qty = json_decode( $product_data_explode[0] );
-                                            $prod_qty += $cart_product_qty;
-                                        }
-                                        $cart_final_products_array[$site_product_id] = $prod_qty . "||" . $line_item_subtotal;
-                                    }
-                                } else {
-                                    if ( false !== strpos( $_product->get_type(), 'bundle' ) ) {
-                                        $prod_qty = 0;
-                                        $cart_final_products_array[$site_product_id] = $prod_qty . "||" . $line_item_subtotal;
-                                    }
-                                }
-                            }
-                        }
-                    } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
-                            foreach ( $cart_array as $value ) {
-                                if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                                    $product_id_lan = $value['variation_id'];
-                                } else {
-                                    $product_id_lan = $value['product_id'];
-                                }
-                                $_product = wc_get_product( $product_id_lan );
-                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
-                                if ( !empty( $sitepress ) ) {
-                                    $site_product_id = apply_filters(
-                                        'wpml_object_id',
-                                        $product_id_lan,
-                                        'product',
-                                        true,
-                                        $default_lang
-                                    );
-                                } else {
-                                    $site_product_id = $product_id_lan;
-                                }
-                                if ( false === strpos( $_product->get_type(), 'bundle' ) ) {
-                                    if ( !in_array( $site_product_id, $condition['product_fees_conditions_values'], true ) ) {
-                                        $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
-                                        if ( array_key_exists( $site_product_id, $cart_final_products_array ) ) {
-                                            $product_data_explode = explode( "||", $cart_final_products_array[$site_product_id] );
+                                        if ( array_key_exists( $product_id_lan, $cart_final_products_array ) ) {
+                                            $product_data_explode = explode( "||", $cart_final_products_array[$product_id_lan] );
                                             $cart_product_qty = json_decode( $product_data_explode[0] );
                                             $prod_qty += $cart_product_qty;
                                         }
@@ -1135,7 +1080,38 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                 } else {
                                     if ( false !== strpos( $_product->get_type(), 'bundle' ) ) {
                                         $prod_qty = 0;
-                                        $cart_final_products_array[$site_product_id] = $prod_qty . "||" . $line_item_subtotal;
+                                        $cart_final_products_array[$product_id_lan] = $prod_qty . "||" . $line_item_subtotal;
+                                    }
+                                }
+                            }
+                        } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                            foreach ( $cart_array as $value ) {
+                                $product_id_lan = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
+                                $_product = wc_get_product( $product_id_lan );
+                                $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
+                                if ( !empty( $sitepress ) ) {
+                                    $product_id_lan = apply_filters(
+                                        'wpml_object_id',
+                                        $product_id_lan,
+                                        'product',
+                                        true,
+                                        $default_lang
+                                    );
+                                }
+                                if ( false === strpos( $_product->get_type(), 'bundle' ) ) {
+                                    if ( !in_array( $product_id_lan, $condition_value, true ) ) {
+                                        $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
+                                        if ( array_key_exists( $product_id_lan, $cart_final_products_array ) ) {
+                                            $product_data_explode = explode( "||", $cart_final_products_array[$product_id_lan] );
+                                            $cart_product_qty = json_decode( $product_data_explode[0] );
+                                            $prod_qty += $cart_product_qty;
+                                        }
+                                        $cart_final_products_array[$product_id_lan] = $prod_qty . "||" . $line_item_subtotal;
+                                    }
+                                } else {
+                                    if ( false !== strpos( $_product->get_type(), 'bundle' ) ) {
+                                        $prod_qty = 0;
+                                        $cart_final_products_array[$product_id_lan] = $prod_qty . "||" . $line_item_subtotal;
                                     }
                                 }
                             }
@@ -1148,35 +1124,28 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
                         }
                     }
-                    // Product Condition End
                 }
+                // Variable Product Condition
                 if ( array_search( 'variableproduct', $condition, true ) ) {
-                    $site_product_id = '';
                     $cart_final_var_products_array = array();
-                    // Variable Product Condition Start
-                    if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
                             foreach ( $cart_array as $value ) {
-                                if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                                    $product_id_lan = $value['variation_id'];
-                                } else {
-                                    $product_id_lan = $value['product_id'];
-                                }
+                                $product_id_lan = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
                                 $_product = wc_get_product( $product_id_lan );
                                 $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
-                                    $site_product_id = apply_filters(
+                                    $product_id_lan = apply_filters(
                                         'wpml_object_id',
                                         $product_id_lan,
                                         'product',
                                         true,
                                         $default_lang
                                     );
-                                } else {
-                                    $site_product_id = $product_id_lan;
                                 }
                                 if ( false === strpos( $_product->get_type(), 'bundle' ) ) {
-                                    if ( in_array( $site_product_id, $condition['product_fees_conditions_values'], true ) ) {
+                                    if ( in_array( $product_id_lan, $condition_value, true ) ) {
                                         $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
                                         $cart_final_var_products_array[] = $prod_qty . "||" . $line_item_subtotal;
                                     }
@@ -1187,30 +1156,22 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     }
                                 }
                             }
-                        }
-                    } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
+                        } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
                             foreach ( $cart_array as $value ) {
-                                if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                                    $product_id_lan = $value['variation_id'];
-                                } else {
-                                    $product_id_lan = $value['product_id'];
-                                }
+                                $product_id_lan = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
                                 $_product = wc_get_product( $product_id_lan );
                                 $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
                                 if ( !empty( $sitepress ) ) {
-                                    $site_product_id = apply_filters(
+                                    $product_id_lan = apply_filters(
                                         'wpml_object_id',
                                         $product_id_lan,
                                         'product',
                                         true,
                                         $default_lang
                                     );
-                                } else {
-                                    $site_product_id = $product_id_lan;
                                 }
                                 if ( false === strpos( $_product->get_type(), 'bundle' ) ) {
-                                    if ( !in_array( $site_product_id, $condition['product_fees_conditions_values'], true ) ) {
+                                    if ( !in_array( $product_id_lan, $condition_value, true ) ) {
                                         $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
                                         $cart_final_var_products_array[] = $prod_qty . "||" . $line_item_subtotal;
                                     }
@@ -1230,8 +1191,160 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                             $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
                         }
                     }
-                    // Variable Product Condition End
                 }
+                // Brand Condition
+                if ( array_search( 'brand', $condition, true ) ) {
+                    $final_cart_product_brand_ids = array();
+                    $cart_final_brand_products_array = array();
+                    $all_brands = get_terms( array(
+                        'taxonomy' => 'product_brand',
+                        'fields'   => 'ids',
+                    ) );
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
+                            foreach ( $condition_value as $brand_id ) {
+                                $final_cart_product_brand_ids[] = $brand_id;
+                            }
+                        } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                            $final_cart_product_brand_ids = array_diff( $all_brands, $condition_value );
+                        }
+                    }
+                    $final_cart_product_brand_ids = array_map( 'intval', $final_cart_product_brand_ids );
+                    $terms = array();
+                    foreach ( $cart_array as $value ) {
+                        $product_id = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
+                        $_product = wc_get_product( $product_id );
+                        $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
+                        $term_ids = wp_get_post_terms( $value['product_id'], 'product_brand', array(
+                            'fields' => 'ids',
+                        ) );
+                        if ( !empty( $term_ids ) ) {
+                            foreach ( $term_ids as $term_id ) {
+                                $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
+                                if ( false !== strpos( $_product->get_type(), 'bundle' ) ) {
+                                    $prod_qty = 0;
+                                }
+                                $product_id = ( $value['variation_id'] ? $value['variation_id'] : $product_id );
+                                if ( in_array( $term_id, $final_cart_product_brand_ids, true ) ) {
+                                    if ( array_key_exists( $product_id, $terms ) && array_key_exists( $term_id, $terms[$product_id] ) ) {
+                                        $term_data_explode = explode( "||", $terms[$product_id][$term_id] );
+                                        $cart_term_qty = json_decode( $term_data_explode[0] );
+                                        $prod_qty += $cart_term_qty;
+                                    }
+                                    $terms[$product_id][$term_id] = $prod_qty . "||" . $line_item_subtotal;
+                                }
+                            }
+                        }
+                    }
+                    if ( isset( $terms ) && !empty( $terms ) ) {
+                        foreach ( $terms as $cart_product_key => $main_term_data ) {
+                            foreach ( $main_term_data as $cart_term_id => $term_data ) {
+                                $term_data_explode = explode( "||", $term_data );
+                                $cart_term_qty = json_decode( $term_data_explode[0] );
+                                $cart_term_subtotal = json_decode( $term_data_explode[1] );
+                                if ( in_array( $cart_term_id, $final_cart_product_brand_ids, true ) ) {
+                                    $cart_final_brand_products_array[$cart_product_key][$cart_term_id] = $cart_term_qty . "||" . $cart_term_subtotal;
+                                }
+                            }
+                        }
+                    }
+                    if ( isset( $cart_final_brand_products_array ) && !empty( $cart_final_brand_products_array ) ) {
+                        foreach ( $cart_final_brand_products_array as $prd_id => $main_cart_item ) {
+                            foreach ( $main_cart_item as $term_id => $cart_item ) {
+                                $cart_item_explode = explode( "||", $cart_item );
+                                $all_rule_check[$prd_id]['qty'] = $cart_item_explode[0];
+                                $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
+                            }
+                        }
+                    }
+                }
+                // wlf_location condition (Custom Support #104847 - Location based fee)
+                $block_conditions = array(
+                    'product',
+                    'variableproduct',
+                    'brand',
+                    'category',
+                    'tag'
+                );
+                $all_conditions = ( is_array( $productFeesArray ) ? array_column( $productFeesArray, 'product_fees_conditions_condition' ) : array() );
+                // Check if any other product specific condition exists
+                $otherProductCondition = true;
+                foreach ( $block_conditions as $block_condition ) {
+                    if ( array_search( $block_condition, $all_conditions, true ) !== false ) {
+                        $otherProductCondition = false;
+                        break;
+                    }
+                }
+                // If no other product based condition is found with location, run this code
+                if ( $otherProductCondition && in_array( 'wlf_location', $all_conditions, true ) ) {
+                    // Run my action
+                    $final_cart_product_wlf_location_ids = array();
+                    $cart_final_wlf_location_products_array = array();
+                    $all_wlf_locations = get_terms( array(
+                        'taxonomy' => 'location',
+                        'fields'   => 'ids',
+                    ) );
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
+                            foreach ( $condition_value as $wlf_location_id ) {
+                                $final_cart_product_wlf_location_ids[] = $wlf_location_id;
+                            }
+                        } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                            $final_cart_product_wlf_location_ids = array_diff( $all_wlf_locations, $condition_value );
+                        }
+                    }
+                    $final_cart_product_wlf_location_ids = array_map( 'intval', $final_cart_product_wlf_location_ids );
+                    $terms = array();
+                    foreach ( $cart_array as $value ) {
+                        $product_id = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
+                        $_product = wc_get_product( $product_id );
+                        $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
+                        $term_ids = wp_get_post_terms( $value['product_id'], 'location', array(
+                            'fields' => 'ids',
+                        ) );
+                        if ( !empty( $term_ids ) ) {
+                            foreach ( $term_ids as $term_id ) {
+                                $prod_qty = ( $value['quantity'] ? $value['quantity'] : 0 );
+                                if ( false !== strpos( $_product->get_type(), 'bundle' ) ) {
+                                    $prod_qty = 0;
+                                }
+                                $product_id = ( $value['variation_id'] ? $value['variation_id'] : $product_id );
+                                if ( in_array( $term_id, $final_cart_product_wlf_location_ids, true ) ) {
+                                    if ( array_key_exists( $product_id, $terms ) && array_key_exists( $term_id, $terms[$product_id] ) ) {
+                                        $term_data_explode = explode( "||", $terms[$product_id][$term_id] );
+                                        $cart_term_qty = json_decode( $term_data_explode[0] );
+                                        $prod_qty += $cart_term_qty;
+                                    }
+                                    $terms[$product_id][$term_id] = $prod_qty . "||" . $line_item_subtotal;
+                                }
+                            }
+                        }
+                    }
+                    if ( isset( $terms ) && !empty( $terms ) ) {
+                        foreach ( $terms as $cart_product_key => $main_term_data ) {
+                            foreach ( $main_term_data as $cart_term_id => $term_data ) {
+                                $term_data_explode = explode( "||", $term_data );
+                                $cart_term_qty = json_decode( $term_data_explode[0] );
+                                $cart_term_subtotal = json_decode( $term_data_explode[1] );
+                                if ( in_array( $cart_term_id, $final_cart_product_wlf_location_ids, true ) ) {
+                                    $cart_final_wlf_location_products_array[$cart_product_key][$cart_term_id] = $cart_term_qty . "||" . $cart_term_subtotal;
+                                }
+                            }
+                        }
+                    }
+                    if ( isset( $cart_final_wlf_location_products_array ) && !empty( $cart_final_wlf_location_products_array ) ) {
+                        foreach ( $cart_final_wlf_location_products_array as $prd_id => $main_cart_item ) {
+                            foreach ( $main_cart_item as $term_id => $cart_item ) {
+                                $cart_item_explode = explode( "||", $cart_item );
+                                $all_rule_check[$prd_id]['qty'] = $cart_item_explode[0];
+                                $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
+                            }
+                        }
+                    }
+                }
+                // Category Condition
                 if ( array_search( 'category', $condition, true ) ) {
                     $final_cart_products_cats_ids = array();
                     $cart_final_cat_products_array = array();
@@ -1239,30 +1352,22 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         'taxonomy' => 'product_cat',
                         'fields'   => 'ids',
                     ) );
-                    if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
-                            foreach ( $condition['product_fees_conditions_values'] as $category_id ) {
-                                settype( $category_id, 'integer' );
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
+                            foreach ( $condition_value as $category_id ) {
                                 $final_cart_products_cats_ids[] = $category_id;
                             }
-                        }
-                    } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
-                            $final_cart_products_cats_ids = array_diff( $all_cats, $condition['product_fees_conditions_values'] );
+                        } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                            $final_cart_products_cats_ids = array_diff( $all_cats, $condition_value );
                         }
                     }
                     $final_cart_products_cats_ids = array_map( 'intval', $final_cart_products_cats_ids );
                     $terms = array();
-                    $cart_value_array = array();
                     foreach ( $cart_array as $value ) {
-                        if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                            $product_id = $value['variation_id'];
-                        } else {
-                            $product_id = $value['product_id'];
-                        }
+                        $product_id = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
                         $_product = wc_get_product( $product_id );
                         $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
-                        $cart_value_array[] = $value;
                         $term_ids = wp_get_post_terms( $value['product_id'], 'product_cat', array(
                             'fields' => 'ids',
                         ) );
@@ -1273,15 +1378,13 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                     $prod_qty = 0;
                                 }
                                 $product_id = ( $value['variation_id'] ? $value['variation_id'] : $product_id );
-                                if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
-                                    if ( in_array( $term_id, $final_cart_products_cats_ids, true ) ) {
-                                        if ( array_key_exists( $product_id, $terms ) && array_key_exists( $term_id, $terms[$product_id] ) ) {
-                                            $term_data_explode = explode( "||", $terms[$product_id][$term_id] );
-                                            $cart_term_qty = json_decode( $term_data_explode[0] );
-                                            $prod_qty += $cart_term_qty;
-                                        }
-                                        $terms[$product_id][$term_id] = $prod_qty . "||" . $line_item_subtotal;
+                                if ( in_array( $term_id, $final_cart_products_cats_ids, true ) ) {
+                                    if ( array_key_exists( $product_id, $terms ) && array_key_exists( $term_id, $terms[$product_id] ) ) {
+                                        $term_data_explode = explode( "||", $terms[$product_id][$term_id] );
+                                        $cart_term_qty = json_decode( $term_data_explode[0] );
+                                        $prod_qty += $cart_term_qty;
                                     }
+                                    $terms[$product_id][$term_id] = $prod_qty . "||" . $line_item_subtotal;
                                 }
                             }
                         }
@@ -1308,37 +1411,32 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         }
                     }
                 }
+                // Tag Condition Start
                 if ( array_search( 'tag', $condition, true ) ) {
-                    // Tag Condition Start
                     $final_cart_products_tag_ids = array();
                     $cart_final_tag_products_array = array();
                     $all_tags = get_terms( array(
                         'taxonomy' => 'product_tag',
                         'fields'   => 'ids',
                     ) );
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'intval', $condition['product_fees_conditions_values'] ) : array() );
                     if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
-                            foreach ( $condition['product_fees_conditions_values'] as $tag_id ) {
+                        if ( !empty( $condition_value ) ) {
+                            foreach ( $condition_value as $tag_id ) {
                                 $final_cart_products_tag_ids[] = $tag_id;
                             }
                         }
                     } elseif ( 'not_in' === $condition['product_fees_conditions_is'] ) {
-                        if ( !empty( $condition['product_fees_conditions_values'] ) ) {
-                            $final_cart_products_tag_ids = array_diff( $all_tags, $condition['product_fees_conditions_values'] );
+                        if ( !empty( $condition_value ) ) {
+                            $final_cart_products_tag_ids = array_diff( $all_tags, $condition_value );
                         }
                     }
                     $final_cart_products_tag_ids = array_map( 'intval', $final_cart_products_tag_ids );
                     $tags = array();
-                    $cart_value_array = array();
                     foreach ( $cart_array as $value ) {
-                        if ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ) {
-                            $product_id = $value['variation_id'];
-                        } else {
-                            $product_id = $value['product_id'];
-                        }
+                        $product_id = ( !empty( $value['variation_id'] ) && 0 !== $value['variation_id'] ? intval( $value['variation_id'] ) : intval( $value['product_id'] ) );
                         $_product = wc_get_product( $product_id );
                         $line_item_subtotal = (float) $value['data']->get_price() * (float) $value['quantity'];
-                        $cart_value_array[] = $value;
                         $tag_ids = wp_get_post_terms( $value['product_id'], 'product_tag', array(
                             'fields' => 'ids',
                         ) );
@@ -1380,6 +1478,199 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                 $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
                             }
                         }
+                    }
+                }
+                // Product Attribute Condition
+                if ( isset( $condition['product_fees_conditions_condition'] ) && strpos( $condition['product_fees_conditions_condition'], 'pa_' ) === 0 && 'any' === $general_rule_match ) {
+                    $cart_final_products_array = [];
+                    $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'sanitize_text_field', $condition['product_fees_conditions_values'] ) : array() );
+                    if ( !empty( $condition_value ) ) {
+                        foreach ( $cart_array as $cart_item ) {
+                            $product = $cart_item['data'];
+                            // Check if product is not a product object then skip the loop
+                            if ( !is_a( $product, 'WC_Product' ) ) {
+                                continue;
+                            }
+                            $product_id = $product->get_id();
+                            $attributes = $product->get_attributes();
+                            // Get product attributes
+                            $attributes_data = [];
+                            $filtered_attributes = [];
+                            foreach ( $attributes as $attribute_slug => $attribute ) {
+                                if ( $product->is_type( 'variation' ) ) {
+                                    // For Variation product
+                                    if ( empty( $attribute ) ) {
+                                        // For 'Any' attribute value
+                                        $variation_data = $cart_item['variation'];
+                                        $selected_value = $variation_data["attribute_{$attribute_slug}"] ?? '';
+                                        $terms = wc_get_product_terms( $product->get_parent_id(), $attribute_slug, [
+                                            'fields' => 'slugs',
+                                        ] );
+                                        if ( !empty( $terms ) ) {
+                                            // If the selected value is one of the valid terms, it's from "Any" options
+                                            if ( in_array( $selected_value, $terms, true ) ) {
+                                                $attributes_data[$attribute_slug] = $selected_value;
+                                            }
+                                        }
+                                    } else {
+                                        // For 'Specific' attribute value
+                                        $attributes_data[$attribute_slug] = $attribute;
+                                    }
+                                } else {
+                                    // For Simple product
+                                    foreach ( $attribute->get_slugs() as $sj_slugs ) {
+                                        $attributes_data[$attribute_slug] = $sj_slugs;
+                                    }
+                                }
+                                // Filter only keys that start with 'pa_'
+                                $filtered_attributes = array_filter( $attributes_data, function ( $key ) {
+                                    return strpos( $key, 'pa_' ) === 0;
+                                }, ARRAY_FILTER_USE_KEY );
+                            }
+                            if ( isset( $filtered_attributes[$condition['product_fees_conditions_condition']] ) && !empty( $filtered_attributes[$condition['product_fees_conditions_condition']] ) ) {
+                                if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
+                                    // is_equal_to condition
+                                    if ( in_array( $filtered_attributes[$condition['product_fees_conditions_condition']], $condition_value, true ) ) {
+                                        $prod_qty = ( $cart_item['quantity'] ? $cart_item['quantity'] : 0 );
+                                        $line_item_subtotal = (float) $cart_item['data']->get_price() * (float) $cart_item['quantity'];
+                                        if ( array_key_exists( $product_id, $cart_final_products_array ) ) {
+                                            $product_data_explode = explode( "||", $cart_final_products_array[$product_id] );
+                                            // Quantity
+                                            $cart_product_qty = json_decode( $product_data_explode[0] );
+                                            $prod_qty += $cart_product_qty;
+                                            //Subtotal
+                                            $cart_product_subtotal = json_decode( $product_data_explode[1] );
+                                            $line_item_subtotal += $cart_product_subtotal;
+                                        }
+                                        $cart_final_products_array[$product_id] = $prod_qty . "||" . $line_item_subtotal;
+                                    }
+                                }
+                                if ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                                    // not_in condition
+                                    if ( !in_array( $filtered_attributes[$condition['product_fees_conditions_condition']], $condition_value, true ) ) {
+                                        $prod_qty = ( $cart_item['quantity'] ? $cart_item['quantity'] : 0 );
+                                        $line_item_subtotal = (float) $cart_item['data']->get_price() * (float) $cart_item['quantity'];
+                                        if ( array_key_exists( $product_id, $cart_final_products_array ) ) {
+                                            $product_data_explode = explode( "||", $cart_final_products_array[$product_id] );
+                                            // Quantity
+                                            $cart_product_qty = json_decode( $product_data_explode[0] );
+                                            $prod_qty += $cart_product_qty;
+                                            //Subtotal
+                                            $cart_product_subtotal = json_decode( $product_data_explode[1] );
+                                            $line_item_subtotal += $cart_product_subtotal;
+                                        }
+                                        $cart_final_products_array[$product_id] = $prod_qty . "||" . $line_item_subtotal;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ( isset( $cart_final_products_array ) && !empty( $cart_final_products_array ) ) {
+                        foreach ( $cart_final_products_array as $prd_id => $cart_item ) {
+                            $cart_item_explode = explode( "||", $cart_item );
+                            $all_rule_check[$prd_id]['qty'] = $cart_item_explode[0];
+                            $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
+                        }
+                    }
+                }
+            }
+        }
+        // All rules check for product attributes, as we need to check all attribute rule with cart product acttribute to get the final qty and subtotal
+        if ( 'all' === $general_rule_match ) {
+            $cart_final_products_array = [];
+            if ( !empty( $cart_array ) ) {
+                foreach ( $cart_array as $cart_item ) {
+                    $product = $cart_item['data'];
+                    // Check if product is not a product object then skip the loop
+                    if ( !is_a( $product, 'WC_Product' ) ) {
+                        continue;
+                    }
+                    $product_id = $product->get_id();
+                    $attributes = $product->get_attributes();
+                    // Get product attributes
+                    $attributes_data = [];
+                    $filtered_attributes = [];
+                    foreach ( $attributes as $attribute_slug => $attribute ) {
+                        if ( $product->is_type( 'variation' ) ) {
+                            // For Variation product
+                            if ( empty( $attribute ) ) {
+                                // For 'Any' attribute value
+                                $variation_data = $cart_item['variation'];
+                                $selected_value = $variation_data["attribute_{$attribute_slug}"] ?? '';
+                                $terms = wc_get_product_terms( $product->get_parent_id(), $attribute_slug, [
+                                    'fields' => 'slugs',
+                                ] );
+                                if ( !empty( $terms ) ) {
+                                    // If the selected value is one of the valid terms, it's from "Any" options
+                                    if ( in_array( $selected_value, $terms, true ) ) {
+                                        $attributes_data[$attribute_slug] = $selected_value;
+                                    }
+                                }
+                            } else {
+                                // For 'Specific' attribute value
+                                $attributes_data[$attribute_slug] = $attribute;
+                            }
+                        } else {
+                            // For Simple product
+                            foreach ( $attribute->get_slugs() as $sj_slugs ) {
+                                $attributes_data[$attribute_slug] = $sj_slugs;
+                            }
+                        }
+                    }
+                    // Now we will check every product with our fee all rules(only product attribute rules) other rules are already checked above
+                    if ( !empty( $productFeesArray ) ) {
+                        $is_passed = [];
+                        foreach ( $productFeesArray as $condition_key => $condition ) {
+                            if ( isset( $condition['product_fees_conditions_condition'] ) && strpos( $condition['product_fees_conditions_condition'], 'pa_' ) === 0 ) {
+                                $condition_value = ( !empty( $condition['product_fees_conditions_values'] ) && is_array( $condition['product_fees_conditions_values'] ) ? array_map( 'sanitize_text_field', $condition['product_fees_conditions_values'] ) : array() );
+                                if ( !empty( $condition_value ) ) {
+                                    // If attribute is matched with backend rule set then we will check the condition
+                                    if ( isset( $attributes_data[$condition['product_fees_conditions_condition']] ) && !empty( $attributes_data[$condition['product_fees_conditions_condition']] ) ) {
+                                        if ( 'is_equal_to' === $condition['product_fees_conditions_is'] ) {
+                                            // is_equal_to condition
+                                            if ( in_array( $attributes_data[$condition['product_fees_conditions_condition']], $condition_value, true ) ) {
+                                                $is_passed[$condition_key]['has_all_rules_passed_by_product_attribute'] = 'yes';
+                                            } else {
+                                                $is_passed[$condition_key]['has_all_rules_passed_by_product_attribute'] = 'no';
+                                            }
+                                        }
+                                        if ( 'not_in' === $condition['product_fees_conditions_is'] ) {
+                                            // not_in condition
+                                            if ( !in_array( $attributes_data[$condition['product_fees_conditions_condition']], $condition_value, true ) ) {
+                                                $is_passed[$condition_key]['has_all_rules_passed_by_product_attribute'] = 'no';
+                                            } else {
+                                                $is_passed[$condition_key]['has_all_rules_passed_by_product_attribute'] = 'yes';
+                                            }
+                                        }
+                                    } else {
+                                        // Custom attribute or attribute which not match with backend rule set then we will set 'no' for this condition
+                                        $is_passed[$condition_key]['has_all_rules_passed_by_product_attribute'] = 'no';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $main_is_passed = $this->wcpfc_pro_check_all_passed_general_rule( $is_passed, 'has_all_rules_passed_by_product_attribute', $general_rule_match );
+                    if ( $main_is_passed === 'yes' ) {
+                        $prod_qty = ( $cart_item['quantity'] ? $cart_item['quantity'] : 0 );
+                        $line_item_subtotal = (float) $cart_item['data']->get_price() * (float) $cart_item['quantity'];
+                        if ( array_key_exists( $product_id, $cart_final_products_array ) ) {
+                            // Quantity
+                            $product_data_explode = explode( "||", $cart_final_products_array[$product_id] );
+                            $cart_product_qty = json_decode( $product_data_explode[0] );
+                            $prod_qty += $cart_product_qty;
+                            // Subtotal
+                            $cart_product_subtotal = json_decode( $product_data_explode[1] );
+                            $line_item_subtotal += $cart_product_subtotal;
+                        }
+                        $cart_final_products_array[$product_id] = $prod_qty . "||" . $line_item_subtotal;
+                    }
+                }
+                if ( isset( $cart_final_products_array ) && !empty( $cart_final_products_array ) ) {
+                    foreach ( $cart_final_products_array as $prd_id => $cart_item ) {
+                        $cart_item_explode = explode( "||", $cart_item );
+                        $all_rule_check[$prd_id]['qty'] = $cart_item_explode[0];
+                        $all_rule_check[$prd_id]['subtotal'] = $cart_item_explode[1];
                     }
                 }
             }
@@ -1539,10 +1830,10 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
     public function wcpfc_pro_match_simple_products_rule( $cart_product_ids_array, $product_array, $general_rule_match ) {
         $is_passed = array();
         foreach ( $product_array as $key => $product ) {
-            if ( 'is_equal_to' === $product['product_fees_conditions_is'] ) {
-                if ( !empty( $product['product_fees_conditions_values'] ) ) {
-                    foreach ( $product['product_fees_conditions_values'] as $product_id ) {
-                        settype( $product_id, 'integer' );
+            $condition_value = ( !empty( $product['product_fees_conditions_values'] ) && is_array( $product['product_fees_conditions_values'] ) ? array_map( 'intval', $product['product_fees_conditions_values'] ) : array() );
+            if ( !empty( $condition_value ) ) {
+                if ( 'is_equal_to' === $product['product_fees_conditions_is'] ) {
+                    foreach ( $condition_value as $product_id ) {
                         if ( in_array( $product_id, $cart_product_ids_array, true ) ) {
                             $is_passed[$key]['has_fee_based_on_product'] = 'yes';
                             break;
@@ -1551,11 +1842,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         }
                     }
                 }
-            }
-            if ( 'not_in' === $product['product_fees_conditions_is'] ) {
-                if ( !empty( $product['product_fees_conditions_values'] ) ) {
-                    foreach ( $product['product_fees_conditions_values'] as $product_id ) {
-                        settype( $product_id, 'integer' );
+                if ( 'not_in' === $product['product_fees_conditions_is'] ) {
+                    foreach ( $condition_value as $product_id ) {
                         if ( in_array( $product_id, $cart_product_ids_array, true ) ) {
                             $is_passed[$key]['has_fee_based_on_product'] = 'no';
                             break;
@@ -2054,13 +2342,11 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      */
     public function wcpfc_pro_match_variable_products_rule( $cart_product_ids_array, $variableproduct_array, $general_rule_match ) {
         $is_passed = array();
-        $passed_product = array();
         foreach ( $variableproduct_array as $key => $product ) {
-            if ( 'is_equal_to' === $product['product_fees_conditions_is'] ) {
-                if ( !empty( $product['product_fees_conditions_values'] ) ) {
-                    foreach ( $product['product_fees_conditions_values'] as $product_id ) {
-                        settype( $product_id, 'integer' );
-                        $passed_product[] = $product_id;
+            $condition_value = ( !empty( $product['product_fees_conditions_values'] ) && is_array( $product['product_fees_conditions_values'] ) ? array_map( 'intval', $product['product_fees_conditions_values'] ) : array() );
+            if ( !empty( $condition_value ) ) {
+                if ( 'is_equal_to' === $product['product_fees_conditions_is'] ) {
+                    foreach ( $condition_value as $product_id ) {
                         if ( in_array( $product_id, $cart_product_ids_array, true ) ) {
                             $is_passed[$key]['has_fee_based_on_product'] = 'yes';
                             break;
@@ -2069,11 +2355,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                         }
                     }
                 }
-            }
-            if ( 'not_in' === $product['product_fees_conditions_is'] ) {
-                if ( !empty( $product['product_fees_conditions_values'] ) ) {
-                    foreach ( $product['product_fees_conditions_values'] as $product_id ) {
-                        settype( $product_id, 'integer' );
+                if ( 'not_in' === $product['product_fees_conditions_is'] ) {
+                    foreach ( $condition_value as $product_id ) {
                         if ( in_array( $product_id, $cart_product_ids_array, true ) ) {
                             $is_passed[$key]['has_fee_based_on_product'] = 'no';
                             break;
@@ -2085,64 +2368,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
             }
         }
         $main_is_passed = $this->wcpfc_pro_check_all_passed_general_rule( $is_passed, 'has_fee_based_on_product', $general_rule_match );
-        return $main_is_passed;
-    }
-
-    /**
-     * Match category rules
-     *
-     * @param array  $cart_product_ids_array
-     * @param array  $category_array
-     * @param string $general_rule_match
-     *
-     * @return string $main_is_passed
-     * @uses     wcpfc_pro_array_flatten()
-     *
-     * @since    1.3.3
-     *
-     * @uses     wp_get_post_terms()
-     */
-    public function wcpfc_pro_match_category_rule( $cart_product_ids_array, $category_array, $general_rule_match ) {
-        $is_passed = array();
-        $cart_category_id_array = array();
-        foreach ( $cart_product_ids_array as $product ) {
-            $cart_product_category = wp_get_post_terms( $product, 'product_cat', array(
-                'fields' => 'ids',
-            ) );
-            if ( isset( $cart_product_category ) && !empty( $cart_product_category ) && is_array( $cart_product_category ) ) {
-                $cart_category_id_array[] = $cart_product_category;
-            }
-        }
-        $get_cat_all = array_unique( $this->wcpfc_pro_array_flatten( $cart_category_id_array ) );
-        foreach ( $category_array as $key => $category ) {
-            if ( 'is_equal_to' === $category['product_fees_conditions_is'] ) {
-                if ( !empty( $category['product_fees_conditions_values'] ) ) {
-                    foreach ( $category['product_fees_conditions_values'] as $category_id ) {
-                        settype( $category_id, 'integer' );
-                        if ( in_array( $category_id, $get_cat_all, true ) ) {
-                            $is_passed[$key]['has_fee_based_on_category'] = 'yes';
-                            break;
-                        } else {
-                            $is_passed[$key]['has_fee_based_on_category'] = 'no';
-                        }
-                    }
-                }
-            }
-            if ( 'not_in' === $category['product_fees_conditions_is'] ) {
-                if ( !empty( $category['product_fees_conditions_values'] ) ) {
-                    foreach ( $category['product_fees_conditions_values'] as $category_id ) {
-                        settype( $category_id, 'integer' );
-                        if ( in_array( $category_id, $get_cat_all, true ) ) {
-                            $is_passed[$key]['has_fee_based_on_category'] = 'no';
-                            break;
-                        } else {
-                            $is_passed[$key]['has_fee_based_on_category'] = 'yes';
-                        }
-                    }
-                }
-            }
-        }
-        $main_is_passed = $this->wcpfc_pro_check_all_passed_general_rule( $is_passed, 'has_fee_based_on_category', $general_rule_match );
         return $main_is_passed;
     }
 
@@ -2175,7 +2400,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
             $products_based_qty,
             0,
             $sitepress,
-            $default_lang
+            $default_lang,
+            $general_rule_match
         );
         $main_is_passed = $this->wcpfc_pro_match_product_based_qty_rule( $products_based_qty[0], $product_qty_array, $general_rule_match );
         return $main_is_passed;
@@ -2437,7 +2663,12 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      * @since 4.2.0
      */
     public function wcpfc_pro_convert_currency( $amount ) {
-        $multiCurrencySettings = ( class_exists( 'WOOMULTI_CURRENCY_F_Data' ) ? WOOMULTI_CURRENCY_F_Data::get_ins() : null );
+        $multiCurrencySettings = null;
+        if ( class_exists( 'WOOMULTI_CURRENCY_Data' ) ) {
+            $multiCurrencySettings = WOOMULTI_CURRENCY_Data::get_ins();
+        } elseif ( class_exists( 'WOOMULTI_CURRENCY_F_Data' ) ) {
+            $multiCurrencySettings = WOOMULTI_CURRENCY_F_Data::get_ins();
+        }
         if ( $multiCurrencySettings ) {
             $currentCurrency = ( $multiCurrencySettings->get_current_currency() ? $multiCurrencySettings->get_current_currency() : $multiCurrencySettings->get_default_currency() );
             if ( $currentCurrency ) {
@@ -2447,24 +2678,32 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                 $amount *= $currentCurrencyRate;
             }
         }
+        // Convert any type to float
+        $amount = floatval( $amount );
         // Put 3 as round off to get more accurate value
         $amount = round( $amount, 3 );
         return $amount;
     }
 
     public function wcpfc_pro_get_all_fees( $args = array() ) {
-        $fees_args = wp_parse_args( $args, array(
-            'post_type'        => 'wc_conditional_fee',
-            'post_status'      => 'publish',
-            'posts_per_page'   => -1,
-            'suppress_filters' => false,
-            'fields'           => 'ids',
-            'order'            => 'DESC',
-            'orderby'          => 'ID',
-        ) );
-        $wcpfc_pro_get_all_fees_query = new WP_Query($fees_args);
-        $wcpfc_pro_get_all_fees = $wcpfc_pro_get_all_fees_query->get_posts();
-        return $wcpfc_pro_get_all_fees;
+        // Get all fees
+        $wcpfc_get_all_fees = get_transient( 'get_all_fees' );
+        if ( false === $wcpfc_get_all_fees ) {
+            $fees_args = wp_parse_args( $args, array(
+                'post_type'        => 'wc_conditional_fee',
+                'post_status'      => 'publish',
+                'posts_per_page'   => -1,
+                'suppress_filters' => false,
+                'fields'           => 'ids',
+                'order'            => 'DESC',
+                'orderby'          => 'ID',
+            ) );
+            $wcpfc_get_all_fees_query = new WP_Query($fees_args);
+            $wcpfc_get_all_fees = $wcpfc_get_all_fees_query->get_posts();
+            // Set transient for fees
+            set_transient( 'get_all_fees', $wcpfc_get_all_fees );
+        }
+        return $wcpfc_get_all_fees;
     }
 
     /**
@@ -2528,6 +2767,102 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
     public function is_ajax_request() {
         return isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) === 'xmlhttprequest';
         //phpcs:ignore
+    }
+
+    /**
+     * Retrive fee ID from fee name
+     * 
+     * @param string $fee_name
+     * 
+     * @return int $fee_id
+     * 
+     * @since 4.3.0
+     */
+    public function wcpfc_fee_id_from_name( $fee_name ) {
+        if ( empty( $fee_name ) ) {
+            return 0;
+        }
+        // This will return latest fee if fond same fee name found
+        $fee_args = new WP_Query(array(
+            'post_type'              => 'wc_conditional_fee',
+            'title'                  => $fee_name,
+            'post_status'            => 'publish',
+            'posts_per_page'         => 1,
+            'no_found_rows'          => true,
+            'ignore_sticky_posts'    => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => false,
+            'orderby'                => 'post_date',
+            'order'                  => 'DESC',
+        ));
+        $fee_object = null;
+        if ( !empty( $fee_args->post ) ) {
+            $fee_object = $fee_args->post;
+        }
+        $fee_id = ( (int) isset( $fee_object->ID ) && !empty( $fee_object->ID ) ? $fee_object->ID : 0 );
+        return $fee_id;
+    }
+
+    /**
+     * Display fee tooltip on cart and checkout page
+     * 
+     * @param string $fee_html
+     * @param object $fee
+     * 
+     * @return string $fee_html
+     * 
+     * @since 4.3.0
+     */
+    public function wcpfc_fee_tooltip( $fee_html, $fee ) {
+        $fee_id = $this->wcpfc_fee_id_from_name( $fee->name );
+        $fee_tooltip = '';
+        if ( !empty( $fee_id ) ) {
+            $wcpfc_fee = new \Woocommerce_Conditional_Product_Fees($fee_id);
+            $fee_tooltip = $wcpfc_fee->get_wcpfc_tooltip_description();
+        } else {
+            $combine_fees_status = get_option( 'chk_enable_custom_fun', 'no' );
+            $combine_fees_tooltip = get_option( 'chk_enable_all_fee_tooltip', 'no' );
+            if ( 'on' === $combine_fees_tooltip && 'on' === $combine_fees_status ) {
+                $fee_tooltip = get_option( 'chk_enable_all_fee_tooltip_text', '' );
+            }
+        }
+        if ( !empty( $fee_tooltip ) ) {
+            $fee_html .= sprintf( ' <a class="wc-wcpfc-help-tip" data-tooltip="%s"><i class="fa fa-question-circle fa-lg"></i></a>', esc_attr( $fee_tooltip ) );
+        }
+        return $fee_html;
+    }
+
+    /**
+     * List all fees with tooltip data (For Block Cart/Checkout Use)
+     * 
+     * @return array $fee_tooltip_data
+     * 
+     * @since 4.3.0
+     */
+    public function wcpfc_all_fee_tooltip_data() {
+        $all_fees = $this->wcpfc_pro_get_all_fees();
+        $fee_tooltip_data = array();
+        if ( !empty( $all_fees ) ) {
+            $combine_fees_status = get_option( 'chk_enable_custom_fun', 'off' );
+            if ( 'on' === $combine_fees_status ) {
+                $combine_fees_tooltip = get_option( 'chk_enable_all_fee_tooltip', 'off' );
+                if ( 'on' === $combine_fees_tooltip ) {
+                    $fee_tooltip = get_option( 'chk_enable_all_fee_tooltip_text', '' );
+                    if ( !empty( $fee_tooltip ) ) {
+                        $combine_fee_title = apply_filters( 'wcpfc_all_fee_title', __( 'Fees', 'woocommerce-conditional-product-fees-for-checkout' ) );
+                        $fee_tooltip_data[sanitize_title( $combine_fee_title )] = esc_html( $fee_tooltip );
+                    }
+                }
+            } else {
+                foreach ( $all_fees as $fee_id ) {
+                    $advance_fee = new \Woocommerce_Conditional_Product_Fees($fee_id);
+                    if ( $advance_fee->has_wcpfc_tooltip_description() ) {
+                        $fee_tooltip_data[sanitize_title( $advance_fee->get_name() )] = $advance_fee->get_wcpfc_tooltip_description();
+                    }
+                }
+            }
+        }
+        return $fee_tooltip_data;
     }
 
     /**

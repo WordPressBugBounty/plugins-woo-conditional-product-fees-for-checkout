@@ -41,10 +41,35 @@
 
     $(document).ready(function ($) {
 
+        /**
+         * Block Compatiblility
+         */
+        init_tooltip();
+
+        // Apply fee on change state of payment method selection
+        let previouslyChosenPaymentMethod = '';
+        if( typeof wp !== 'undefined' && wp.data ) {
+            wp.data.subscribe( function () {
+                const chosenPaymentMethod =
+                wp.data.select( wc.wcBlocksData.PAYMENT_STORE_KEY ).getActivePaymentMethod();
+                if ( chosenPaymentMethod !== previouslyChosenPaymentMethod ) {
+                    previouslyChosenPaymentMethod = chosenPaymentMethod;
+                    addFeeDataInSession();
+                }
+            }, wc.wcBlocksData.PAYMENT_STORE_KEY );
+        }
+
         // Tooltip toggle on click
         $(document).on('click', '.wcpfc-fee-tooltip', function () {
             $('.wcpfc-fee-tooltiptext').toggle();
         });
+
+        // Function to update the fee label
+        updateFeeLabel();
+
+        // Also run it whenever the DOM updates (e.g., when items are added/removed)
+        const observer = new MutationObserver(updateFeeLabel);
+        observer.observe(document.body, { childList: true, subtree: true });
 
         /**
          * Optional Fees Block Compatibility
@@ -65,12 +90,11 @@
             if (localStorage.getItem('browser_data') !== null) {
                 updateFieldsBasedOnStoredData();
             }
-            if ($('.woocommerce-checkout .wp-block-woocommerce-checkout-optional-fee-block').length > 0 || $('.woocommerce-cart .wp-block-woocommerce-checkout-optional-fee-block').length > 0) {
-                addFeeDataInSession();
-            }
+
+            addFeeDataInSession();
             classicAddFeeDataInSession();
             dropdown_check();
-        }, 1000);
+        }, 100);
 
 
         if (localStorage.getItem('browser_data') !== null) {
@@ -128,9 +152,17 @@
         // Update WooCommerce Blocks checkout with fee data
         function updateFeeData() {
             const data = collectFeeDataOnChange();
+
+            const { select } = wp.data;
+            const { PAYMENT_STORE_KEY } = window.wc.wcBlocksData;
+            const chosenPaymentMethod = select( PAYMENT_STORE_KEY ).getActivePaymentMethod();
+
             return wc.blocksCheckout.extensionCartUpdate({
                 namespace: 'woocommerce-conditional-product-optional-fees',
-                data:data
+                data: {
+                    fees_ids: data,
+                    payment_method: chosenPaymentMethod,
+                } 
             });
         }
 
@@ -208,9 +240,16 @@
                 }
             }
 
+            const { select } = wp.data;
+            const { PAYMENT_STORE_KEY } = window.wc.wcBlocksData;
+            const chosenPaymentMethod = select( PAYMENT_STORE_KEY ).getActivePaymentMethod();
+
             wc.blocksCheckout.extensionCartUpdate({
                 namespace: 'woocommerce-conditional-product-optional-fees',
-                data: sendData,
+                data: {
+                    fees_ids: sendData,
+                    payment_method: chosenPaymentMethod,
+                } 
             }).then(function () {
                 setTimeout(function () {
                     $(document.body).trigger('wc_fragment_refresh');
@@ -399,6 +438,31 @@
                     }).insertAfter($(this));
                 }
             });
+        }
+
+        function updateFeeLabel() {  
+            $.each( wcpfc_public_vars.fee_tooltip_data, function( fee_slug, fee_html ){
+                if( $('.wc-block-components-totals-fees__'+fee_slug).length > 0 ) {
+                    var $valueElement = $('.wc-block-components-totals-fees__'+fee_slug).find('.wc-block-components-totals-item__value');
+                    if ($valueElement.length && $('.wcpfc-help-tip-'+fee_slug).length === 0) {
+                        var $tooltip = $('<span class="wc-wcpfc-help-tip wc-block-components-tooltip wcpfc-help-tip-' + fee_slug + '" data-tip="' + fee_html + '"></span>');
+                        $valueElement.after($tooltip);
+                    }
+                }
+            });
+            init_tooltip();
+        }
+
+        function init_tooltip() {
+            setTimeout( function(){ 
+                $('.wc-wcpfc-help-tip').each(function () {
+                    return $(this).tipTip({ 
+                        content: $(this).data('tip'),
+                        keepAlive: true, 
+                        edgeOffset: 2 
+                    });
+                });
+            }, 1000 );
         }
 
     });

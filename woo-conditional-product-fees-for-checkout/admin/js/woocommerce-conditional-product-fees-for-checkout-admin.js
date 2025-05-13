@@ -203,12 +203,16 @@
 	/** Script for Freemius upgrade popup */
     function upgradeToProFreemius( couponCode ) {
         let handler;
-        handler = FS.Checkout.configure({
+        handler = new FS.Checkout({
             plugin_id: '3390',
             plan_id: '5474',
             public_key:'pk_9edf804dccd14eabfd00ff503acaf',
             image: 'https://www.thedotstore.com/wp-content/uploads/sites/1417/2023/09/WooCommerce-Extra-Fees-Banner-New.png',
             coupon: couponCode,
+            hide_coupon: true, // For security reasons, we recommend setting this to true. So no one can know the coupon code.
+            show_reviews: true,
+            show_refund_badge: true,
+            always_show_renewals_amount: true,
         });
         handler.open({
             name: 'WooCommerce Extra Fees Plugin',
@@ -391,6 +395,7 @@
 					'options': [
 						{ 'name': coditional_vars.cart_contains_product, 'attributes': { 'value': 'product' } },
 						{ 'name': coditional_vars.cart_contains_variable_product, 'attributes': { 'value': 'variableproduct' } },
+						{ 'name': coditional_vars.cart_brand_product_disabled, 'attributes': { 'value': 'brand_disabled' } },
 						{ 'name': coditional_vars.cart_category_product_disabled, 'attributes': { 'value': 'category_disabled' } },
 						{ 'name': coditional_vars.cart_contains_tag_product, 'attributes': { 'value': 'tag' } },
 						{ 'name': coditional_vars.cart_contains_product_qty, 'attributes': { 'value': 'product_qty' } },
@@ -415,9 +420,9 @@
                     'type': 'optgroup',
                     'attributes' : {'label' : coditional_vars.purchase_history},
                     'options': [
-                        {'name' : coditional_vars.last_spent_order, 'attributes': {'value' : 'last_spent_order'}},
-                        {'name' : coditional_vars.total_spent_order, 'attributes': {'value' : 'total_spent_order'}},
-                        {'name' : coditional_vars.spent_order_count, 'attributes': {'value' : 'spent_order_count'}},
+                        {'name' : coditional_vars.last_spent_order_disabled, 'attributes': {'value' : 'last_spent_order_disabled'}},
+                        {'name' : coditional_vars.total_spent_order_disabled, 'attributes': {'value' : 'total_spent_order_disabled'}},
+                        {'name' : coditional_vars.spent_order_count_disabled, 'attributes': {'value' : 'spent_order_count_disabled'}},
                     ]
                 },
 				{
@@ -813,7 +818,6 @@
 			if ( -1 !== product_qty_fees_conditions_conditions.indexOf('product_qty') || -1 !== product_qty_fees_conditions_conditions.indexOf('cart_specificproduct') ) {
 				if (product_qty_fees_conditions_conditions.indexOf('product') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('variableproduct') === -1
-				    && product_qty_fees_conditions_conditions.indexOf('category') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('tag') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('sku') === -1) {
 					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -1278,6 +1282,12 @@
             e.preventDefault();
             $('body').removeClass('wcpfc-modal-visible');
             let couponCode = $('.upgrade-to-pro-discount-code').val();
+            upgradeToProFreemius( couponCode );
+        });
+        $(document).on('click', '.getting-started-actions .upgrade-now', function(e){
+            e.preventDefault();
+            $('body').removeClass('wcpfc-modal-visible');
+            let couponCode = $('.getting-started-discount-code').val();
             upgradeToProFreemius( couponCode );
         });
 	});

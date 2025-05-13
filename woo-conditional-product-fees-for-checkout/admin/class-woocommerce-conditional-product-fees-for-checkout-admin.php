@@ -140,8 +140,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 false
             );
             wp_enqueue_script(
-                $this->plugin_name . 'freemius_pro',
-                'https://checkout.freemius.com/checkout.min.js',
+                $this->plugin_name . '-freemius_pro',
+                'https://checkout.freemius.com/js/v1/',
                 array('jquery'),
                 $this->version,
                 true
@@ -192,6 +192,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'disable_fees_ajax_nonce'                  => wp_create_nonce( 'disable_fees_nonce' ),
                 'setup_wizard_ajax_nonce'                  => wp_create_nonce( 'wizard_ajax_nonce' ),
                 'select2_ajax_nonce'                       => wp_create_nonce( 'select2_data_nonce' ),
+                'deactivate_plugin_ajax_nonce'             => wp_create_nonce( 'deactivate_plugin_nonce' ),
                 'country'                                  => esc_html__( 'Country', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'city'                                     => esc_html__( 'City', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'state_disabled'                           => esc_html__( 'State 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -200,6 +201,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'zone_disabled'                            => esc_html__( 'Zone 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_product'                    => esc_html__( 'Cart contains product', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_variable_product'           => esc_html__( 'Cart contains variable product', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'cart_brand_product_disabled'              => esc_html__( 'Cart contains brand\'s product 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_category_product_disabled'           => esc_html__( 'Cart contains category\'s product 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_tag_product'                => esc_html__( 'Cart contains tag\'s product', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_contains_product_qty'                => esc_html__( 'Cart contains product\'s quantity', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -217,6 +219,9 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'shipping_class_disabled'                  => esc_html__( 'Shipping Class 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'payment_gateway_disabled'                 => esc_html__( 'Payment Gateway 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'shipping_method_disabled'                 => esc_html__( 'Shipping Method 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'last_spent_order_disabled'                => esc_html__( 'Last order spent 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'total_spent_order_disabled'               => esc_html__( 'Total order spent (all time) 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'spent_order_count_disabled'               => esc_html__( 'Number of orders (all time) 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'equal_to'                                 => esc_html__( 'Equal to ( = )', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'not_equal_to'                             => esc_html__( 'Not Equal to ( != )', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'less_or_equal_to'                         => esc_html__( 'Less or Equal to ( <= )', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -229,6 +234,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'attribute_specific'                       => esc_html__( 'Attribute Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'shipping_specific'                        => esc_html__( 'Shipping Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'user_specific'                            => esc_html__( 'User Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'purchase_history'                         => esc_html__( 'Purchase History', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'cart_specific'                            => esc_html__( 'Cart Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'payment_specific'                         => esc_html__( 'Payment Specific', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'attribute_list_disabled'                  => esc_html__( 'Color 🔒', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -252,7 +258,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'currency_symbol'                          => esc_attr( get_woocommerce_currency_symbol() ),
                 'dpb_api_url'                              => WCPFC_STORE_URL,
                 'select_product'                           => esc_html__( 'Select a product', 'woocommerce-conditional-product-fees-for-checkout' ),
-                'select_category'                          => esc_html__( 'Select a category', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_days'                              => esc_html__( 'Select day of the week', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_country'                           => esc_html__( 'Select a country', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_tag'                               => esc_html__( 'Select a product tag', 'woocommerce-conditional-product-fees-for-checkout' ),
@@ -593,8 +598,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                     '',
                     true
                 ) );
-            } elseif ( 'category' === $condition ) {
-                $html .= wp_json_encode( $this->wcpfc_pro_get_category_list( $count, [], true ) );
             } elseif ( 'tag' === $condition ) {
                 $html .= wp_json_encode( $this->wcpfc_pro_get_tag_list( $count, [], true ) );
             } elseif ( 'product_qty' === $condition ) {
@@ -646,7 +649,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
     }
 
     /**
-     * Function for select category list
+     * Function for select product list
      *
      * @param string $count
      * @param array  $selected
@@ -773,64 +776,6 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         $html .= '</select>';
         if ( $json ) {
             return [];
-        }
-        return $html;
-    }
-
-    /**
-     * Function for select cat list
-     *
-     * @param string $count
-     * @param array  $selected
-     * @param bool   $json
-     *
-     * @return string or array $html
-     * @since 1.0.0
-     *
-     */
-    public function wcpfc_pro_get_category_list( $count = '', $selected = array(), $json = false ) {
-        global $sitepress;
-        $default_lang = $this->wcpfc_pro_get_default_langugae_with_sitpress();
-        $filter_categories = [];
-        $args = array(
-            'taxonomy'     => 'product_cat',
-            'orderby'      => 'name',
-            'hierarchical' => true,
-            'hide_empty'   => false,
-        );
-        $get_all_categories = get_terms( $args );
-        $html = '<select rel-id="' . esc_attr( $count ) . '" name="fees[product_fees_conditions_values][value_' . esc_attr( $count ) . '][]" class="wcpfc_select product_fees_conditions_values multiselect2" multiple="multiple">';
-        if ( isset( $get_all_categories ) && !empty( $get_all_categories ) ) {
-            foreach ( $get_all_categories as $get_all_category ) {
-                if ( $get_all_category ) {
-                    if ( !empty( $sitepress ) ) {
-                        $new_cat_id = apply_filters(
-                            'wpml_object_id',
-                            $get_all_category->term_id,
-                            'product_cat',
-                            true,
-                            $default_lang
-                        );
-                    } else {
-                        $new_cat_id = $get_all_category->term_id;
-                    }
-                    $selected = array_map( 'intval', $selected );
-                    $selectedVal = ( is_array( $selected ) && !empty( $selected ) && in_array( $new_cat_id, $selected, true ) ? 'selected=selected' : '' );
-                    $category = get_term_by( 'id', $new_cat_id, 'product_cat' );
-                    $parent_category = get_term_by( 'id', $category->parent, 'product_cat' );
-                    if ( $category->parent > 0 ) {
-                        $html .= '<option value=' . esc_attr( $category->term_id ) . ' ' . esc_attr( $selectedVal ) . '>' . '#' . esc_html( $parent_category->name ) . '->' . esc_html( $category->name ) . '</option>';
-                        $filter_categories[$category->term_id] = '#' . $parent_category->name . '->' . $category->name;
-                    } else {
-                        $html .= '<option value=' . esc_attr( $category->term_id ) . ' ' . esc_attr( $selectedVal ) . '>' . esc_html( $category->name ) . '</option>';
-                        $filter_categories[$category->term_id] = $category->name;
-                    }
-                }
-            }
-        }
-        $html .= '</select>';
-        if ( $json ) {
-            return $this->wcpfc_pro_convert_array_to_json( $filter_categories );
         }
         return $html;
     }
@@ -1750,6 +1695,16 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                     if ( !empty( $get_posts ) ) {
                         $return_array[] = $get_posts->post_name;
                     }
+                } elseif ( 'brand' === $condition ) {
+                    $brand = get_term( $ids, 'product_brand' );
+                    if ( $brand ) {
+                        $return_array[] = $brand->slug;
+                    }
+                } elseif ( 'wlf_location' === $condition ) {
+                    $location = get_term( $ids, 'location' );
+                    if ( $location ) {
+                        $return_array[] = $location->slug;
+                    }
                 } elseif ( 'category' === $condition || 'cpc' === $condition ) {
                     $term = get_term( $ids, 'product_cat' );
                     if ( $term ) {
@@ -1805,6 +1760,16 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                         foreach ( $variable_posts->posts as $val ) {
                             $return_array[] = $val;
                         }
+                    }
+                } elseif ( 'brand' === $condition ) {
+                    $brand = get_term_by( 'slug', $slugs, 'product_brand' );
+                    if ( $brand ) {
+                        $return_array[] = $brand->term_id;
+                    }
+                } elseif ( 'wlf_location' === $condition ) {
+                    $location = get_term_by( 'slug', $slugs, 'location' );
+                    if ( $location ) {
+                        $return_array[] = $location->term_id;
                     }
                 } elseif ( 'category' === $condition || 'cpc' === $condition ) {
                     $term = get_term_by( 'slug', $slugs, 'product_cat' );
@@ -1871,6 +1836,30 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                             'wpml_object_id',
                             $slugs,
                             'product_variation',
+                            false,
+                            $language_code
+                        );
+                    }
+                    $return_array[] = $id;
+                } elseif ( 'brand' === $condition ) {
+                    $id = $slugs;
+                    if ( !empty( $sitepress ) ) {
+                        $id = apply_filters(
+                            'wpml_object_id',
+                            $slugs,
+                            'product_brand',
+                            false,
+                            $language_code
+                        );
+                    }
+                    $return_array[] = $id;
+                } elseif ( 'wlf_location' === $condition ) {
+                    $id = $slugs;
+                    if ( !empty( $sitepress ) ) {
+                        $id = apply_filters(
+                            'wpml_object_id',
+                            $slugs,
+                            'location',
                             false,
                             $language_code
                         );
@@ -2099,7 +2088,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 $productFeesArray = get_post_meta( $base_post_id, 'product_fees_metabox', true );
                 if ( !empty( $productFeesArray ) ) {
                     foreach ( $productFeesArray as $key => $condition_array ) {
-                        if ( 'product' === $condition_array['product_fees_conditions_condition'] || 'variableproduct' === $condition_array['product_fees_conditions_condition'] || 'category' === $condition_array['product_fees_conditions_condition'] || 'tag' === $condition_array['product_fees_conditions_condition'] || 'shipping_class' === $condition_array['product_fees_conditions_condition'] || strpos( $condition_array['product_fees_conditions_condition'], 'pa_' ) === 0 ) {
+                        if ( 'product' === $condition_array['product_fees_conditions_condition'] || 'variableproduct' === $condition_array['product_fees_conditions_condition'] || 'brand' === $condition_array['product_fees_conditions_condition'] || 'wlf_location' === $condition_array['product_fees_conditions_condition'] || 'category' === $condition_array['product_fees_conditions_condition'] || 'tag' === $condition_array['product_fees_conditions_condition'] || 'shipping_class' === $condition_array['product_fees_conditions_condition'] || strpos( $condition_array['product_fees_conditions_condition'], 'pa_' ) === 0 ) {
                             $product_fees_conditions_values = $this->wcpfc_wpml_translated_id( $condition_array['product_fees_conditions_values'], $condition_array['product_fees_conditions_condition'], $job->language_code );
                             $wppfc_wmpl_metabox_customize[$key] = array(
                                 'product_fees_conditions_condition' => $condition_array['product_fees_conditions_condition'],
@@ -2173,6 +2162,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                             'ap_fees_ap_cat_min_qty'    => $val['ap_fees_ap_cat_min_qty'],
                             'ap_fees_ap_cat_max_qty'    => $val['ap_fees_ap_cat_max_qty'],
                             'ap_fees_ap_price_category' => $val['ap_fees_ap_price_category'],
+                            'ap_fees_ap_per_category'   => ( isset( $val['ap_fees_ap_per_category'] ) && !empty( $val['ap_fees_ap_per_category'] ) && strpos( $val['ap_fees_ap_price_category'], '%' ) ? $val['ap_fees_ap_per_category'] : 'no' ),
                         );
                     }
                     update_post_meta( $new_post_id, 'sm_metabox_ap_category', $wppfc_wmpl_ap_category_customize );

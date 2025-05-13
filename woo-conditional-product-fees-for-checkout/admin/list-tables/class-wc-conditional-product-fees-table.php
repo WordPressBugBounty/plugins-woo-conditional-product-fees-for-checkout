@@ -415,10 +415,13 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 				return esc_html__( 'null', 'woocommerce-conditional-product-fees-for-checkout' );
 			}
             $amount = get_post_meta( $item->ID, 'fee_settings_product_cost', true );
+
+            $currency_symbol = get_woocommerce_currency_symbol();
+
 			if( !is_null($amount) ) {
 				$amount_type  = get_post_meta( $item->ID, 'fee_settings_select_fee_type', true );
 				if( 'fixed' === $amount_type ) {
-					return esc_html( get_woocommerce_currency_symbol() ) . '' . $amount;
+					return esc_html( $currency_symbol ) . '' . $amount;
 				} else if( 'both' === $amount_type && strpos($amount, '+') !== false ){
 					$newamount = explode('+', $amount);
 					return $newamount[0] . '% + ' . $newamount[1];

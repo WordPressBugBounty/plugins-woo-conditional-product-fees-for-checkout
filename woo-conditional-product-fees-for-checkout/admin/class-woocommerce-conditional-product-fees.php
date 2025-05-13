@@ -41,7 +41,7 @@ class Woocommerce_Conditional_Product_Fees {
     protected $sm_custom_weight_base_cost_meta = 'sm_custom_weight_base_cost';
     protected $sm_custom_weight_base_per_each_meta = 'sm_custom_weight_base_per_each';
     protected $sm_custom_weight_base_over_meta = 'sm_custom_weight_base_over';
-    protected $wcpfc_tooltip_description_meta = 'wcpfc_tooltip_description';
+    protected $wcpfc_tooltip_description_meta = 'fee_settings_tooltip_desc';
     protected $fee_settings_select_taxable_meta = 'fee_settings_select_taxable';
     protected $fee_settings_select_optional_meta = 'fee_settings_select_optional';
     protected $fee_settings_optional_type_meta = 'fee_settings_optional_type';

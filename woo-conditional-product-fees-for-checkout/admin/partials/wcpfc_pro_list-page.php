@@ -399,11 +399,16 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                 'action' => 'add',
             ), admin_url( 'admin.php' ) );
             require_once plugin_dir_path( __FILE__ ) . 'header/plugin-header.php';
+            // Count for remove nav bar
+            $all_count = wp_count_posts( self::wcpfc_post_type );
+            $all_count = intval( $all_count->publish + $all_count->draft );
             ?>
             <div class="wrap">
                 <form method="post" enctype="multipart/form-data">
                     <div class="wcpfc-section-left">
-                        <div class="wcpfc-main-table res-cl wcpfc-add-rule-page">
+                        <div class="wcpfc-main-table res-cl wcpfc-add-rule-page<?php 
+            echo ( $all_count < 1 ? " no-rules" : "" );
+            ?>">
                             <h1 class="wp-heading-inline"><?php 
             esc_html_e( 'Product Fees', 'woocommerce-conditional-product-fees-for-checkout' );
             ?></h1>
