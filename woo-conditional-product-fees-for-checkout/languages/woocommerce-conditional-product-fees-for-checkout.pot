@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Extra Fees for WooCommerce 4.3.0\n"
+"Project-Id-Version: Extra Fees for WooCommerce 4.3.1\n"
 "Report-Msgid-Bugs-To: https://www.multidots.com/contact/\n"
-"POT-Creation-Date: 2025-05-13 10:47:18+00:00\n"
+"POT-Creation-Date: 2025-05-14 12:38:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -250,7 +250,7 @@ msgstr ""
 #: admin/partials/wcpfc-pro-add-new-page.php:2858
 #: admin/partials/wcpfc-pro-add-new-page.php:3405
 #: admin/partials/wcpfc-pro-add-new-page.php:4101
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:919
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:927
 msgid "Min Quantity"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 #: admin/partials/wcpfc-pro-add-new-page.php:3354
 #: admin/partials/wcpfc-pro-add-new-page.php:3414
 #: admin/partials/wcpfc-pro-add-new-page.php:4104
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:920
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:928
 msgid "Max Quantity"
 msgstr ""
 
@@ -1549,7 +1549,7 @@ msgid "Unlock Premium Features with a %s%% Discount!"
 msgstr ""
 
 #: admin/partials/dots-upgrade-popup.php:55
-#: dotstore-analytics__premium_only/dots-marketing-popup.php:22
+#: dotstore-analytics/dots-marketing-popup.php:22
 msgid "Unlock Premium Features Today!"
 msgstr ""
 
@@ -1578,7 +1578,7 @@ msgstr ""
 #: admin/partials/dots-upgrade-popup.php:68
 #: admin/partials/header/plugin-header.php:90
 #: admin/partials/header/plugin-header.php:95
-#: dotstore-analytics__premium_only/dots-marketing-popup.php:10
+#: dotstore-analytics/dots-marketing-popup.php:10
 msgid "Upgrade Now"
 msgstr ""
 
@@ -1997,7 +1997,7 @@ msgstr ""
 #: admin/partials/wcpfc-pro-add-new-page.php:3175
 #: admin/partials/wcpfc-pro-add-new-page.php:3527
 #: admin/partials/wcpfc-pro-add-new-page.php:3694
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:921
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:929
 msgid "Fee Amount"
 msgstr ""
 
@@ -3050,7 +3050,7 @@ msgid "Plugin Tour"
 msgstr ""
 
 #: admin/partials/wcpfc-pro-get-started-page.php:113
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:303
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:303
 msgid "Premium title icon"
 msgstr ""
 
@@ -3211,51 +3211,51 @@ msgstr ""
 msgid "Automatically apply discounts to streamline the checkout process."
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:202
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:202
 msgid "Get {{offer}} Off – Go Premium and Boost Your Experience"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:313
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:313
 msgid "Configure plugin"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:317
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:317
 msgid "Activate premium plugin"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:333
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:333
 msgid "Invalid nonce"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:343
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:343
 msgid "Event type is missing"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:350
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:350
 msgid "Plugin ID is missing"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:354
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:354
 msgid "Invalid plugin ID"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:362
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:362
 msgid "Marketing website is missing"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:367
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:367
 msgid "Marketing plugin title is missing"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:388
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:388
 msgid "Error occurred while sending data"
 msgstr ""
 
-#: dotstore-analytics__premium_only/class-dotstore-tracking-and-analytics.php:395
+#: dotstore-analytics/class-dotstore-tracking-and-analytics.php:395
 msgid "Event tracked successfully"
 msgstr ""
 
-#: dotstore-analytics__premium_only/dots-marketing-popup.php:34
+#: dotstore-analytics/dots-marketing-popup.php:34
 msgid "Limited Time Only – Grab It Before It’s Gone!"
 msgstr ""
 
@@ -3314,32 +3314,32 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:820
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:828
 msgid "Total Payable Amount"
 msgstr ""
 
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:2482
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:7585
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:2495
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:7598
 msgid " Fees"
 msgstr ""
 
-#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:7846
+#: public/class-woocommerce-conditional-product-fees-for-checkout-public.php:7859
 msgid "Fees"
 msgstr ""
 
-#: woocommerce-conditional-product-fees-for-checkout.php:168
+#: woocommerce-conditional-product-fees-for-checkout.php:170
 msgid "Activate Plugin"
 msgstr ""
 
-#: woocommerce-conditional-product-fees-for-checkout.php:336
+#: woocommerce-conditional-product-fees-for-checkout.php:338
 msgid "WooCommerce Extra Fees Plugin"
 msgstr ""
 
-#: woocommerce-conditional-product-fees-for-checkout.php:337
+#: woocommerce-conditional-product-fees-for-checkout.php:339
 msgid "WooCommerce"
 msgstr ""
 
-#: woocommerce-conditional-product-fees-for-checkout.php:342
+#: woocommerce-conditional-product-fees-for-checkout.php:344
 #. translators: %1$s: Required plugin name, %2$s: WooCommerce plugin name with
 #. a link
 msgid "%1$s requires %2$s to be installed & activated!"

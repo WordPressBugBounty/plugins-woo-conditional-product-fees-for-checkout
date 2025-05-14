@@ -423,6 +423,10 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                     $fees_id = $fees;
                 }
                 $optional_fee_array = ( isset( $post_data['wef_fees_id_array_' . $fees_id] ) && !empty( $post_data['wef_fees_id_array_' . $fees_id] ) ? array_map( 'intval', $post_data['wef_fees_id_array_' . $fees_id] ) : array() );
+                // Code for optional fee compatibility with FunnelKit plugins
+                if ( isset( $post_data['_wfacp_post_id'] ) && !empty( $post_data['_wfacp_post_id'] ) ) {
+                    $optional_fee_array = ( isset( $post_data['wef_fees_id_array_' . $fees_id] ) && !empty( $post_data['wef_fees_id_array_' . $fees_id] ) ? array(intval( $fees_id )) : array() );
+                }
                 if ( !empty( $sitepress ) ) {
                     if ( version_compare( ICL_SITEPRESS_VERSION, '3.2', '>=' ) ) {
                         $language_information = apply_filters( 'wpml_post_language_details', null, $fees_id );

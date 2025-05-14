@@ -8,7 +8,7 @@ Requires at least: 5.0
 Requires PHP: 7.2
 Tested up to: 6.8.1
 WC tested up to: 9.8.5
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,6 +293,10 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.3.1 - 14-05-2025 =
+* [Bug Fix] - 'Namespace not defined' error on block cart and checkout page
+* [Bug Fix] - Conflict with FunnelKit plugins plugin resolved
+
 = 4.3.0 - 13-05-2025 =
 * [Enhancement] - Minor bug fixes
 * [Enhancement] - List out our other free plugins on getting started page
