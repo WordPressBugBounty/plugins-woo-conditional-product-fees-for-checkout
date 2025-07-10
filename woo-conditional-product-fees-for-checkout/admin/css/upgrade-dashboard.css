@@ -1,7 +1,7 @@
 /* Free User Upgrade Dashboard CSS */
 .dots-header .dots_get_premium{position:relative;}
 .dots-header .dots_get_premium::before{content:"";width:16px;height:16px;background-image:url("../images/premium-upgrade-img/pro-feature-icon.svg");background-repeat:no-repeat;display:inline-block;vertical-align:middle;margin:-2px 6px 0 0;}
-.dotstore-upgrade-dashboard{padding:50px 40px;text-align:center;-webkit-box-shadow:0px 5px 20px rgb(0 0 0 / 5%);box-shadow:0px 5px 20px rgb(0 0 0 / 5%);background-color:#fff;border-radius:5px;margin-bottom:30px;}
+.dotstore-upgrade-dashboard{padding:50px 40px;text-align:center;-webkit-box-shadow:0px 5px 20px rgb(0 0 0 / 5%);box-shadow:0px 5px 20px rgb(0 0 0 / 5%);background-color:#fff;border-radius:5px;margin-bottom:30px;width:100%;max-width:1350px;margin:0 auto;}
 .dotstore-upgrade-dashboard,.dotstore-upgrade-dashboard *{-webkit-box-sizing:border-box;box-sizing:border-box;}
 #dotsstoremain .dots-settings-inner-main .dotstore-upgrade-dashboard h2{font-size:25px;font-weight:600;color:#000;line-height:28px;padding:0;margin-top:0;border:none;background-color:transparent;}
 .dotstore-upgrade-dashboard .premium-benefits-section p{font-size:18px;font-weight:400;color:#000;line-height:22px;margin:25px 0;}

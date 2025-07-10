@@ -6,7 +6,6 @@
 #dotsstoremain .all-pad{margin:20px 20px 0 0px;}
 /*header css start*/
 header.dots-header{width:100%;display:inline-block;background:#d9d9d9;vertical-align:top;margin-bottom:20px;}
-.dots-menu-main ul li a{text-decoration:none;-webkit-transition:all 200ms ease-in;transition:all 200ms ease-in;font-size:14px;padding:12px 20px;display:block;line-height:28px;color:#000}
 .dots-plugin-details{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;justify-content:space-between;}
 .dots-plugin-details .dots-header-left{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;flex-basis:60%;}
 .dots-logo-main{margin:20px;background-color:#fff;-webkit-box-shadow:0 8px 30px rgb(0 0 0 / 40%);-moz-box-shadow:0 8px 30px rgb(0 0 0 / 0.4);box-shadow:0 8px 30px rgb(0 0 0 / 40%);text-align:center;}
@@ -26,6 +25,7 @@ header.dots-header{width:100%;display:inline-block;background:#d9d9d9;vertical-a
 .button-dots span.support_dotstore_image a strong,.button-dots-left span.support_dotstore_image a strong{font-size:15px;}
 .dots-menu-main{width:100%;display:inline-block;background:rgba(152,152,152,0.5);box-sizing:border-box;vertical-align:bottom;}
 .dots-menu-main ul li{display:inline-block;position:relative;float:left;margin:0;}
+.dots-menu-main ul li a{text-decoration:none;-webkit-transition:all 200ms ease-in;transition:all 200ms ease-in;font-size:14px;padding:12px 20px;display:block;line-height:28px;color:#000}
 .dots-menu-main ul li a.active{color:#fff;background:#444;}
 .dots-menu-main ul li:hover> a{color:#fff;background:#444;color:#fff;}
 .dots-menu-main ul{display:inline-block;float:left;margin:0;width:100%;}
