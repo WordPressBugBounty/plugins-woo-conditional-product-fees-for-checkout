@@ -10,9 +10,6 @@
 
 class DS_Command_Line {
     
-    /** @var string post_type */
-	protected $post_type;
-
     /**
 	 * Initialize the variable which we used in this class
 	 *
@@ -27,7 +24,7 @@ class DS_Command_Line {
      * 
      */
 	public function environment() {
-        WP_CLI::log( sprintf( 'Environment: %s', wp_get_environment_type() ) ); // @phpstan-ignore-line
+        WP_CLI::log( sprintf( 'Environment: %s', wp_get_environment_type() ) );
 	}
 
     /**
@@ -35,11 +32,11 @@ class DS_Command_Line {
      * 
      */
     public function plugin_details( $args, $assoc_args ){
-        WP_CLI::log( WP_CLI::colorize( "%C=== Welcome to theDotstore Plugin ===%n" )); // @phpstan-ignore-line
+        WP_CLI::log( WP_CLI::colorize( "%C=== Welcome to theDotstore Plugin ===%n" ));
 
         $all_plugins = get_plugins();
         if( !empty($all_plugins) ){
-            $plugin_details = $all_plugins['woocommerce-conditional-product-fees-for-checkout/woocommerce-conditional-product-fees-for-checkout.php'];
+            $plugin_details = $all_plugins['woocommerce-conditional-product-fees-for-checkout-premium/woocommerce-conditional-product-fees-for-checkout.php'];
         }
         $data = array(
                 array( 
@@ -73,7 +70,7 @@ class DS_Command_Line {
                         )
                     );
         }
-        $cli_formatter = new \WP_CLI\Formatter( $assoc_args, array( // @phpstan-ignore-line
+        $cli_formatter = new \WP_CLI\Formatter( $assoc_args, array(
             'label',
             'value'
         ));
@@ -97,11 +94,11 @@ class DS_Command_Line {
         if( isset($assoc_args['id']) && !empty($assoc_args['id']) ){
             $all_fee_ids = intval($assoc_args['id']);
             if( $this->post_type !== get_post_type($all_fee_ids) ){
-                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' ); // @phpstan-ignore-line
+                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' );
             }
             $all_fee_ids = array($all_fee_ids);
         } else {
-            WP_CLI::confirm( "Are you sure you want to enable all fees?", $assoc_args ); // @phpstan-ignore-line
+            WP_CLI::confirm( "Are you sure you want to enable all fees?", $assoc_args );
             $post_args = array(
                 'post_type' => $this->post_type,
                 'post_status' => array( 'publish', 'draft' ),
@@ -114,7 +111,7 @@ class DS_Command_Line {
 
         if( !empty($all_fee_ids) ){
             $count = count($all_fee_ids);
-            $progress = \WP_CLI\Utils\make_progress_bar( 'Enabling fees', $count ); // @phpstan-ignore-line
+            $progress = \WP_CLI\Utils\make_progress_bar( 'Enabling fees', $count );
             foreach( $all_fee_ids as $all_fee_id ){
                 $enable_post = array(
                     'post_type'   => $this->post_type,
@@ -127,7 +124,7 @@ class DS_Command_Line {
             }
             $progress->finish();
         }
-        WP_CLI::success( esc_html__( 'All fees have been enabled...!', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+        WP_CLI::success( esc_html__( 'All fees have been enabled...!', 'woocommerce-conditional-product-fees-for-checkout' ) );
     }
 
     /**
@@ -147,11 +144,11 @@ class DS_Command_Line {
         if( isset($assoc_args['id']) && !empty($assoc_args['id']) ){
             $all_fee_ids = intval($assoc_args['id']);
             if( $this->post_type !== get_post_type($all_fee_ids) ){
-                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' ); // @phpstan-ignore-line
+                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' );
             }
             $all_fee_ids = array($all_fee_ids);
         } else {
-            WP_CLI::confirm( "Are you sure you want to disable all fees?", $assoc_args ); // @phpstan-ignore-line
+            WP_CLI::confirm( "Are you sure you want to disable all fees?", $assoc_args );
             $post_args = array(
                 'post_type' => $this->post_type,
                 'post_status' => array( 'publish', 'draft' ),
@@ -164,7 +161,7 @@ class DS_Command_Line {
 
         if( $all_fee_ids > 0 ){
             $count = count($all_fee_ids);
-            $progress = \WP_CLI\Utils\make_progress_bar( 'Disabling fees', $count ); // @phpstan-ignore-line
+            $progress = \WP_CLI\Utils\make_progress_bar( 'Disabling fees', $count );
             foreach( $all_fee_ids as $all_fee_id ){
                 $disable_post = array(
                     'post_type'   => $this->post_type,
@@ -177,7 +174,7 @@ class DS_Command_Line {
             }
             $progress->finish();
         }
-        WP_CLI::success( esc_html__( 'All fees have been disabled...!', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+        WP_CLI::success( esc_html__( 'All fees have been disabled...!', 'woocommerce-conditional-product-fees-for-checkout' ) );
     }
 
     /**
@@ -201,11 +198,11 @@ class DS_Command_Line {
         if( isset($assoc_args['id']) && !empty($assoc_args['id']) ){
             $all_fee_ids = intval($assoc_args['id']);
             if( $this->post_type !== get_post_type($all_fee_ids) ){
-                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' ); // @phpstan-ignore-line
+                WP_CLI::error( 'Please add '.$this->post_type.' post type fee id.' );
             }
             $all_fee_ids = array($all_fee_ids);
         } else {
-            WP_CLI::confirm( "Are you sure you want to delete all fees?", $assoc_args ); // @phpstan-ignore-line
+            WP_CLI::confirm( "Are you sure you want to delete all fees?", $assoc_args );
             $post_type = 'wc_conditional_fee';
             $post_args = array(
                 'post_type' => $post_type,
@@ -219,14 +216,14 @@ class DS_Command_Line {
 
         if( $all_fee_ids > 0 ){
             $count = count($all_fee_ids);
-            $progress = \WP_CLI\Utils\make_progress_bar( 'Deleting fees', $count ); // @phpstan-ignore-line
+            $progress = \WP_CLI\Utils\make_progress_bar( 'Deleting fees', $count );
             foreach( $all_fee_ids as $all_fee_id ){
                 wp_delete_post( $all_fee_id );
                 $progress->tick();
             }
             $progress->finish();
         }
-        WP_CLI::success( esc_html__( 'All fees have been deleted...!', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+        WP_CLI::success( esc_html__( 'All fees have been deleted...!', 'woocommerce-conditional-product-fees-for-checkout' ) );
     }
 
     /**
@@ -258,28 +255,28 @@ class DS_Command_Line {
         //Ask for fee name
         $fee_name = $this->ask( "Please enter fee name: " );
         if ( '' === $fee_name ) {
-            WP_CLI::error( "Sorry, please enter fee name!" ); // @phpstan-ignore-line
+            WP_CLI::error( "Sorry, please enter fee name!" );
             exit;
         }
 
         //Ask for fee type
         $fee_type = $this->ask( "Please enter fee amount type(percentage/fixed): " );
         if ( '' === $fee_type ) {
-            WP_CLI::error( "Sorry, please enter type of fee amount!" ); // @phpstan-ignore-line
+            WP_CLI::error( "Sorry, please enter type of fee amount!" );
             exit;
         }
 
         //Ask for fee status
         $fee_status = $this->ask( "Please enter fee status(on/off): " );
         if ( '' === $fee_status ) {
-            WP_CLI::error( "Sorry, please enter status of fee!" ); // @phpstan-ignore-line
+            WP_CLI::error( "Sorry, please enter status of fee!" );
             exit;
         }
 
         //Ask for fee amount
         $fee_amount = $this->ask( "Please enter fee amount: " );
         if ( '' === $fee_amount ) {
-            WP_CLI::error( "Sorry, please enter fee amount!" ); // @phpstan-ignore-line
+            WP_CLI::error( "Sorry, please enter fee amount!" );
             exit;
         }
 
@@ -306,11 +303,9 @@ class DS_Command_Line {
                 'product_fees_conditions_values' => array()
             );
             update_post_meta( $post_id, 'product_fees_metabox', $feesArray );
-            /* translators: %s Fee name. */
-            WP_CLI::success( sprintf( esc_html__("Your fee with name %s has been created with basic configuration!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) ); // @phpstan-ignore-line
+            WP_CLI::success( sprintf( esc_html__("Your fee with name %s has been created with basic configuration!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) );
         } else {
-            /* translators: %s Fee name. */
-            WP_CLI::error( sprintf( esc_html__("Sorry! your fee %s is not created!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) ); // @phpstan-ignore-line
+            WP_CLI::error( sprintf( esc_html__("Sorry! your fee %s is not created!", 'woocommerce-conditional-product-fees-for-checkout' ), $fee_name ) );
         }
     }
 
@@ -328,16 +323,16 @@ class DS_Command_Line {
      */
     public function import_fee( $args ){
         if( empty($args[0]) ) {
-            WP_CLI::line( WP_CLI::error( esc_html__( 'Please add a file path to import', 'woocommerce-conditional-product-fees-for-checkout' ) ) ); // @phpstan-ignore-line
+            WP_CLI::line( WP_CLI::error( esc_html____( 'Please add a file path to import', 'woocommerce-conditional-product-fees-for-checkout' ) ) );
         }
         if( ! file_exists($args[0]) ){
-            WP_CLI::line( WP_CLI::error( esc_html__( 'File not exist...', 'woocommerce-conditional-product-fees-for-checkout' ) ) ); // @phpstan-ignore-line
+            WP_CLI::line( WP_CLI::error( esc_html____( 'File not exist...', 'woocommerce-conditional-product-fees-for-checkout' ) ) );
         }
         $import_args = array( 'cli_type' => 'import', 'file' => $args[0] );
         $plugin_name = 'woocommerce-conditional-product-fees-for-checkout'; //This will use from plugin file
         $version     = WCPFC_PRO_PLUGIN_VERSION; //This will use from plugin file
         $plugin_admin = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin( $plugin_name, $version );
-        WP_CLI::line( WP_CLI::success( $plugin_admin->wcpfc_pro_import_export_fees__premium_only($import_args) ) ); // @phpstan-ignore-line
+        WP_CLI::line( WP_CLI::success( $plugin_admin->wcpfc_pro_import_export_fees__premium_only($import_args) ) );
         
     }
 
@@ -354,8 +349,8 @@ class DS_Command_Line {
         $version     = WCPFC_PRO_PLUGIN_VERSION; //This will use from plugin file
         $plugin_admin = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin( $plugin_name, $version );
         $export_result = $plugin_admin->wcpfc_pro_import_export_fees__premium_only($export_args);
-        WP_CLI::line( WP_CLI::success($export_result['message']) ); // @phpstan-ignore-line
-        WP_CLI::line( WP_CLI::colorize( esc_html__( 'Open in new tab and download: ', 'woocommerce-conditional-product-fees-for-checkout' )."%C".$export_result['download_path']."%n") ); // @phpstan-ignore-line
+        WP_CLI::line( WP_CLI::success($export_result['message']) );
+        WP_CLI::line( WP_CLI::colorize( esc_html__( 'Open in new tab and download: ', 'woocommerce-conditional-product-fees-for-checkout' )."%C".$export_result['download_path']."%n") );
     }
 
     /**
@@ -378,11 +373,11 @@ class DS_Command_Line {
         $user_details = get_user_by( 'email', $author_mail );
         
         if( $this->post_type !== get_post_type($original_fee) || ! in_array( get_post_status($original_fee), array('draft', 'publish'), true ) ){
-            WP_CLI::error( esc_html__( 'Original fee does not exist.', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+            WP_CLI::error( esc_html__( 'Original fee does not exist.', 'woocommerce-conditional-product-fees-for-checkout' ) );
         }
 
         if( ! $user_details ){
-            WP_CLI::error( esc_html__( 'Author email does not exist. Please enter valid user email of this site.', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+            WP_CLI::error( esc_html__( 'Author email does not exist. Please enter valid user email of this site.', 'woocommerce-conditional-product-fees-for-checkout' ) );
         }
         
         $new_post_author = isset( $user_details->ID ) && !empty( $user_details->ID ) ? intval($user_details->ID) : 0;
@@ -418,10 +413,9 @@ class DS_Command_Line {
                     update_post_meta( $new_post_id, $meta_key, $meta_value );
                 }
             }
-            /* translators: %d new fee ID. */
-            WP_CLI::success( sprintf( esc_html__( 'Your fee(#%d) has been cloned with disable mode.', 'woocommerce-conditional-product-fees-for-checkout' ), intval( $new_post_id ) ) ); // @phpstan-ignore-line
+            WP_CLI::success( esc_html__( 'Your fee(#'.$new_post_id.') has been cloned with disable mode.', 'woocommerce-conditional-product-fees-for-checkout' ) );
         } else {
-            WP_CLI::error( esc_html__( 'Trouble in getting fee details', 'woocommerce-conditional-product-fees-for-checkout' ) ); // @phpstan-ignore-line
+            WP_CLI::error( esc_html__( 'Trouble in getting fee details', 'woocommerce-conditional-product-fees-for-checkout' ) );
         }
     }
 }

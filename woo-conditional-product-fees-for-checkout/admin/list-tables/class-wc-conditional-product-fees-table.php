@@ -321,10 +321,10 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 			), admin_url( 'admin.php' ) );
 
 			$method_name = '<strong>
-                            <a href="' . esc_url( $editurl ) . '" class="row-title">' . esc_html( $item->post_title ) . '</a>
+                            <a href="' . wp_nonce_url( $editurl, 'edit_' . $item->ID, '_wpnonce' ) . '" class="row-title">' . esc_html( $item->post_title ) . '</a>
                         </strong>';
 
-			return wp_kses( $method_name, self::$wcpfc_object->allowed_html_tags() );
+			echo wp_kses( $method_name, self::$wcpfc_object->allowed_html_tags() );
 		}
 
 		/**
@@ -343,11 +343,12 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 				return '';
 			}
 
-			$editurl = add_query_arg( array(
+			$edit_method_url = add_query_arg( array(
 				'page'   => 'wcpfc-pro-list',
 				'action' => 'edit',
 				'id'   => $item->ID
 			), admin_url( 'admin.php' ) );
+			$editurl         = wp_nonce_url( $edit_method_url, 'edit_' . $item->ID, '_wpnonce' );
 
 			$delete_method_url = add_query_arg( array(
 				'page'   => 'wcpfc-pro-list',
@@ -415,13 +416,10 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 				return esc_html__( 'null', 'woocommerce-conditional-product-fees-for-checkout' );
 			}
             $amount = get_post_meta( $item->ID, 'fee_settings_product_cost', true );
-
-            $currency_symbol = get_woocommerce_currency_symbol();
-
 			if( !is_null($amount) ) {
 				$amount_type  = get_post_meta( $item->ID, 'fee_settings_select_fee_type', true );
 				if( 'fixed' === $amount_type ) {
-					return esc_html( $currency_symbol ) . '' . $amount;
+					return esc_html( get_woocommerce_currency_symbol() ) . '' . $amount;
 				} else if( 'both' === $amount_type && strpos($amount, '+') !== false ){
 					$newamount = explode('+', $amount);
 					return $newamount[0] . '% + ' . $newamount[1];
@@ -494,8 +492,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 			}
             
             $date_obj = date_create($item->post_date);
-            /* translators: %1$s: date with format, %2$s: Time with format*/
-            $new_format = sprintf( esc_html__( '%1$s at %2$s', 'woocommerce-conditional-product-fees-for-checkout' ), date_format( $date_obj, get_option('date_format')), date_format( $date_obj, get_option('time_format')));
+            $new_format = sprintf( esc_html__( '%s at %s', 'woocommerce-conditional-product-fees-for-checkout' ), date_format( $date_obj, get_option('date_format')), date_format( $date_obj, get_option('time_format')));
 
 			return $new_format;
 		}
@@ -511,7 +508,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 		 */
         public function column_icl_translations( $item ){
 			global $sitepress;
-			$language_column = new WPML_Custom_Columns($sitepress); // @phpstan-ignore-line
+			$language_column = new WPML_Custom_Columns($sitepress);
 			return $language_column->add_content_for_posts_management_column( 'icl_translations', $item->ID );
 		}
 
@@ -549,7 +546,8 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 			}
 
 			$deletenonce = wp_verify_nonce( $delete_nonce, 'bulk-shippingmethods' );
-			if ( ! empty( $deletenonce ) && 1 !== $deletenonce ) {
+
+			if ( ! isset( $deletenonce ) && 1 !== $deletenonce ) {
 				return;
 			}
 
@@ -649,7 +647,7 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 	    	$input_id = $input_id . '-search-input';
 	        ?>
 	        <p class="search-box">
-				<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+				<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php esc_html_e( $text, 'woocommerce-conditional-product-fees-for-checkout' ); ?>:</label>
 				<input type="search" id="<?php echo esc_attr( $input_id ); ?>" placeholder="<?php esc_attr_e( 'Fee title', 'woocommerce-conditional-product-fees-for-checkout' ) ?>" name="s" value="<?php _admin_search_query(); ?>" />
 					<?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
 			</p>

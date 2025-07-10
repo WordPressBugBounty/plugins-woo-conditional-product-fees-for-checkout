@@ -1,4 +1,4 @@
-=== Extra Fees for WooCommerce ===
+=== Extra Fees Plugin for WooCommerce ===
 Contributors: dots,kakshak,dency,jariwalasagar
 Donate link: http://thedotstore.com/
 Author: Thedotstore
@@ -6,9 +6,9 @@ Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.8.1
-WC tested up to: 9.8.5
-Stable tag: 4.3.1
+Tested up to: 6.5.5
+WC tested up to: 9.2.3
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,11 +49,6 @@ With <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees plugin</a>, yo
 <li>Set extra fees at checkout based on fixed or percentage based value.</li>
 <li>Set extra fees as taxable or not taxable</li>
 <li>Set additional fees at checkout for the future</li>
-<li>Display fees on the product detail page.</li>
-<li>Select custom tax class for fees.</li>
-<li>Add purchase history-based fee rules.</li>
-<li>Display optional fees on the cart page.</li>
-<li>Add fees based on cart row quantity.</li>
 </ul>
 
 == 🚀 PLUGIN USE CASES ==
@@ -120,6 +115,13 @@ Upgrade to <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees Plugin P
 </ul>
 
 == 📣 LEARN MORE: Extra Fees Plugin — <a href ="https://bit.ly/3qiftwQ" target="_blank">Try Pro Version Today!</a> == 
+
+
+== 🎯 Supercharge Your Store Performance ==
+
+Gain access to <strong>50 expert tips</strong> covering everything from <strong>site speed</strong> and <strong>user experience</strong> to advanced sales strategies, each with impact scores to help you prioritize what truly drives results.
+
+<a href ="https://www.thedotstore.com/?popup_id=76452&utm_source=freeplugin&utm_medium=content&utm_id=ebook1_extra_fee" target="_blank">Download Free eBook</a>
 
 == 💁 How to’s Plugin Guide ==
 
@@ -288,60 +290,28 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 11.
 12.
 13.
-14.
-15.
-16.
 
 == Changelog ==
-= 4.3.1 - 14-05-2025 =
-* [Bug Fix] - 'Namespace not defined' error on block cart and checkout page
-* [Bug Fix] - Conflict with FunnelKit plugins plugin resolved
-
-= 4.3.0 - 13-05-2025 =
-* [Enhancement] - Minor bug fixes
-* [Enhancement] - List out our other free plugins on getting started page
-* [Enhancement] - Compatible with WooCommerce 9.8.x
-* [Enhancement] - Compatible with WordPress 6.8.x
-
-= 4.2.0 - 24-02-2024 =
-* [New] - Compatible with CURCY - Multi-Currency for WooCommerce plugin
-* [New] - Added filter for fee-based orders on the admin order page
-* [New] - Moved variable product condition to the free version
-* [Bug Fix] - Limited the fee decimal with WooCommerce decimal configuration
-* [Bug Fix] - Fee not saved when CTX Feed Plugin is activated
-* [Enhancement] - Special character (accent marks) support added to city condition
-* [Enhancement] - Multiple options can be selected at the same time in the Select2 dropdown
-* [Enhancement] - Minor bug fixes
-* [Enhancement] - Updated Freemius to 2.11.0
-* [Enhancement] - Compatible with WooCommerce 9.6.x
-* [Enhancement] - Compatible with WordPress 6.7.x
-
-= 4.1.2 - 24-12-2024 =
-* [Enhancement] - Compatibility with WPML 4.7
-* [Enhancement] - Freemius update to 2.10.1
-* [Enhancement] - Compatible with WooCommerce 9.5.x
-* [Enhancement] - Compatible with WordPress 6.7.x
-
-= 4.1.1 - 27-09-2024 =
+= 4.1.1 27-09-2024 =
 * [Bug Fix] Minor quick fix.
 
-= 4.1.0 - 25-09-2024 =
-* [Bug Fix] – Resolved issue with ordering fees in the backend for smoother fee management
+= 4.1.0 25-09-2024 =
+* [Bug Fix] - Resolved issue with ordering fees in the backend for smoother fee management
 * [Enhancement] – Improved compatibility with the Table Rate Shipping plugin
 * [Enhancement] – Enhanced compatibility with Cart and Checkout blocks
 
-= 4.0.0 - 11-07-2024 =
+= 4.0.0 11-07-2024 =
 * [Enhancement] – Plugin UI enhancement
 * [Enhancement] - Compatible with WooCommerce 9.0.x
 * [Enhancement] - Compatible with WordPress 6.5.x
 
-= 3.9.6.1 - 06-5-2024 =
+= 3.9.6.1 06-5-2024 =
 * [Bug Fix] - Minor fixes related to errors with language code
 * [Enhancement] – Plugin UI enhancement
 * [Enhancement] - Compatible with WooCommerce 8.8.x
 * [Enhancement] - Compatible with WordPress 6.5.x
 
-= 3.9.6 - 15-2-2024 =
+= 3.9.6 15-2-2024 =
 * [New] - Added support for a new fee type: Percentage + Fee
 * [Bug Fix] - Fixed fee sorting order issue on cart and checkout pages.
 * [Bug Fix] - Minor fixes related to the YITH Bundle Products.

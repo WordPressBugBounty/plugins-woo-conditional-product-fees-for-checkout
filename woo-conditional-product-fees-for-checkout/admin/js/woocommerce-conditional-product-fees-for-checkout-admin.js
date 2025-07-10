@@ -1,8 +1,6 @@
 (function( $ ) {
 	'use strict';
-	$( '.multiselect2' ).select2({
-        closeOnSelect: false,
-    });
+	$( '.multiselect2' ).select2();
 
 	function allowSpeicalCharacter( str ) {
 		return str.replace( '&#8211;', '–' ).replace( '&gt;', '>' ).replace( '&lt;', '<' ).replace( '&#197;', 'Å' );
@@ -12,7 +10,6 @@
 		$( '.product_fees_conditions_values_product' ).each( function() {
 			$( '.product_fees_conditions_values_product' ).select2( {
 				placeholder: coditional_vars.select_product,
-                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -55,7 +52,6 @@
 		$( '.product_fees_conditions_values_var_product' ).each( function() {
 			$( '.product_fees_conditions_values_var_product' ).select2( {
 				placeholder: coditional_vars.select_product,
-                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -126,7 +122,6 @@
 					},
 					cache: true
 				},
-                closeOnSelect: false,
 				minimumInputLength: 3,
 				placeholder: coditional_vars.select_product,
 			} );
@@ -137,7 +132,6 @@
 		$( '.product_fees_conditions_values_user' ).each( function() {
 			$( '.product_fees_conditions_values_user' ).select2( {
 				placeholder: coditional_vars.select_user,
-                closeOnSelect: false,
 				ajax: {
 					url: coditional_vars.ajaxurl,
 					dataType: 'json',
@@ -203,16 +197,12 @@
 	/** Script for Freemius upgrade popup */
     function upgradeToProFreemius( couponCode ) {
         let handler;
-        handler = new FS.Checkout({
+        handler = FS.Checkout.configure({
             plugin_id: '3390',
             plan_id: '5474',
             public_key:'pk_9edf804dccd14eabfd00ff503acaf',
             image: 'https://www.thedotstore.com/wp-content/uploads/sites/1417/2023/09/WooCommerce-Extra-Fees-Banner-New.png',
             coupon: couponCode,
-            hide_coupon: true, // For security reasons, we recommend setting this to true. So no one can know the coupon code.
-            show_reviews: true,
-            show_refund_badge: true,
-            always_show_renewals_amount: true,
         });
         handler.open({
             name: 'WooCommerce Extra Fees Plugin',
@@ -234,12 +224,9 @@
   	}, 2000);
 	
 	$( window ).on( 'load', function() {
-		$( '.multiselect2' ).select2({
-            closeOnSelect: false,
-        });
+		$( '.multiselect2' ).select2();
 		$( '.product_fees_conditions_values_country' ).select2({
-			placeholder: coditional_vars.select_country,
-            closeOnSelect: false
+			placeholder: coditional_vars.select_country
 		});
 
 		$( 'a[href="admin.php?page=wcpfc-pro-list"]' ).parents().addClass( 'current wp-has-current-submenu' );
@@ -395,7 +382,6 @@
 					'options': [
 						{ 'name': coditional_vars.cart_contains_product, 'attributes': { 'value': 'product' } },
 						{ 'name': coditional_vars.cart_contains_variable_product, 'attributes': { 'value': 'variableproduct' } },
-						{ 'name': coditional_vars.cart_brand_product_disabled, 'attributes': { 'value': 'brand_disabled' } },
 						{ 'name': coditional_vars.cart_category_product_disabled, 'attributes': { 'value': 'category_disabled' } },
 						{ 'name': coditional_vars.cart_contains_tag_product, 'attributes': { 'value': 'tag' } },
 						{ 'name': coditional_vars.cart_contains_product_qty, 'attributes': { 'value': 'product_qty' } },
@@ -420,9 +406,9 @@
                     'type': 'optgroup',
                     'attributes' : {'label' : coditional_vars.purchase_history},
                     'options': [
-                        {'name' : coditional_vars.last_spent_order_disabled, 'attributes': {'value' : 'last_spent_order_disabled'}},
-                        {'name' : coditional_vars.total_spent_order_disabled, 'attributes': {'value' : 'total_spent_order_disabled'}},
-                        {'name' : coditional_vars.spent_order_count_disabled, 'attributes': {'value' : 'spent_order_count_disabled'}},
+                        {'name' : coditional_vars.last_spent_order, 'attributes': {'value' : 'last_spent_order'}},
+                        {'name' : coditional_vars.total_spent_order, 'attributes': {'value' : 'total_spent_order'}},
+                        {'name' : coditional_vars.spent_order_count, 'attributes': {'value' : 'spent_order_count'}},
                     ]
                 },
 				{
@@ -479,7 +465,7 @@
 			$( '.fees_on_cart_total_wrap' ).show();
 		}
 
-		$( 'body' ).on( 'change', '.product_fees_conditions_condition, .arcmt_select', function() {
+		$( 'body' ).on( 'change', '.product_fees_conditions_condition', function() {
 			let selectedOption = $(this).find(':selected').val();
             if( selectedOption.includes('_disabled') ){
                 $(this).find(':selected').prop('selected', false);
@@ -666,8 +652,7 @@
 
 					let selectCoundition = coditional_vars['select_' + condition];
 					$( '.multiselect2_' + count + '_' + condition ).select2({
-						placeholder: selectCoundition,
-                        closeOnSelect: false
+						placeholder: selectCoundition
 					});
 
 					productFilter();
@@ -818,6 +803,7 @@
 			if ( -1 !== product_qty_fees_conditions_conditions.indexOf('product_qty') || -1 !== product_qty_fees_conditions_conditions.indexOf('cart_specificproduct') ) {
 				if (product_qty_fees_conditions_conditions.indexOf('product') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('variableproduct') === -1
+				    && product_qty_fees_conditions_conditions.indexOf('category') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('tag') === -1
 				    && product_qty_fees_conditions_conditions.indexOf('sku') === -1) {
 					// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -1083,8 +1069,7 @@
 		}
 
 		$('#ds_select_day_of_week').select2({
-			placeholder: coditional_vars.select_days,
-            closeOnSelect: false
+			placeholder: coditional_vars.select_days
 		});
 
 	    /** tiptip js implementation */
@@ -1282,12 +1267,6 @@
             e.preventDefault();
             $('body').removeClass('wcpfc-modal-visible');
             let couponCode = $('.upgrade-to-pro-discount-code').val();
-            upgradeToProFreemius( couponCode );
-        });
-        $(document).on('click', '.getting-started-actions .upgrade-now', function(e){
-            e.preventDefault();
-            $('body').removeClass('wcpfc-modal-visible');
-            let couponCode = $('.getting-started-discount-code').val();
             upgradeToProFreemius( couponCode );
         });
 	});
