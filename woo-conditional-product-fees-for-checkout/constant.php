@@ -13,9 +13,6 @@ if ( !defined( 'ABSPATH' ) ) {
  * @since  1.0.0
  */
 // define constant for plugin
-if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
-    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.1' );
-}
 if ( !defined( 'WCPFC_PRO_PLUGIN_URL' ) ) {
     define( 'WCPFC_PRO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }

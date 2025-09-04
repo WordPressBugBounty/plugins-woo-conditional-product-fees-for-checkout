@@ -85,6 +85,7 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                 20,
                 3
             );
+            add_action( 'wp_loaded', array($this, 'wcpffc_load_constants') );
         }
 
         /**
@@ -132,6 +133,20 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             if ( class_exists( 'WP_CLI' ) ) {
                 WP_CLI::add_command( 'dotstore', 'DS_Command_Line' );
             }
+        }
+
+        /**
+         * Load the plugin constants.
+         *
+         * This function loads the constants file and initializes the DotStore Analytics
+         *
+         * @since 1.0.1
+         */
+        public function wcpffc_load_constants() {
+            /**
+             * The core plugin include constant file for set constant.
+             */
+            require plugin_dir_path( dirname( __FILE__ ) ) . 'constant.php';
         }
 
         /**

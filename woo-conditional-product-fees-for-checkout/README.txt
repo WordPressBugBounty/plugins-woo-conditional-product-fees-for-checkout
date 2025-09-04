@@ -1,4 +1,4 @@
-=== Extra Fees Plugin for WooCommerce ===
+=== Extra Fees for WooCommerce ===
 Contributors: dots,kakshak,dency,jariwalasagar
 Donate link: http://thedotstore.com/
 Author: Thedotstore
@@ -6,9 +6,9 @@ Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.8.1
-WC tested up to: 9.8.5
-Stable tag: 4.3.1
+Tested up to: 6.8.2
+WC tested up to: 10.1.2
+Stable tag: 4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,11 +145,6 @@ Upgrade to <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees Plugin P
 
 == 📣 PREMIUM: Extra Fees for WooCommerce — <a href ="https://bit.ly/3qiftwQ" target="_blank">Try Pro Version Today!</a> == 
 
-== 🎯 Supercharge Your Store Performance ==
-
-Gain access to <strong>50 expert tips</strong> covering everything from <strong>site speed</strong> and <strong>user experience</strong> to advanced sales strategies, each with impact scores to help you prioritize what truly drives results.
-
-<a href ="https://www.thedotstore.com/?popup_id=76452&utm_source=freeplugin&utm_medium=content&utm_id=ebook1_extra_fee" target="_blank">Download Free eBook</a>
 
 == ☎️ CONTACT US ==
 
@@ -298,9 +293,13 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.3.2 - 1-09-2025 =
+* [Enhancement] - Minor bug fixes and fixed text domain notice
+* [Enhancement] - Compatible with WooCommerce 10.1.x
+* [Enhancement] - Compatible with WordPress 6.8.x
+
 = 4.3.1 - 14-05-2025 =
 * [Bug Fix] - 'Namespace not defined' error on block cart and checkout page
-* [Bug Fix] - Conflict with FunnelKit plugins plugin resolved
 
 = 4.3.0 - 13-05-2025 =
 * [Enhancement] - Minor bug fixes
@@ -327,26 +326,26 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 * [Enhancement] - Compatible with WooCommerce 9.5.x
 * [Enhancement] - Compatible with WordPress 6.7.x
 
-= 4.1.1 27-09-2024 =
+= 4.1.1 - 27-09-2024 =
 * [Bug Fix] Minor quick fix.
 
-= 4.1.0 25-09-2024 =
-* [Bug Fix] - Resolved issue with ordering fees in the backend for smoother fee management
+= 4.1.0 - 25-09-2024 =
+* [Bug Fix] – Resolved issue with ordering fees in the backend for smoother fee management
 * [Enhancement] – Improved compatibility with the Table Rate Shipping plugin
 * [Enhancement] – Enhanced compatibility with Cart and Checkout blocks
 
-= 4.0.0 11-07-2024 =
+= 4.0.0 - 11-07-2024 =
 * [Enhancement] – Plugin UI enhancement
 * [Enhancement] - Compatible with WooCommerce 9.0.x
 * [Enhancement] - Compatible with WordPress 6.5.x
 
-= 3.9.6.1 06-5-2024 =
+= 3.9.6.1 - 06-5-2024 =
 * [Bug Fix] - Minor fixes related to errors with language code
 * [Enhancement] – Plugin UI enhancement
 * [Enhancement] - Compatible with WooCommerce 8.8.x
 * [Enhancement] - Compatible with WordPress 6.5.x
 
-= 3.9.6 15-2-2024 =
+= 3.9.6 - 15-2-2024 =
 * [New] - Added support for a new fee type: Percentage + Fee
 * [Bug Fix] - Fixed fee sorting order issue on cart and checkout pages.
 * [Bug Fix] - Minor fixes related to the YITH Bundle Products.

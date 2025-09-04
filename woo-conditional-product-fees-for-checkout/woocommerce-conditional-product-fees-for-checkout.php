@@ -4,7 +4,7 @@
  * Plugin Name:         Extra Fees for WooCommerce
  * Plugin URI:          https://www.thedotstore.com/woocommerce-conditional-product-fees-checkout/
  * Description:         With this plugin, you can create and manage complex fee rules in WooCommerce store without the help of a developer.
- * Version:             4.3.1
+ * Version:             4.3.2
  * Author:              theDotstore
  * Author URI:          https://www.thedotstore.com/
  * License:             GPL-2.0+
@@ -15,8 +15,8 @@
  *
  * 
  * WC requires at least:4.5
- * WP tested up to:     6.8.1
- * WC tested up to:     9.8.5
+ * WP tested up to:     6.8.2
+ * WC tested up to:     10.1.2
  * Requires PHP:        7.2
  * Requires at least:   5.0
  */
@@ -76,6 +76,9 @@ if ( function_exists( 'wcpffc_fs' ) ) {
 // Define plugin basename constant
 if ( !defined( 'WCPFC_PRO_PLUGIN_BASENAME' ) ) {
     define( 'WCPFC_PRO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+}
+if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
+    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.2' );
 }
 /**
  * Hide freemius account tab
@@ -169,10 +172,6 @@ if ( !function_exists( 'wcpfc_load_plugin_setup_wizard_connect_after' ) ) {
 
     wcpffc_fs()->add_action( 'connect/after', 'wcpfc_load_plugin_setup_wizard_connect_after' );
 }
-/**
- * The core plugin include constant file for set constant.
- */
-require plugin_dir_path( __FILE__ ) . 'constant.php';
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-woocommerce-conditional-product-fees-for-checkout-activator.php

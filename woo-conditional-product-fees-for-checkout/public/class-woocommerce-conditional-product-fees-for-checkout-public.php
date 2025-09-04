@@ -2517,16 +2517,27 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
      *
      */
     public function wcpfc_pro_remove_currency_symbol( $price ) {
-        $args = array(
-            'decimal_separator'  => wc_get_price_decimal_separator(),
-            'thousand_separator' => wc_get_price_thousand_separator(),
-        );
+        $decimal_separator = wc_get_price_decimal_separator();
+        $thousand_separator = wc_get_price_thousand_separator();
         $wc_currency_symbol = get_woocommerce_currency_symbol();
         $cleanText = wp_strip_all_tags( $price );
         $new_price = str_replace( $wc_currency_symbol, '', $cleanText );
-        $tnew_price = str_replace( $args['thousand_separator'], '', $new_price );
-        $dnew_price = str_replace( $args['decimal_separator'], '.', $tnew_price );
-        $new_price2 = preg_replace( '/[^.\\d]/', '', $dnew_price );
+        // Determine decimal and thousand separators
+        if ( strpos( $new_price, $thousand_separator ) !== false && strpos( $new_price, $decimal_separator ) !== false ) {
+            if ( strrpos( $new_price, $decimal_separator ) > strrpos( $new_price, $thousand_separator ) ) {
+                // Format: 1.002,25 = dot is thousand, comma is decimal
+                $new_price = str_replace( $thousand_separator, '', $new_price );
+                $new_price = str_replace( $decimal_separator, '.', $new_price );
+            } else {
+                // Format: 1,002.25 = comma is thousand, dot is decimal
+                $new_price = str_replace( $thousand_separator, '', $new_price );
+            }
+        } elseif ( strpos( $new_price, $decimal_separator ) !== false ) {
+            // Only comma -> assume it's decimal
+            $new_price = str_replace( $decimal_separator, '.', $new_price );
+        }
+        $new_price2 = preg_replace( '/[^\\d\\.]/', '', $new_price );
+        $new_price2 = floatval( wc_format_decimal( $new_price2 ) );
         return $new_price2;
     }
 
@@ -2623,23 +2634,24 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         $total_shipping = 0;
         $cart_subtotal = WC()->cart->get_cart_contents_total();
         foreach ( WC()->cart->get_tax_totals() as $taxy ) {
-            $total_tax += $taxy->amount;
+            $total_tax += ( is_numeric( $taxy->amount ) ? (float) $taxy->amount : 0 );
         }
+        $chosen_shipping_methods = (array) (( WC()->session ? WC()->session->get( 'chosen_shipping_methods' ) : array() ));
         // Loop through shipping packages from WC_Session (They can be multiple in some cases)
         foreach ( WC()->cart->get_shipping_packages() as $package_id => $package ) {
             // Check if a shipping for the current package exist
             if ( WC()->session->__isset( 'shipping_for_package_' . $package_id ) ) {
                 // Loop through shipping rates for the current package
                 foreach ( WC()->session->get( 'shipping_for_package_' . $package_id )['rates'] as $shipping_rate_id => $shipping_rate ) {
-                    if ( in_array( $shipping_rate_id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
+                    if ( is_array( $chosen_shipping_methods ) && in_array( $shipping_rate_id, $chosen_shipping_methods, true ) ) {
                         $shipping_rate = WC()->session->get( 'shipping_for_package_' . $package_id )['rates'][$shipping_rate_id];
-                        $total_shipping += $shipping_rate->get_cost();
+                        $total_shipping += ( is_numeric( $shipping_rate->get_cost() ) ? (float) $shipping_rate->get_cost() : 0 );
                         // The cost without tax
                     }
                 }
             }
         }
-        $cart_final_total = $cart_subtotal + $total_tax + $total_shipping;
+        $cart_final_total = (float) $cart_subtotal + (float) $total_tax + (float) $total_shipping;
         return $cart_final_total;
     }
 
@@ -2684,8 +2696,11 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         }
         // Convert any type to float
         $amount = floatval( $amount );
-        // Put 3 as round off to get more accurate value
-        $amount = round( $amount, 3 );
+        $number_of_decimals = get_option( 'woocommerce_price_num_decimals', 2 );
+        if ( false === $number_of_decimals || !is_numeric( $number_of_decimals ) ) {
+            $number_of_decimals = 2;
+        }
+        $amount = round( $amount, (int) $number_of_decimals );
         return $amount;
     }
 
