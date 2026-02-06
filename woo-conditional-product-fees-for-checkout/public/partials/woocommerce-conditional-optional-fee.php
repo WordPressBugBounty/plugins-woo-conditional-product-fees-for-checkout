@@ -21,9 +21,9 @@ $fees_ids = ( class_exists( 'WooCommerce' ) && WC()->session ) ? WC()->session->
 if ( ! is_array( $fees_ids ) ) { $fees_ids = array(); }
 
 if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
-
+    
     $section_title = apply_filters( 'wcpfc_optional_fee_text', esc_html__( 'Optional fee(s)', 'woocommerce-conditional-product-fees-for-checkout' ) );
-
+    $price_decimals = (int) wc_get_price_decimals();
     if( $is_checkout_has_block ) {
         // Block checkout HTML structure
         ?>
@@ -32,10 +32,10 @@ if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
         <?php
         $display_title = true;
         foreach( $optional_fee_data as $optional_fee ) { //phpcs:ignore
-
+            
             $getOptionalFeesCartPage = get_post_meta( $optional_fee['fee_id'], 'optional_fees_in_cart', true );
             $fee_show_on_checkout_only	= get_post_meta( $optional_fee['fee_id'], 'fee_show_on_checkout_only', true ) ? get_post_meta( $optional_fee['fee_id'], 'fee_show_on_checkout_only', true ) : '';
-
+            
             if ( is_checkout() || ( is_cart() && empty($fee_show_on_checkout_only) ) ){ ?>
             <?php if ( $display_title ) { ?>
             <h2 class="wc-block-components-title wc-block-components-checkout-optional_fee__title" aria-hidden="true"><?php echo esc_html( $section_title ); ?></h2>
@@ -80,7 +80,7 @@ if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
                         <?php } ?>
 
                             <span class="wc-block-components-totals-item__label"><?php echo esc_html( $optional_fee['fee_title'] ); ?></span>
-                            <div class="wc-block-components-totals-item__value"><strong><?php echo wp_kses_post(wc_price( $optional_fee['fee_cost']) ); ?></strong></div>
+                            <div class="wc-block-components-totals-item__value"><strong><?php echo wp_kses_post(wc_price( $optional_fee['fee_cost'] + $optional_fee['fee_tax_cost'] ) ); ?></strong></div>
                             <?php if( $optional_fee['fee_description'] ) { ?>
                                 <div class="wc-block-components-totals-item__description">
                                     <span class="wc-block-components-shipping-address"><?php echo esc_html( $optional_fee['fee_description'] ); ?></span>
@@ -103,35 +103,35 @@ if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
             <table class="shop_table"><?php 
                 $display_title = true;
                 foreach( $optional_fee_data as $optional_fee ) { //phpcs:ignore
-
+                    
                     $getOptionalFeesCartPage = get_post_meta( $optional_fee['fee_id'], 'optional_fees_in_cart', true );
 
                     $fee_show_on_checkout_only	= get_post_meta( $optional_fee['fee_id'], 'fee_show_on_checkout_only', true ) ? get_post_meta( $optional_fee['fee_id'], 'fee_show_on_checkout_only', true ) : '';
-
+                    
 					if ( is_checkout() || ( is_cart() && empty($fee_show_on_checkout_only) ) ){ ?>
                         <?php if ( $display_title ) { ?>
                         <h3 id="optional_fee_heading"><?php echo esc_html( $section_title ); ?></h3>
                         <?php $display_title = false; } ?>
                         <tr class="optional_row"> <?php 
-                            if ( 'checkbox' === $optional_fee['fee_checked_type'] || empty( $optional_fee['fee_checked_type'] ) ) { 
+                            if ( 'checkbox' === $optional_fee['fee_checked_type'] || empty( $optional_fee['fee_checked_type'] ) ) {
                                 if ( isset( $getOptionalFeesCartPage ) && $getOptionalFeesCartPage !== 'on') {
-                                    // For the checkout page, check if the fee is marked as "on".
-                                    $is_checked = checked( 'on', $optional_fee['fee_checked'], false );
+                                    // For the checkout page, determine if the fee is checked or not.
+                                    $selected_value = !empty( $optional_fee['fee_checked'] ) ? 'on' : 'off';
                                 } else {
-                                    // For AJAX requests, check if the fee ID is in the selected fees; otherwise, fallback to the default "checked" state.
-                                    $is_checked = wcpfc_pro_public()->is_ajax_request() 
-                                        ? ( in_array( (int) $optional_fee['fee_id'], array_map( 'intval', $fees_ids ), true ) ? 'checked="checked"' : '' )
-                                        : checked( 'on', $optional_fee['fee_checked'], false );
-                                } ?>
+                                    $selected_value = wcpfc_pro_public()->is_ajax_request() 
+                                        ? ( in_array( (int) $optional_fee['fee_id'], array_map( 'intval', $fees_ids ), true ) ? 'on' : 'off' ) 
+                                        : ( !empty( $optional_fee['fee_checked'] ) ? 'on' : 'off' );
+                                }
+                                ?>
                                 <th class="checbox_row">
-                                    <input type="checkbox" class="input-checkbox" name="wef_fees_id_array_<?php echo esc_attr( $optional_fee['fee_id'] ); ?>[]" <?php echo esc_html($is_checked); ?> id="fees_<?php echo esc_attr( $optional_fee['fee_id'] ); ?>" value="<?php echo esc_attr( $optional_fee['fee_id'] ); ?>" />
+                                    <input type="checkbox" class="input-checkbox" name="wef_fees_id_array_<?php echo esc_attr( $optional_fee['fee_id'] ); ?>[]" <?php checked( 'on', $selected_value ); ?> id="fees_<?php echo esc_attr( $optional_fee['fee_id'] ); ?>" value="<?php echo esc_attr( $optional_fee['fee_id'] ); ?>" />
                                     <label class="checkbox"><span class="title_fee"><?php echo esc_html( $optional_fee['fee_title'] ); ?></span></label>
                                     <?php if ( !empty( $optional_fee['fee_description'] ) ){ ?>
                                         <p class="optional_fee_description"><?php echo esc_html( $optional_fee['fee_description'] ); ?></p>
                                     <?php } ?>
                                 </th>
                                 <td>
-                                    <p class="optional_fee_cost"><?php echo wp_kses_post(wc_price( $optional_fee['fee_cost']) ); ?></p>
+                                    <p class="optional_fee_cost"><?php echo wp_kses_post( wc_price( $optional_fee['fee_cost'] + $optional_fee['fee_tax_cost'] ) ); ?></p>
                                 </td>
                             <?php
                             } elseif ( 'dropdown' === $optional_fee['fee_checked_type'] ) {
@@ -163,7 +163,7 @@ if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
                                     <?php } ?>
                                 </th>
                                 <td>
-                                    <p class="optional_fee_cost"><?php echo wp_kses_post( wc_price( $optional_fee['fee_cost'] ) ); ?></p>
+                                    <p class="optional_fee_cost"><?php echo wp_kses_post( wc_price( $optional_fee['fee_cost'] + $optional_fee['fee_tax_cost'] ) ); ?></p>
                                 </td> <?php 
                             } elseif ( 'radio-button' === $optional_fee['fee_checked_type'] ) { 
                                 if ( isset( $getOptionalFeesCartPage ) && $getOptionalFeesCartPage !== 'on') {
@@ -196,7 +196,7 @@ if ( isset($optional_fee_data) && !empty($optional_fee_data) ) {
                                     <?php } ?>
                                 </th>
                                 <td>
-                                    <p class="optional_fee_cost"><?php echo wp_kses_post( wc_price( $optional_fee['fee_cost'] ) ); ?></p>
+                                    <p class="optional_fee_cost"><?php echo wp_kses_post( wc_price( $optional_fee['fee_cost'] + $optional_fee['fee_tax_cost'] ) ); ?></p>
                                 </td>
                             <?php } ?>
                         </tr><?php 

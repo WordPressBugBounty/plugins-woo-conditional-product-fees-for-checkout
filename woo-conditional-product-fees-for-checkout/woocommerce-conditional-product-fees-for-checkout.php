@@ -4,7 +4,7 @@
  * Plugin Name:         Extra Fees for WooCommerce
  * Plugin URI:          https://www.thedotstore.com/woocommerce-conditional-product-fees-checkout/
  * Description:         With this plugin, you can create and manage complex fee rules in WooCommerce store without the help of a developer.
- * Version:             4.3.2
+ * Version:             4.3.3
  * Author:              theDotstore
  * Author URI:          https://www.thedotstore.com/
  * License:             GPL-2.0+
@@ -14,9 +14,9 @@
  * Requires Plugins:    woocommerce
  *
  * 
- * WC requires at least:4.5
- * WP tested up to:     6.8.2
- * WC tested up to:     10.1.2
+ * WC requires at least:5.0
+ * WP tested up to:     6.9
+ * WC tested up to:     10.4.3
  * Requires PHP:        7.2
  * Requires at least:   5.0
  */
@@ -78,7 +78,7 @@ if ( !defined( 'WCPFC_PRO_PLUGIN_BASENAME' ) ) {
     define( 'WCPFC_PRO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
 if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
-    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.2' );
+    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.3' );
 }
 /**
  * Hide freemius account tab
@@ -196,6 +196,39 @@ if ( !function_exists( 'wcpfc_initialize_plugin' ) ) {
             if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', $active_plugins ), true ) ) {
                 add_action( 'admin_notices', 'wcpfc_plugin_admin_notice_required_plugin' );
             }
+        }
+        //Track plugin version (detect existing users per site)
+        if ( is_multisite() ) {
+            foreach ( get_sites( [
+                'fields' => 'ids',
+            ] ) as $blog_id ) {
+                // We only need to switch DB context to access post data.
+                // No plugins, themes, or hooks from the target blog are required.
+                switch_to_blog( $blog_id );
+                // phpcs:ignore
+                wcpfc_handle_version_update();
+                restore_current_blog();
+            }
+        } else {
+            wcpfc_handle_version_update();
+        }
+    }
+
+}
+/**
+ * Handle plugin version update
+ *
+ * @since    4.3.3
+ * @return   void
+ */
+if ( !function_exists( 'wcpfc_handle_version_update' ) ) {
+    function wcpfc_handle_version_update() {
+        // Marker introduced in version 2.5.0
+        if ( !get_option( 'wcpfc_popup_feature_introduced' ) ) {
+            // Mark existing users (installed before popup feature)
+            update_option( 'wcpfc_existing_user', 1 );
+            // Mark feature introduction
+            update_option( 'wcpfc_popup_feature_introduced', time() );
         }
     }
 

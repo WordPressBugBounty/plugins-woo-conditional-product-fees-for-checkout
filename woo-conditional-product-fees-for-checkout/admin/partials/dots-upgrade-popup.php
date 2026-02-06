@@ -33,7 +33,7 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
 ?>
 <!-- Upgrade to pro plugin popup -->
 <input type="hidden" class="upgrade-to-pro-discount-code" value="<?php echo esc_attr( $discount_coupon ); ?>" >
-<div class="upgrade-to-pro-modal-main">
+<!-- <div class="upgrade-to-pro-modal-main">
     <div class="upgrade-to-pro-modal-outer">
         <div class="pro-modal-inner">
             <div class="pro-modal-wrapper">
@@ -66,6 +66,54 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
                 </div>
                 <div class="pro-modal-footer">
                     <a class="pro-feature-trial-btn upgrade-now" target="_blank" href="javascript:void(0);"><?php esc_html_e( 'Upgrade Now', 'woocommerce-conditional-product-fees-for-checkout' ); ?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="upgrade-to-pro-modal-main upgrade-to-pro-modal-new">
+    <div class="upgrade-to-pro-modal-outer">
+        <div class="pro-modal-inner">
+            <div class="pro-modal-wrapper">
+                <div class="pro-modal-header">
+                    <?php 
+                    if ( ! empty( $discount_number ) ) {
+                        ?>
+                        <h3 class="pro-feature-title"><?php 
+                            // translators: %s: is the discount percentage
+                            echo sprintf( esc_html__( 'Unlock Premium Features with a %s%% Discount!', 'woocommerce-conditional-product-fees-for-checkout' ), esc_html( $discount_number ) ); 
+                        ?></h3>
+                        <?php
+                    } else {
+                        ?>
+                        <h3 class="pro-feature-title"><?php echo esc_html__( 'Unlock Premium Features Today!', 'woocommerce-conditional-product-fees-for-checkout' ); ?></h3>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <div class="pro-modal-content">
+                    <div class="pro-modal-left">
+                        <div class="pro-modal-body">
+                            <p><?php esc_html_e( 'Unlock a world of possibilities for your WooCommerce store with our Premium Extra Fees plugin!', 'woocommerce-conditional-product-fees-for-checkout' ); ?></p>
+                            <ul class="pro-feature-list">
+                                <li><?php esc_html_e( 'Set up unlimited conditional dynamic fees and increase revenue.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
+                                <li><?php esc_html_e( 'Create advanced fee rules by product, cart subtotal, and more.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
+                                <li><?php esc_html_e( 'Set the dynamic fee at checkout based on state, postal code, etc.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
+                                <li><?php esc_html_e( 'Develop a revenue strategy by analyzing top fees with pie charts.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
+                            </ul>
+                        </div>
+                        <div class="pro-modal-footer">
+                            <a class="pro-feature-trial-btn upgrade-now" target="_blank" href="javascript:void(0);"><?php esc_html_e( 'Upgrade Now', 'woocommerce-conditional-product-fees-for-checkout' ); ?></a>
+                            <span><?php esc_html_e( '14-day, no-questions-asked money-back guarantee.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></span>
+                        </div>
+                    </div>
+                    <div class="pro-modal-right">
+                        <img src="<?php echo esc_url( WCPFC_PRO_PLUGIN_URL . 'admin/images/premium-upgrade-img/upgrade-pro-img.png' ); ?>" alt="<?php esc_attr_e( 'Upgrade to Pro', 'woocommerce-conditional-product-fees-for-checkout' ); ?>">
+                    </div>
+                </div>
+                <div class="pro-modal-content-footer">
+                    <span class="modal-close-btn"><?php esc_html_e( 'No thanks, I\'m not interested', 'woocommerce-conditional-product-fees-for-checkout' ); ?></span>
                 </div>
             </div>
         </div>

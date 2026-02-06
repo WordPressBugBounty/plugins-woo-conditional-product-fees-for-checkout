@@ -179,6 +179,7 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             $this->loader->add_action( 'admin_menu', $plugin_admin, 'wcpfc_admin_menu_pages' );
             $this->loader->add_action( 'admin_head', $plugin_admin, 'wcpfc_dot_store_icon_css' );
             $this->loader->add_action( 'admin_notices', $plugin_admin, 'wcpfc_pro_notifications' );
+            $this->loader->add_action( 'admin_notices', $plugin_admin, 'wcpfc_updated_message' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_product_fees_conditions_values_ajax', $plugin_admin, 'wcpfc_pro_product_fees_conditions_values_ajax' );
             $this->loader->add_action( 'wp_ajax_nopriv_wcpfc_pro_product_fees_conditions_values_ajax', $plugin_admin, 'wcpfc_pro_product_fees_conditions_values_ajax' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_product_fees_conditions_values_product_ajax', $plugin_admin, 'wcpfc_pro_product_fees_conditions_values_product_ajax' );
@@ -298,11 +299,25 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                 1
             );
             $this->loader->add_action(
-                'woocommerce_checkout_create_order',
+                'woocommerce_checkout_order_created',
                 $plugin_public,
                 'wcpfc_add_fee_details_with_order_for_track',
                 20,
                 1
+            );
+            $this->loader->add_action(
+                'woocommerce_store_api_checkout_order_processed',
+                $plugin_public,
+                'wcpfc_add_fee_details_with_order_for_track',
+                20,
+                1
+            );
+            $this->loader->add_action(
+                'woocommerce_order_status_changed',
+                $plugin_public,
+                'wcpfc_handle_order_refunded_status_change',
+                20,
+                4
             );
             $this->loader->add_filter(
                 'woocommerce_locate_template',

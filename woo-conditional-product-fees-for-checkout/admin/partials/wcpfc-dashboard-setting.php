@@ -298,9 +298,6 @@ function wcpfc_free_dashboard_settings_content() {
                 </div>
             </div>
         </div>
-        <button class="button-primary button reset-cache" style="float:right;margin-top:30px;"><?php 
-    esc_html_e( 'Refresh Data', 'woocommerce-conditional-product-fees-for-checkout' );
-    ?></button>
     </div>
     <?php 
 }

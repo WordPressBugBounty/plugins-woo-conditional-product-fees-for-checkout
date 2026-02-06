@@ -13,6 +13,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * @subpackage Woocommerce_Conditional_Product_Fees_For_Checkout_Pro/public
  * @author     Multidots <inquiry@multidots.in>
  */
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
     private static $admin_object = null;
 
@@ -427,6 +428,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                 if ( isset( $post_data['_wfacp_post_id'] ) && !empty( $post_data['_wfacp_post_id'] ) ) {
                     $optional_fee_array = ( isset( $post_data['wef_fees_id_array_' . $fees_id] ) && !empty( $post_data['wef_fees_id_array_' . $fees_id] ) ? array(intval( $fees_id )) : array() );
                 }
+                // blank for standard tax class
+                $fee_taxable_class = '';
                 if ( !empty( $sitepress ) ) {
                     if ( version_compare( ICL_SITEPRESS_VERSION, '3.2', '>=' ) ) {
                         $language_information = apply_filters( 'wpml_post_language_details', null, $fees_id );
@@ -760,7 +763,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                                     $title,
                                                                     $fees_cost,
                                                                     $texable,
-                                                                    apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                                    apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                                 );
                                                             }
                                                         }
@@ -782,7 +785,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                                 $title,
                                                                 $fees_cost,
                                                                 $texable,
-                                                                apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                                apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                             );
                                                         }
                                                     }
@@ -794,7 +797,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
-                                                            apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                            apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                         );
                                                     }
                                                 }
@@ -815,7 +818,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
-                                                            apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                            apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                         );
                                                     }
                                                 }
@@ -827,7 +830,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                         $title,
                                                         $fees_cost,
                                                         $texable,
-                                                        apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                        apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                     );
                                                 } else {
                                                     if ( !is_cart() && !empty( $fee_show_on_checkout_only ) ) {
@@ -835,7 +838,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                                                             $title,
                                                             $fees_cost,
                                                             $texable,
-                                                            apply_filters( 'wcpfc_tax_class', $final_item_tax_class, $fees )
+                                                            apply_filters( 'wcpfc_tax_class', $fee_taxable_class, $fees )
                                                         );
                                                     }
                                                 }
@@ -861,11 +864,12 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                     $fee_title = apply_filters( 'wcpfc_all_fee_title', 'Fees' );
                     // Fetch the tax class type for the merged fee
                     $taxClassType = get_option( 'merge_fee_settings_taxable_type' );
+                    // total fees are alreadty converted by CURCY plugin while adding fees
                     WC()->cart->add_fee(
                         wp_kses_post( $fee_title, 'woocommerce-conditional-product-fees-for-checkout' ),
                         $total_fee,
                         $chk_enable_all_fee_tax,
-                        apply_filters( 'wcpfc_tax_class', $final_item_tax_class, -1 )
+                        apply_filters( 'wcpfc_tax_class', $taxClassType, -1 )
                     );
                     //-1 for combined fees id
                 }
@@ -883,23 +887,89 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         if ( !empty( $order->get_fees() ) ) {
             $extra_fee_arr = array();
             foreach ( $order->get_fees() as $fee_detail ) {
-                $fees_id = ( !empty( $fee_detail->legacy_fee->id ) ? $fee_detail->legacy_fee->id : 0 );
+                $fees_id = ( $fee_detail instanceof \WC_Order_Item_Fee ? $fee_detail->get_name() : $fee_detail->name );
+                if ( !is_numeric( $fees_id ) ) {
+                    $fee_obj = get_page_by_path( $fees_id, OBJECT, 'wc_conditional_fee' );
+                    // phpcs:ignore
+                    if ( !empty( $fee_obj ) && isset( $fee_obj->ID ) && $fee_obj->ID > 0 ) {
+                        $fees_id = $fee_obj->ID;
+                    }
+                }
+                $fees_id = ( !empty( $fees_id ) ? intval( $fees_id ) : 0 );
                 $fee_amount = 0;
+                wc_get_logger()->info( 'ORDER: Fee ID: ' . $fees_id . ' for Order ID:' . $order->get_id() );
                 if ( $fees_id > 0 ) {
                     $fee_revenue = ( get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) ? get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) : 0 );
-                    $fee_amount = ( !empty( $fee_detail->legacy_fee->total ) ? $fee_detail->legacy_fee->total : 0 );
-                    if ( !empty( $fee_detail->legacy_fee->taxable ) && $fee_detail->legacy_fee->taxable ) {
-                        $fee_amount += ( $fee_detail->legacy_fee->tax > 0 ? $fee_detail->legacy_fee->tax : 0 );
+                    if ( $fee_detail instanceof \WC_Order_Item_Fee ) {
+                        $fee_amount = ( !empty( $fee_detail->get_total() ) ? $fee_detail->get_total() : 0 );
+                        $is_fee_taxable = $fee_detail->get_tax_status() === 'taxable';
+                        if ( $is_fee_taxable ) {
+                            $fee_amount += $fee_detail->get_total_tax();
+                        }
+                    } else {
+                        $fee_amount = ( !empty( $fee_detail->total ) ? $fee_detail->total : 0 );
+                        $is_fee_taxable = $fee_detail->taxable;
+                        if ( $is_fee_taxable ) {
+                            $fee_amount += $fee_detail->tax;
+                        }
                     }
                     $fee_revenue += $fee_amount;
                     if ( $fee_revenue > 0 ) {
                         update_post_meta( $fees_id, '_wcpfc_fee_revenue', $fee_revenue );
                     }
-                    array_push( $extra_fee_arr, $fee_detail->legacy_fee );
+                    array_push( $extra_fee_arr, $fee_detail->get_data() );
                 }
             }
             if ( !empty( $extra_fee_arr ) ) {
+                wc_get_logger()->info( 'ORDER: Fee (_wcpfc_fee_summary) added details: ' . print_r( $extra_fee_arr, true ) . ' for Order ID:' . $order->get_id() );
+                // phpcs:ignore
                 $order->update_meta_data( '_wcpfc_fee_summary', $extra_fee_arr );
+                $order->save();
+                // ensure meta is saved
+            }
+        }
+    }
+
+    public function wcpfc_handle_order_refunded_status_change(
+        $order_id,
+        $old_status,
+        $new_status,
+        $order
+    ) {
+        if ( in_array( $old_status, ['processing', 'completed'], true ) && 'refunded' === $new_status ) {
+            // Your custom logic here.
+            error_log( "Dotstore notice: Order #{$order_id} changed from {$old_status} to refunded." );
+            // phpcs:ignore
+            if ( !empty( $order->get_fees() ) ) {
+                $extra_fee_arr = array();
+                foreach ( $order->get_fees() as $fee_detail ) {
+                    $fees_name = ( !empty( $fee_detail->get_name() ) ? $fee_detail->get_name() : '' );
+                    $fees_id = 0;
+                    if ( !empty( $fees_name ) ) {
+                        $fee_obj = get_page_by_title( $fees_name, OBJECT, 'wc_conditional_fee' );
+                        // phpcs:ignore
+                        if ( !empty( $fee_obj ) && isset( $fee_obj->ID ) && $fee_obj->ID > 0 ) {
+                            $fees_id = $fee_obj->ID;
+                        }
+                    }
+                    $fee_amount = 0;
+                    if ( $fees_id > 0 ) {
+                        $fee_revenue = ( get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) ? get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) : 0 );
+                        $fee_amount = ( !empty( $fee_detail->get_total() ) ? $fee_detail->get_total() : 0 );
+                        $is_fee_taxable = $fee_detail->get_tax_status() === 'taxable';
+                        if ( $is_fee_taxable ) {
+                            $fee_amount += $fee_detail->get_total_tax();
+                        }
+                        $fee_revenue = $fee_revenue - $fee_amount;
+                        if ( $fee_revenue >= 0 ) {
+                            update_post_meta( $fees_id, '_wcpfc_fee_revenue', $fee_revenue );
+                        }
+                        array_push( $extra_fee_arr, $fee_detail->get_data() );
+                    }
+                }
+                if ( !empty( $extra_fee_arr ) ) {
+                    $order->update_meta_data( '_wcpfc_refunded_fee_summary', $extra_fee_arr );
+                }
             }
         }
     }
@@ -915,6 +985,18 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         }
         return array();
         // Return empty array if product is not variable
+    }
+
+    /**
+     * Register dynamic fee hooks (we will add more future dynamic hooks here)
+     * - checkoutWC plugin dynamic placement for optional fee hook
+     * 
+     * @since 4.3.3
+     */
+    public function register_dynamic_fee_hook() {
+        // CheclputWC dynamic hook
+        $placement_action = apply_filters( 'wcpfc_optional_fee_placement_action', 'woocommerce_review_order_after_shipping' );
+        add_action( $placement_action, [$this, 'wcpfc_add_option_to_checkout_fragment__premium_only'] );
     }
 
     public function wcpfc_pro_get_woo_version_number() {
@@ -2694,6 +2776,11 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                 $amount *= $currentCurrencyRate;
             }
         }
+        // Convert amount - WooPayments Plugin
+        if ( function_exists( 'WC_Payments_Multi_Currency' ) ) {
+            $multi_currency = WC_Payments_Multi_Currency();
+            $amount = $multi_currency->get_price( $amount, 'product' );
+        }
         // Convert any type to float
         $amount = floatval( $amount );
         $number_of_decimals = get_option( 'woocommerce_price_num_decimals', 2 );
@@ -2752,6 +2839,17 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
             }
         }
         return true;
+    }
+
+    public function get_tax_from_class_name( $amount, $tax_class ) {
+        if ( empty( $tax_class ) || 'standard' === $tax_class ) {
+            $tax_class = '';
+        }
+        $tax_rates = WC_Tax::get_rates( $tax_class );
+        $taxes = WC_Tax::calc_tax( $amount, $tax_rates, false );
+        // false = amount is excl tax
+        $total_tax = array_sum( $taxes );
+        return $total_tax;
     }
 
     // Function to return custom allowed HTML

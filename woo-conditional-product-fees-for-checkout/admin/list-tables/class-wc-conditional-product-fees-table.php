@@ -563,7 +563,12 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 				foreach ( $items as $id ) {
 					wp_delete_post( $id );
 				}
-				self::$admin_object->wcpfc_updated_message( 'deleted', '' );
+				// Below redirect is used instead of self::$admin_object->wcpfc_updated_message( 'deleted', '' ); because it was not working as expected.
+                wp_safe_redirect( add_query_arg( array(
+                    'page'      => 'wcpfc-pro-list',
+                    'message'    => 'deleted'
+                ), admin_url( 'admin.php' ) ) );
+                exit();
 			} elseif ( 'enable' === $action ) {
 
 				foreach ( $items as $id ) {
@@ -575,7 +580,13 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 					wp_update_post( $enable_post );
                     update_post_meta( $id, 'fee_settings_status', 'on' );
 				}
-				self::$admin_object->wcpfc_updated_message( 'enabled', '' );
+                
+				// Below redirect is used instead of self::$admin_object->wcpfc_updated_message( 'enabled', '' ); because it was not working as expected.
+                wp_safe_redirect( add_query_arg( array(
+                    'page'      => 'wcpfc-pro-list',
+                    'message'    => 'enabled'
+                ), admin_url( 'admin.php' ) ) );
+                exit();
 			} elseif ( 'disable' === $action ) {
 				foreach ( $items as $id ) {
 					$disable_post = array(
@@ -586,7 +597,12 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 					wp_update_post( $disable_post );
                     update_post_meta( $id, 'fee_settings_status', 'off' );
 				}
-				self::$admin_object->wcpfc_updated_message( 'disabled', '' );
+				// Below redirect is used instead of self::$admin_object->wcpfc_updated_message( 'disabled', '' ); because it was not working as expected.
+                wp_safe_redirect( add_query_arg( array(
+                    'page'      => 'wcpfc-pro-list',
+                    'message'    => 'disabled'
+                ), admin_url( 'admin.php' ) ) );
+                exit();
 			}
             delete_transient( 'get_top_ten_fees' );
 			delete_transient( 'get_all_fees' );

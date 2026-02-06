@@ -6,9 +6,9 @@ Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.8.2
-WC tested up to: 10.1.2
-Stable tag: 4.3.2
+Tested up to: 6.9
+WC tested up to: 10.4.3
+Stable tag: 4.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,7 +293,15 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
-= 4.3.2 - 1-09-2025 =
+= 4.3.3 - 19-01-2026 =
+* [Enhancement] - CURCY Plugin compatibility
+* [Enhancement] - Upgrade to pro popup design update
+* [Enhancement] - Freemius v2.13.0
+* [Enhancement] - Compatible with WooCommerce 10.4.x
+* [Enhancement] - Compatible with WordPress 6.9.x
+* [Enhancement] - Minor bug fixes
+
+= 4.3.2 - 01-09-2025 =
 * [Enhancement] - Minor bug fixes and fixed text domain notice
 * [Enhancement] - Compatible with WooCommerce 10.1.x
 * [Enhancement] - Compatible with WordPress 6.8.x

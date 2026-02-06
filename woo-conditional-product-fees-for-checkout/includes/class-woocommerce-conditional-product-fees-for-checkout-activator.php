@@ -28,5 +28,32 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Activator {
 		} else {
 			set_transient( '_welcome_screen_activation_redirect_data', true, 30 );
 		}
+
+        // Check if the plugin is activated on a multisite network (Popup = per site, because each site owner/admin experience differs.)
+        if ( is_multisite() ) {
+
+            foreach ( get_sites( [ 'fields' => 'ids' ] ) as $blog_id ) {
+                // We only need to switch DB context to access post data.
+                // No plugins, themes, or hooks from the target blog are required.
+                switch_to_blog( $blog_id ); // phpcs:ignore 
+
+                // New install → mark feature as introduced NOW
+                update_option( 'wcpfc_popup_feature_introduced', time() );
+
+                if ( ! get_option( 'wcpfc_installed_at' ) ) {
+                    update_option( 'wcpfc_installed_at', time() );
+                }
+
+                restore_current_blog();
+            }
+        } else {
+
+            // New install → mark feature as introduced NOW
+            update_option( 'wcpfc_popup_feature_introduced', time() );
+
+            if ( ! get_option( 'wcpfc_installed_at' ) ) {
+                update_option( 'wcpfc_installed_at', time() );
+            }
+        }
 	}
 }

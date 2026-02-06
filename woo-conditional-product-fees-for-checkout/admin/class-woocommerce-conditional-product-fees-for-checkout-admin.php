@@ -265,6 +265,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 'select_float_number'                      => esc_html__( '0.00', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_integer_number'                    => esc_html__( '10', 'woocommerce-conditional-product-fees-for-checkout' ),
                 'select_city'                              => esc_html__( "City 1\nCity 2", 'woocommerce-conditional-product-fees-for-checkout' ),
+                'single_confirm_delete'                    => esc_html__( 'Are you sure you want to delete this fee?', 'woocommerce-conditional-product-fees-for-checkout' ),
+                'multiple_confirm_delete'                  => esc_html__( 'Are you sure you want to delete these fees?', 'woocommerce-conditional-product-fees-for-checkout' ),
             ) );
         }
         // Get the current screen object
@@ -926,10 +928,22 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      */
     public function wcpfc_reset_fee_cache() {
         check_ajax_referer( 'dsm_nonce', 'nonce' );
-        $html = esc_html__( 'Somethng went wrong!', 'woocommerce-conditional-product-fees-for-checkout' );
+        $html = esc_html__( 'Nothing to refresh!', 'woocommerce-conditional-product-fees-for-checkout' );
         delete_transient( 'get_all_fees' );
-        if ( delete_transient( 'get_top_ten_fees' ) && delete_transient( 'get_all_dashboard_fees' ) && delete_transient( 'get_total_revenue' ) && delete_transient( 'get_total_yearly_revenue' ) && delete_transient( 'get_total_last_month_revenue' ) && delete_transient( 'get_total_this_month_revenue' ) && delete_transient( 'get_total_yesterday_revenue' ) && delete_transient( 'get_total_today_revenue' ) ) {
-            $html = esc_html__( 'Fees data has been updated successfully.', 'woocommerce-conditional-product-fees-for-checkout' );
+        $transients = array(
+            'get_top_ten_fees',
+            'get_all_dashboard_fees',
+            'get_total_revenue',
+            'get_total_yearly_revenue',
+            'get_total_last_month_revenue',
+            'get_total_this_month_revenue',
+            'get_total_yesterday_revenue',
+            'get_total_today_revenue'
+        );
+        foreach ( $transients as $transient ) {
+            if ( delete_transient( $transient ) ) {
+                $html = esc_html__( 'Fees data has been updated successfully.', 'woocommerce-conditional-product-fees-for-checkout' );
+            }
         }
         echo esc_html( $html );
         wp_die();
@@ -953,101 +967,154 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      *
      * @since 3.7.0
      */
-    public function wcpfc_get_fee_data_from_date_range( $start_date, $end_date, $all = '' ) {
-        $default_lang = $this->wcpfc_pro_get_default_langugae_with_sitpress();
-        if ( '' === $all && (empty( $start_date ) || empty( $end_date )) ) {
-            return 0;
-        }
-        global $sitepress;
-        $filter_arr = array(
-            "limit"   => -1,
-            "orderby" => "date",
-            "return"  => "ids",
-            'status'  => array('wc-processing', 'wc-completed'),
-        );
-        if ( empty( $all ) ) {
-            $filter_arr["date_created"] = $start_date . "..." . $end_date;
-        }
-        $orders = wc_get_orders( $filter_arr );
+    public function wcpfc_get_fee_data_from_date_range( $start_date = '', $end_date = '' ) {
+        // Only fetch order IDs with the needed statuses (minimize objects in memory)
+        global $wpdb;
         $fee_array = array();
-        if ( isset( $orders ) && !empty( $orders ) ) {
-            foreach ( $orders as $order_id ) {
-                $order = wc_get_order( $order_id );
-                $order_fees = $order->get_meta( '_wcpfc_fee_summary' );
-                if ( !empty( $order_fees ) ) {
-                    foreach ( $order_fees as $order_fee ) {
-                        $fee_revenue = 0;
-                        if ( !empty( $sitepress ) ) {
-                            $fee_id = apply_filters(
-                                'wpml_object_id',
-                                $order_fee->id,
-                                'product',
-                                true,
-                                $default_lang
-                            );
-                        } else {
-                            $fee_id = $order_fee->id;
-                        }
-                        $fee_obj = get_page_by_path( $fee_id, OBJECT, 'wc_conditional_fee' );
-                        // phpcs:ignore
-                        if ( !empty( $fee_obj ) && isset( $fee_obj->ID ) && $fee_obj->ID > 0 ) {
-                            $fee_id = $fee_obj->ID;
-                        }
-                        $fee_id = ( !empty( $fee_id ) ? $fee_id : 0 );
-                        if ( $fee_id > 0 ) {
-                            $fee_amount = ( !empty( $order_fee->total ) ? $order_fee->total : 0 );
-                            if ( !empty( $order_fee->taxable ) && $order_fee->taxable ) {
-                                $fee_amount += ( $order_fee->tax > 0 ? $order_fee->tax : 0 );
-                            }
-                            $fee_revenue += $fee_amount;
-                            if ( $fee_revenue > 0 && array_key_exists( $fee_id, $fee_array ) ) {
-                                $fee_array[$fee_id] += $fee_revenue;
-                            } else {
-                                $fee_array[$fee_id] = $fee_revenue;
-                            }
-                        }
+        // Sanitize & normalize dates
+        $start_date_raw = ( !empty( $start_date ) ? wp_unslash( sanitize_text_field( $start_date ) ) : '' );
+        $end_date_raw = ( !empty( $end_date ) ? wp_unslash( sanitize_text_field( $end_date ) ) : '' );
+        // Convert date to YYYY-MM-DD format if it's not 'all'
+        if ( '' !== $start_date_raw ) {
+            $start_timestamp = strtotime( $start_date_raw );
+            $start_date = ( false !== $start_timestamp ? gmdate( 'Y-m-d 00:00:00', $start_timestamp ) : $start_date_raw );
+        }
+        if ( '' !== $end_date_raw ) {
+            $end_timestamp = strtotime( $end_date_raw );
+            $end_date = ( false !== $end_timestamp ? gmdate( 'Y-m-d 23:59:59', $end_timestamp ) : $end_date_raw );
+        }
+        /* 
+         * This is the New way with HPOS compatibility and Legacy way(Custom Posts Ordering)
+         */
+        $order_query_args = array(
+            'status' => array('processing', 'completed'),
+            'limit'  => -1,
+            'return' => 'ids',
+        );
+        $date_filter = '';
+        if ( $start_date && $end_date ) {
+            // This will use for date range BETWEEN (inclusive)
+            $date_filter = $start_date . '...' . $end_date;
+        } elseif ( $start_date ) {
+            // This will use for date range AFTER (inclusive)
+            $date_filter = '>=' . $start_date;
+        } elseif ( $end_date ) {
+            // This will use for date range BEFORE (inclusive)
+            $date_filter = '<=' . $end_date;
+        }
+        if ( $date_filter ) {
+            $order_query_args['date_created'] = $date_filter;
+        }
+        $order_ids = wc_get_orders( $order_query_args );
+        // Prepare placeholders for order_ids
+        $placeholders = implode( ',', array_fill( 0, count( $order_ids ), '%d' ) );
+        // 1. Fetch all fee order items (order_item_id, order_id, order_item_name)
+        $fee_items = array();
+        if ( !empty( $order_ids ) ) {
+            // phpcs:disable
+            $fee_items = $wpdb->get_results( $wpdb->prepare( "SELECT order_item_id, order_id, order_item_name\n                    FROM {$wpdb->prefix}woocommerce_order_items\n                    WHERE order_id IN ({$placeholders}) AND order_item_type = %s", array_merge( $order_ids, array('fee') ) ), ARRAY_A );
+            // phpcs:enable
+        }
+        // 2. Map: order_id => fee_item_id => order_item_name
+        $order_fee_item_map = array();
+        $fee_item_ids = array();
+        if ( !empty( $fee_items ) ) {
+            foreach ( $fee_items as $item ) {
+                $order_id = $item['order_id'];
+                $order_fee_item_map[$order_id][$item['order_item_id']] = array(
+                    'order_item_name' => $item['order_item_name'],
+                );
+                $fee_item_ids[] = $item['order_item_id'];
+            }
+        }
+        // 3. Fetch all fee item meta in one go
+        $fee_item_meta = array();
+        if ( !empty( $fee_item_ids ) ) {
+            $meta_placeholders = implode( ',', array_fill( 0, count( $fee_item_ids ), '%d' ) );
+            // phpcs:disable
+            $fee_item_metas = $wpdb->get_results( $wpdb->prepare( "\n                    SELECT order_item_id, meta_key, meta_value\n                    FROM {$wpdb->prefix}woocommerce_order_itemmeta\n                    WHERE order_item_id IN ({$meta_placeholders})\n                    ", $fee_item_ids ), ARRAY_A );
+            // phpcs:enable
+            // Map meta to each order_item_id
+            foreach ( $fee_item_metas as $meta ) {
+                $fid = $meta['order_item_id'];
+                if ( !isset( $fee_item_meta[$fid] ) ) {
+                    $fee_item_meta[$fid] = array();
+                }
+                $fee_item_meta[$fid][$meta['meta_key']] = $meta['meta_value'];
+            }
+        }
+        // 4. Prepare: order_id => array of fee data arrays (each: name, total, total_tax, etc)
+        $order_fee_data_map = array();
+        foreach ( $order_fee_item_map as $order_id => $fee_items ) {
+            foreach ( $fee_items as $fee_item_id => $item_data ) {
+                $fee_data = array(
+                    'name'       => ( isset( $item_data['order_item_name'] ) ? $item_data['order_item_name'] : '' ),
+                    'total'      => ( isset( $fee_item_meta[$fee_item_id]['_line_total'] ) ? floatval( $fee_item_meta[$fee_item_id]['_line_total'] ) : 0 ),
+                    'total_tax'  => ( isset( $fee_item_meta[$fee_item_id]['_line_tax'] ) ? floatval( $fee_item_meta[$fee_item_id]['_line_tax'] ) : 0 ),
+                    'taxable'    => ( isset( $fee_item_meta[$fee_item_id]['_tax_status'] ) ? $fee_item_meta[$fee_item_id]['_tax_status'] === 'taxable' : false ),
+                    'tax_status' => ( isset( $fee_item_meta[$fee_item_id]['_tax_status'] ) ? $fee_item_meta[$fee_item_id]['_tax_status'] : '' ),
+                );
+                $order_fee_data_map[$order_id][] = $fee_data;
+            }
+        }
+        // Prepare a static fee name to ID map to avoid repeated DB lookups
+        $fee_name_to_id = array();
+        foreach ( $order_fee_data_map as $order_id => $order_fee_data ) {
+            foreach ( $order_fee_data as $order_fee ) {
+                $fee_revenue = 0;
+                // 'name' can be object property or array key
+                $fee_name = '';
+                if ( $order_fee instanceof \WC_Order_Item_Fee ) {
+                    $fee_name = $order_fee->get_name();
+                    $fee_amount = floatval( $order_fee->get_total() );
+                    $is_fee_taxable = $order_fee->get_tax_status() === 'taxable';
+                    if ( $is_fee_taxable ) {
+                        $fee_amount += floatval( $order_fee->get_total_tax() );
+                    }
+                } elseif ( is_array( $order_fee ) ) {
+                    $fee_name = ( isset( $order_fee['name'] ) ? $order_fee['name'] : '' );
+                    $fee_amount = ( isset( $order_fee['total'] ) ? floatval( $order_fee['total'] ) : 0 );
+                    $is_fee_taxable = !empty( $order_fee['tax_status'] ) && $order_fee['tax_status'] === 'taxable';
+                    if ( $is_fee_taxable ) {
+                        $fee_amount += ( !empty( $order_fee['total_tax'] ) ? floatval( $order_fee['total_tax'] ) : 0 );
                     }
                 } else {
-                    if ( !empty( $order->get_fees() ) ) {
-                        foreach ( $order->get_fees() as $fee_id => $fee ) {
-                            $fee_revenue = 0;
-                            // Query to fetch fees ids by name
-                            $args = array(
-                                'post_type'      => 'wc_conditional_fee',
-                                'post_status'    => 'publish',
-                                'posts_per_page' => 1,
-                                'fields'         => 'ids',
-                                'title'          => $fee['name'],
-                            );
-                            $query = new WP_Query($args);
-                            $fee_post = '';
-                            if ( $query->have_posts() ) {
-                                $fee_post = $query->posts[0];
+                    $fee_name = ( isset( $order_fee->name ) ? $order_fee->name : '' );
+                    $fee_amount = ( !empty( $order_fee->total ) ? floatval( $order_fee->total ) : 0 );
+                    $is_fee_taxable = isset( $order_fee->taxable ) && $order_fee->taxable;
+                    if ( $is_fee_taxable ) {
+                        $fee_amount += ( isset( $order_fee->tax ) ? floatval( $order_fee->tax ) : 0 );
+                    }
+                }
+                // Map Fee Name to Fee ID (cache lookup)
+                if ( isset( $fee_name_to_id[$fee_name] ) ) {
+                    $fee_id = $fee_name_to_id[$fee_name];
+                } else {
+                    if ( is_numeric( $fee_name ) ) {
+                        $fee_id = intval( $fee_name );
+                        $fee_name_to_id[$fee_name] = $fee_id;
+                    } else {
+                        if ( !empty( $fee_name ) ) {
+                            // Only perform WP query once per unique name
+                            $fee_obj_id = 0;
+                            $existing_fee = get_page_by_path( $fee_name, OBJECT, 'wc_conditional_fee' );
+                            if ( !empty( $existing_fee ) && isset( $existing_fee->ID ) && $existing_fee->ID > 0 ) {
+                                $fee_obj_id = $existing_fee->ID;
                             }
-                            wp_reset_postdata();
-                            $fee_id = ( !empty( $fee_post ) ? $fee_post : 0 );
-                            if ( !empty( $sitepress ) ) {
-                                $fee_id = apply_filters(
-                                    'wpml_object_id',
-                                    $fee_id,
-                                    'product',
-                                    true,
-                                    $default_lang
-                                );
-                            }
-                            //$fee_id 0 will consider as other custom fees.
-                            if ( $fee['line_total'] > 0 ) {
-                                $fee_revenue += $fee['line_total'];
-                            }
-                            if ( $fee['line_tax'] > 0 ) {
-                                $fee_revenue += $fee['line_tax'];
-                            }
-                            if ( $fee_revenue >= 0 && array_key_exists( $fee_id, $fee_array ) ) {
-                                $fee_array[$fee_id] += $fee_revenue;
-                            } else {
-                                $fee_array[$fee_id] = $fee_revenue;
-                            }
+                            $fee_id = $fee_obj_id;
+                            $fee_name_to_id[$fee_name] = $fee_id;
+                        } else {
+                            $fee_id = 0;
                         }
+                    }
+                }
+                $fee_revenue = $fee_amount;
+                if ( $fee_id >= 0 ) {
+                    $fee_array[$fee_id]['fee_name'] = ( $fee_id > 0 ? array_search( $fee_id, $fee_name_to_id, true ) : 'Other Custom Fees' );
+                    if ( isset( $fee_array[$fee_id] ) && !empty( $fee_array[$fee_id]['fee_revenue'] ) ) {
+                        $fee_array[$fee_id]['fee_revenue'] += $fee_revenue;
+                    } else {
+                        $fee_array[$fee_id]['fee_revenue'] = $fee_revenue;
                     }
                 }
             }
@@ -1946,44 +2013,56 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      * @since 1.0.0
      *
      */
-    public function wcpfc_updated_message( $message, $validation_msg ) {
-        if ( empty( $message ) ) {
+    public function wcpfc_updated_message() {
+        $message = filter_input( INPUT_GET, 'message', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $validation_msg = filter_input( INPUT_GET, 'validation_msg', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        if ( empty( $message ) && empty( $validation_msg ) ) {
             return false;
         }
-        if ( 'created' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been created.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'saved' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been updated.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'deleted' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been deleted.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'duplicated' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been duplicated.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'disabled' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been disabled.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'enabled' === $message ) {
-            $updated_message = esc_html__( "Fee rule has been enabled.", 'woocommerce-conditional-product-fees-for-checkout' );
-        }
-        if ( 'failed' === $message ) {
-            $failed_messsage = esc_html__( "There was an error with saving data.", 'woocommerce-conditional-product-fees-for-checkout' );
-        } elseif ( 'nonce_check' === $message ) {
-            $failed_messsage = esc_html__( "There was an error with security check.", 'woocommerce-conditional-product-fees-for-checkout' );
-        }
-        if ( 'validated' === $message ) {
-            $validated_messsage = esc_html( $validation_msg );
-        } elseif ( 'exist' === $message ) {
-            $validated_messsage = esc_html__( "The fee rule title already exists. Please create a different title.", 'woocommerce-conditional-product-fees-for-checkout' );
+        $updated_message = $failed_messsage = $validated_messsage = array();
+        $message_array = explode( ',', $message );
+        foreach ( $message_array as $message_item ) {
+            if ( 'created' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been created.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'saved' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been updated.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'deleted' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been deleted.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'duplicated' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been duplicated.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'disabled' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been disabled.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'enabled' === $message_item ) {
+                $updated_message[] = esc_html__( "Fee rule has been enabled.", 'woocommerce-conditional-product-fees-for-checkout' );
+            }
+            if ( 'failed' === $message_item ) {
+                $failed_messsage[] = esc_html__( "There was an error with saving data.", 'woocommerce-conditional-product-fees-for-checkout' );
+            } elseif ( 'nonce_check' === $message_item ) {
+                $failed_messsage[] = esc_html__( "There was an error with security check.", 'woocommerce-conditional-product-fees-for-checkout' );
+            }
+            if ( 'validated' === $message_item ) {
+                $validated_messsage[] = esc_html( $validation_msg );
+            } elseif ( 'exist' === $message_item ) {
+                $validated_messsage[] = esc_html__( "The fee rule title already exists. Please create a different title.", 'woocommerce-conditional-product-fees-for-checkout' );
+            }
+            if ( 'checkoutwc' === $message_item ) {
+                $validated_messsage[] = esc_html__( "To ensure the Optional Fee module works correctly, please use the Classic WooCommerce Checkout while CheckoutWC is active.", 'woocommerce-conditional-product-fees-for-checkout' );
+            }
         }
         if ( !empty( $updated_message ) ) {
-            echo sprintf( '<div id="message" class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $updated_message ) );
-            return false;
+            foreach ( $updated_message as $message ) {
+                echo sprintf( '<div id="message" class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $message ) );
+            }
         }
         if ( !empty( $failed_messsage ) ) {
-            echo sprintf( '<div id="message" class="notice notice-error is-dismissible"><p>%s</p></div>', esc_html( $failed_messsage ) );
-            return false;
+            foreach ( $failed_messsage as $message ) {
+                echo sprintf( '<div id="message" class="notice notice-error is-dismissible"><p>%s</p></div>', esc_html( $message ) );
+            }
         }
         if ( !empty( $validated_messsage ) ) {
-            echo sprintf( '<div id="message" class="notice notice-error is-dismissible"><p>%s</p></div>', esc_html( $validated_messsage ) );
-            return false;
+            foreach ( $validated_messsage as $message ) {
+                echo sprintf( '<div id="message" class="notice notice-error is-dismissible"><p>%s</p></div>', esc_html( $message ) );
+            }
         }
     }
 
@@ -2563,6 +2642,15 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
      */
     function wcpfc_order_filter( $post_type, $which ) {
         if ( 'shop_order' !== $post_type ) {
+            return;
+        }
+        /**
+         * Filter to disable the WCPFC admin order fee title filter.
+         *
+         * @param bool $disabled Whether to disable the filter. Default is false.
+         * @since 4.2.0
+         */
+        if ( apply_filters( 'wcpfc_disabled_admin_order_fee_title_filter', false ) ) {
             return;
         }
         $wcpfc_fee_filter = filter_input( INPUT_GET, 'wcpfc_fee_filter', FILTER_VALIDATE_INT );

@@ -1290,5 +1290,6 @@
             let couponCode = $('.getting-started-discount-code').val();
             upgradeToProFreemius( couponCode );
         });
+
 	});
 })( jQuery );

@@ -243,6 +243,7 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
         $admin_object = new \Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin('', '');
         $default_lang = $admin_object->wcpfc_pro_get_default_langugae_with_sitpress();
         $cart_product_ids_array = wcpfc_pro_public()->wcpfc_pro_get_prd_var_id( $sitepress, $default_lang );
+        $cart_main_product_ids_array = wcpfc_pro_public()->wcpfc_pro_get_main_prd_id( $sitepress, $default_lang );
         $cart_array = wcpfc_pro_public()->wcpfc_pro_get_cart();
         $wc_curr_version = wcpfc_pro_public()->wcpfc_pro_get_woo_version_number();
         $get_condition_array = get_post_meta( $fees_id, 'product_fees_metabox', true );
@@ -287,7 +288,7 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
         }
         // Check if is brand exist
         if ( isset( $this->brand_array ) && !empty( $this->brand_array ) && is_array( $this->brand_array ) ) {
-            $brand_passed = wcpfc_pro_public()->wcpfc_pro_match_brand_rule__premium_only( $cart_product_ids_array, $this->brand_array, $this->cost_rule_match );
+            $brand_passed = wcpfc_pro_public()->wcpfc_pro_match_brand_rule__premium_only( $cart_main_product_ids_array, $this->brand_array, $this->cost_rule_match );
             if ( 'yes' === $brand_passed ) {
                 $is_passed['has_fee_based_on_brand'] = true;
             } else {
@@ -296,7 +297,7 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
         }
         // Check if is wlf_location exist (Custom Support #104847 - Location based fee)
         if ( isset( $this->wlf_location_array ) && !empty( $this->wlf_location_array ) && is_array( $this->wlf_location_array ) ) {
-            $wlf_location_passed = wcpfc_pro_public()->wcpfc_pro_match_wlf_location_rule__premium_only( $cart_product_ids_array, $this->wlf_location_array, $this->cost_rule_match );
+            $wlf_location_passed = wcpfc_pro_public()->wcpfc_pro_match_wlf_location_rule__premium_only( $cart_main_product_ids_array, $this->wlf_location_array, $this->cost_rule_match );
             if ( 'yes' === $wlf_location_passed ) {
                 $is_passed['has_fee_based_on_wlf_location'] = true;
             } else {
@@ -305,7 +306,7 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
         }
         // Check if is category exist
         if ( isset( $this->category_array ) && !empty( $this->category_array ) && is_array( $this->category_array ) ) {
-            $category_passed = wcpfc_pro_public()->wcpfc_pro_match_category_rule__premium_only( $cart_product_ids_array, $this->category_array, $this->cost_rule_match );
+            $category_passed = wcpfc_pro_public()->wcpfc_pro_match_category_rule__premium_only( $cart_main_product_ids_array, $this->category_array, $this->cost_rule_match );
             if ( 'yes' === $category_passed ) {
                 $is_passed['has_fee_based_on_category'] = true;
             } else {
@@ -314,7 +315,7 @@ class Woocommerce_Conditional_Product_Fees_Conditional_Rules {
         }
         // Check if is tag exist
         if ( isset( $this->tag_array ) && !empty( $this->tag_array ) && is_array( $this->tag_array ) ) {
-            $tag_passed = wcpfc_pro_public()->wcpfc_pro_match_tag_rule( $cart_product_ids_array, $this->tag_array, $this->cost_rule_match );
+            $tag_passed = wcpfc_pro_public()->wcpfc_pro_match_tag_rule( $cart_main_product_ids_array, $this->tag_array, $this->cost_rule_match );
             if ( 'yes' === $tag_passed ) {
                 $is_passed['has_fee_based_on_tag'] = true;
             } else {

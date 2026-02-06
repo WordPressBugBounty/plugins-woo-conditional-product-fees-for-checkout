@@ -224,6 +224,9 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                         if ( 'edit' === $action ) {
                             $message = 'saved';
                         }
+                        if ( (function_exists( 'cfw_output_fieldset' ) || is_plugin_active( 'checkoutwc-lite/checkout-for-woocommerce.php' ) || is_plugin_active( 'checkout-for-woocommerce/checkout-for-woocommerce.php' )) && 'yes' === $fee_settings_select_optional ) {
+                            $message .= ',checkoutwc';
+                        }
                         wp_safe_redirect( add_query_arg( array(
                             'page'    => 'wcpfc-pro-list',
                             'action'  => 'edit',
@@ -289,7 +292,12 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                 ), admin_url( 'admin.php' ) ) );
                 exit;
             } else {
-                self::$admin_object->wcpfc_updated_message( 'nonce_check', "" );
+                // Below redirect is used instead of self::$admin_object->wcpfc_updated_message( 'nonce_check', "" ); because it was not working as expected.
+                wp_safe_redirect( add_query_arg( array(
+                    'page'    => 'wcpfc-pro-list',
+                    'message' => 'nonce_check',
+                ), admin_url( 'admin.php' ) ) );
+                exit;
             }
         }
 
@@ -352,7 +360,12 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                 ), admin_url( 'admin.php' ) ) );
                 exit;
             } else {
-                self::$admin_object->wcpfc_updated_message( 'nonce_check', "" );
+                // Below redirect is used instead of self::$admin_object->wcpfc_updated_message( 'nonce_check', "" ); because it was not working as expected.
+                wp_safe_redirect( add_query_arg( array(
+                    'page'    => 'wcpfc-pro-list',
+                    'message' => 'nonce_check',
+                ), admin_url( 'admin.php' ) ) );
+                exit;
             }
         }
 
