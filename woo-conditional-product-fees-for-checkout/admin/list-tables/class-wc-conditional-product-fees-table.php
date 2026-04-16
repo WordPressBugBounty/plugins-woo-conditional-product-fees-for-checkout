@@ -547,9 +547,13 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 			if ( ! isset( $method_id_cb ) ) {
 				return;
 			}
-
-			$deletenonce = wp_verify_nonce( $delete_nonce, 'bulk-shippingmethods' );
-			if ( ! empty( $deletenonce ) && 1 !== $deletenonce ) {
+            // Defense in depth: only allow privileged users to bulk-modify fee rules.
+            if ( ! current_user_can( 'manage_options' ) ) {
+                return;
+            }
+            
+			// Enforce correct WP_List_Table bulk action nonce (same as wp_nonce_field( 'bulk-' . $this->_args['plural'] )).
+			if ( empty( $delete_nonce ) || ! wp_verify_nonce( $delete_nonce, 'bulk-' . $this->_args['plural'] ) ) {
 				return;
 			}
 

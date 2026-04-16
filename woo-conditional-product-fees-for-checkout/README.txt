@@ -8,7 +8,7 @@ Requires at least: 5.0
 Requires PHP: 7.2
 Tested up to: 6.9
 WC tested up to: 10.4.3
-Stable tag: 4.3.3
+Stable tag: 4.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,6 +293,9 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.3.4 - 16-04-2026 =
+* [Enhancement] - Security enhancement
+
 = 4.3.3 - 19-01-2026 =
 * [Enhancement] - CURCY Plugin compatibility
 * [Enhancement] - Upgrade to pro popup design update

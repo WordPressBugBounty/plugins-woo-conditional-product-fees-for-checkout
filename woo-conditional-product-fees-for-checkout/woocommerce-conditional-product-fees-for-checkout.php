@@ -4,7 +4,7 @@
  * Plugin Name:         Extra Fees for WooCommerce
  * Plugin URI:          https://www.thedotstore.com/woocommerce-conditional-product-fees-checkout/
  * Description:         With this plugin, you can create and manage complex fee rules in WooCommerce store without the help of a developer.
- * Version:             4.3.3
+ * Version:             4.3.4
  * Author:              theDotstore
  * Author URI:          https://www.thedotstore.com/
  * License:             GPL-2.0+
@@ -39,28 +39,29 @@ if ( function_exists( 'wcpffc_fs' ) ) {
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 // @phpstan-ignore-next-line
                 $wcpffc_fs = fs_dynamic_init( array(
-                    'id'              => '3390',
-                    'slug'            => 'woocommerce-conditional-product-fees-for-checkout',
-                    'type'            => 'plugin',
-                    'public_key'      => 'pk_d202bec45f41a5ae6b41399bde03f',
-                    'is_premium'      => false,
-                    'premium_suffix'  => 'Premium',
-                    'has_addons'      => false,
-                    'has_paid_plans'  => true,
-                    'trial'           => array(
+                    'id'               => '3390',
+                    'slug'             => 'woocommerce-conditional-product-fees-for-checkout',
+                    'type'             => 'plugin',
+                    'public_key'       => 'pk_d202bec45f41a5ae6b41399bde03f',
+                    'is_premium'       => false,
+                    'premium_suffix'   => 'Premium',
+                    'has_addons'       => false,
+                    'has_paid_plans'   => true,
+                    'trial'            => array(
                         'days'               => 14,
                         'is_require_payment' => true,
                     ),
-                    'has_affiliation' => 'selected',
-                    'menu'            => array(
+                    'has_affiliation'  => 'selected',
+                    'menu'             => array(
                         'slug'       => 'wcpfc-pro-list',
                         'first-path' => 'admin.php?page=wcpfc-pro-list',
                         'contact'    => false,
                         'support'    => false,
                         'network'    => true,
                     ),
-                    'is_live'         => true,
-                    'navigation'      => 'menu',
+                    'is_live'          => true,
+                    'navigation'       => 'menu',
+                    'is_org_compliant' => true,
                 ) );
             }
             return $wcpffc_fs;
@@ -78,7 +79,7 @@ if ( !defined( 'WCPFC_PRO_PLUGIN_BASENAME' ) ) {
     define( 'WCPFC_PRO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
 if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
-    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.3' );
+    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.4' );
 }
 /**
  * Hide freemius account tab
