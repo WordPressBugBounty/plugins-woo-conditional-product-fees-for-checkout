@@ -426,6 +426,30 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
             esc_html_e( 'Product Fees', 'woocommerce-conditional-product-fees-for-checkout' );
             ?></h1>
                             <?php 
+            if ( function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported() && function_exists( 'wcpfc_should_show_bestfit_ai_connector_notice' ) && wcpfc_should_show_bestfit_ai_connector_notice() ) {
+                $ai_settings_url = ( function_exists( 'wcpfc_get_ai_settings_url' ) ? wcpfc_get_ai_settings_url() : admin_url( 'options-connectors.php' ) );
+                $dismiss_url = wp_nonce_url( add_query_arg( 'wcpfc-hide-bestfit-ai-notice', 'wcpfc-hide-bestfit-ai' ), 'wcpfc_bestfit_ai_notice_nonce', '_wcpfc_bestfit_ai_notice_nonce' );
+                ?>
+                                <div class="notice notice-warning is-dismissible wcpfc-bestfit-ai-notice">
+                                    <a class="notice-dismiss" href="<?php 
+                echo esc_url( $dismiss_url );
+                ?>">
+                                        <span class="screen-reader-text"><?php 
+                esc_html_e( 'Dismiss this notice.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></span>
+                                    </a>
+                                    <p>
+                                        <?php 
+                printf( 
+                    /* translators: %s: link to AI connectors settings */
+                    esc_html__( 'To use the AI Suggested Fee new feature, you required to activate AI plugin and configure any one Provider (Anthropic, Google, OpenAI). %s', 'woocommerce-conditional-product-fees-for-checkout' ),
+                    '<a href="' . esc_url( $ai_settings_url ) . '">' . esc_html__( 'Configure Now', 'woocommerce-conditional-product-fees-for-checkout' ) . '</a>'
+                 );
+                ?>
+                                    </p>
+                                </div>
+                                <?php 
+            }
             if ( !(wcpffc_fs()->is__premium_only() && wcpffc_fs()->can_use_premium_code()) ) {
                 $valid_rules = get_option( 'wcpfc_limited_allowed_rules', '' );
                 if ( !empty( $valid_rules ) && intval( $valid_rules ) >= 10 ) {
@@ -452,6 +476,25 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                 ?></a>
                                 <?php 
             }
+            $show_best_fit = function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported();
+            if ( $show_best_fit ) {
+                $can_best_fit = function_exists( 'wcpfc_can_use_best_fit' ) && wcpfc_can_use_best_fit();
+                $best_fit_btn_class = 'page-title-action button';
+                ?>
+                                <button type="button" class="<?php 
+                echo esc_attr( $best_fit_btn_class );
+                ?>" id="wcpfc_find_best_fits_btn"<?php 
+                echo ( $can_best_fit ? '' : ' data-locked="1"' );
+                ?>>
+                                <?php 
+                if ( !$can_best_fit ) {
+                    echo '<span class="wcpfc-pro-label"></span>';
+                }
+                esc_html_e( '  ✨ AI Suggested Fee', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                                </button>
+                                <?php 
+            }
             $request_s = filter_input( INPUT_GET, 's', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
             if ( isset( $request_s ) && !empty( $request_s ) ) {
                 /* translators: %s: searched term */
@@ -468,6 +511,123 @@ if ( !class_exists( 'WCPFC_Rule_Listing_Page' ) ) {
                     </div>
                 </form>
             </div>
+            <?php 
+            if ( function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported() && function_exists( 'wcpfc_can_use_best_fit' ) && wcpfc_can_use_best_fit() ) {
+                ?>
+                <div id="wcpfc-bestfit-modal" class="wcpfc-bestfit-modal" title="<?php 
+                esc_attr_e( '✨ AI Suggested Fee', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>" style="display:none;">
+                    <div class="wcpfc-bestfit-loading">
+                        <p class="wcpfc-bestfit-loading-note">
+                            <?php 
+                esc_html_e( 'We are analyzing your WooCommerce store to find fee opportunities based on real order patterns, catalog data, and checkout behavior.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                        </p>
+                        <p class="wcpfc-bestfit-scan-stats" aria-live="polite"></p>
+                        <div class="wcpfc-bestfit-scan-progress">
+                            <div class="wcpfc-bestfit-scan-status-pill" aria-live="polite">
+                                <span class="wcpfc-bestfit-btn-spinner" aria-hidden="true"></span>
+                                <span class="wcpfc-bestfit-scan-status-text"><?php 
+                esc_html_e( 'Preparing store analysis…', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></span>
+                            </div>
+                            <div class="wcpfc-bestfit-scan-bar-wrap">
+                                <div class="wcpfc-bestfit-scan-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <span class="wcpfc-bestfit-scan-bar-fill"></span>
+                                </div>
+                                <span class="wcpfc-bestfit-scan-bar-percent">0%</span>
+                            </div>
+                        </div>
+                        <div class="wcpfc-bestfit-scan" aria-live="polite" aria-busy="true">
+                            <div class="wcpfc-bestfit-scan-viewport">
+                                <ul class="wcpfc-bestfit-scan-steps"></ul>
+                            </div>
+                        </div>
+                        <p class="wcpfc-bestfit-loading-privacy-note">
+                            <strong><?php 
+                esc_html_e( 'Privacy & performance', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></strong>
+                            <?php 
+                esc_html_e( 'Your store data is analyzed securely on your server for fast performance. When an AI provider is connected, only the required order and product data is shared with the provider to generate personalized fee recommendations. Analysis typically completes within seconds, with no page refresh required.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                        </p>
+                    </div>
+                    <div class="wcpfc-bestfit-content" style="display:none;">
+                        <p class="wcpfc-bestfit-summary"></p>
+                        <div class="wcpfc-bestfit-suggestions"></div>
+                        <div class="wcpfc-bestfit-revenue-totals" style="display:none;">
+                            <h3 class="wcpfc-bestfit-revenue-title"><?php 
+                esc_html_e( 'Estimated Additional Revenue Opportunity', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></h3>
+                            <p class="wcpfc-bestfit-revenue-desc"><?php 
+                esc_html_e( 'If you implement all the recommended fees, here\'s the estimated additional revenue your store could generate based on your analyzed order history.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></p>
+                            <div class="wcpfc-bestfit-revenue-stats">
+                                <div class="wcpfc-bestfit-revenue-stat">
+                                    <span class="wcpfc-bestfit-revenue-stat-icon dashicons dashicons-chart-bar" aria-hidden="true"></span>
+                                    <div class="wcpfc-bestfit-revenue-stat-body">
+                                        <span class="wcpfc-bestfit-revenue-stat-label"><?php 
+                esc_html_e( 'Est. monthly revenue', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></span>
+                                        <strong class="wcpfc-bestfit-revenue-monthly-value">—</strong>
+                                    </div>
+                                </div>
+                                <div class="wcpfc-bestfit-revenue-stat">
+                                    <span class="wcpfc-bestfit-revenue-stat-icon dashicons dashicons-chart-line" aria-hidden="true"></span>
+                                    <div class="wcpfc-bestfit-revenue-stat-body">
+                                        <span class="wcpfc-bestfit-revenue-stat-label"><?php 
+                esc_html_e( 'Est. 3-month revenue', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></span>
+                                        <strong class="wcpfc-bestfit-revenue-three-value">—</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wcpfc-bestfit-modal-actions">
+                                <button type="button" class="button button-primary" id="wcpfc_bestfit_draft_all">
+                                    <span class="wcpfc-bestfit-draft-all-label"><?php 
+                esc_html_e( 'Draft all fee', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></span>
+                                </button>
+                                <p class="wcpfc-bestfit-draft-all-status" style="display:none;" aria-live="polite"></p>
+                            </div>
+                        </div>
+                        <div class="wcpfc-bestfit-confidence-legend">
+                            <p>
+                                <span class="wcpfc-bestfit-card-dot wcpfc-bestfit-card-dot--strong" aria-hidden="true"></span>
+                                <?php 
+                esc_html_e( 'Green dot — It showcase the strong signal from your analyzed store data; so, you can trust the conditions.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                            </p>
+                            <p>
+                                <span class="wcpfc-bestfit-card-dot wcpfc-bestfit-card-dot--moderate" aria-hidden="true"></span>
+                                <?php 
+                esc_html_e( 'Yellow dot — It showcase the moderate signal from your analyzed store data; so, review the conditions carefully.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                            </p>
+                        </div>
+                        <div class="wcpfc-bestfit-footer-notes">
+                            <p class="wcpfc-bestfit-footer-note">
+                                <strong><?php 
+                esc_html_e( 'Draft by default', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?></strong>
+                                <?php 
+                esc_html_e( 'Each fee is created with conditions pre-filled and status set to inactive (Draft). Nothing goes live automatically—you review and activate on your own terms. No risk, no surprises.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                            </p>
+                        </div>
+                        <p class="wcpfc-bestfit-disclaimer">
+                            <?php 
+                esc_html_e( 'Review fees for legal, tax, and customer-impact requirements before publishing.', 'woocommerce-conditional-product-fees-for-checkout' );
+                ?>
+                        </p>
+                    </div>
+                    <div class="wcpfc-bestfit-error" style="display:none;"></div>
+                </div>
+                <?php 
+            } elseif ( function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported() && function_exists( 'wcpfc_can_use_best_fit' ) && !wcpfc_can_use_best_fit() ) {
+                require_once plugin_dir_path( __FILE__ ) . 'wcpfc-bestfit-free-popup.php';
+            }
+            ?>
             </div>
             </div>
             </div>

@@ -202,29 +202,9 @@
 
 	/** Script for Freemius upgrade popup */
     function upgradeToProFreemius( couponCode ) {
-        let handler;
-        handler = new FS.Checkout({
-            plugin_id: '3390',
-            plan_id: '5474',
-            public_key:'pk_9edf804dccd14eabfd00ff503acaf',
-            image: 'https://www.thedotstore.com/wp-content/uploads/sites/1417/2023/09/WooCommerce-Extra-Fees-Banner-New.png',
-            coupon: couponCode,
-            hide_coupon: true, // For security reasons, we recommend setting this to true. So no one can know the coupon code.
-            show_reviews: true,
-            show_refund_badge: true,
-            always_show_renewals_amount: true,
-        });
-        handler.open({
-            name: 'WooCommerce Extra Fees Plugin',
-            subtitle: 'You’re a step closer to our Pro features',
-            licenses: jQuery('input[name="licence"]:checked').val(),
-            purchaseCompleted: function( response ) {
-                console.log (response);
-            },
-            success: function (response) {
-                console.log (response);
-            }
-        });
+        if ( typeof window.wcpfcOpenFreemiusCheckout === 'function' ) {
+            window.wcpfcOpenFreemiusCheckout( couponCode );
+        }
     }
 
 	// show loader after 2 seconds
@@ -379,16 +359,28 @@
 		function get_all_condition() {
 			return [
 				{
-					'type': 'optgroup',
-					'attributes': { 'label': coditional_vars.location_specific },
-					'options': [
-						{ 'name': coditional_vars.country, 'attributes': { 'value': 'country' } },
-						{ 'name': coditional_vars.city, 'attributes': { 'value': 'city' } },
-						{ 'name': coditional_vars.state_disabled, 'attributes': {'value': 'state_disabled'} },
-						{ 'name': coditional_vars.postcode_disabled, 'attributes': {'value': 'postcode_disabled'} },
-						{ 'name': coditional_vars.zone_disabled, 'attributes': {'value': 'zone_disabled'} },
-					]
-				},
+    'type': 'optgroup',
+    'attributes': { 'label': coditional_vars.location_specific },
+    'options': [
+        { 'name': coditional_vars.country, 'attributes': { 'value': 'country' } },
+        { 'name': coditional_vars.city, 'attributes': { 'value': 'city' } },
+
+        {
+            'name': coditional_vars.state_disabled.replace( /🔒/g, '' ).trim() + ' 🔒\uFE0E',
+            'attributes': { 'value': 'state_disabled' }
+        },
+
+        {
+            'name': coditional_vars.postcode_disabled.replace( /🔒/g, '' ).trim() + ' 🔒\uFE0E',
+            'attributes': { 'value': 'postcode_disabled' }
+        },
+
+        {
+            'name': coditional_vars.zone_disabled.replace( /🔒/g, '' ).trim() + ' 🔒\uFE0E',
+            'attributes': { 'value': 'zone_disabled' }
+        },
+    ]
+},
 				{
 					'type': 'optgroup',
 					'attributes': { 'label': coditional_vars.product_specific },

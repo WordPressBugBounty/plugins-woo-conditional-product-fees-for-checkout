@@ -1,14 +1,14 @@
 === Extra Fees for WooCommerce ===
-Contributors: dots,kakshak,dency,jariwalasagar
+Contributors: dots,kakshak,dency,jariwalasagar, freemius
 Donate link: http://thedotstore.com/
 Author: Thedotstore
 Author URI: https://www.thedotstore.com/
 Tags: Extra Fees, Additional fee, Custom fee, Extra Fees Rules, Extra Charge
 Requires at least: 5.0
 Requires PHP: 7.2
-Tested up to: 6.9
-WC tested up to: 10.4.3
-Stable tag: 4.3.4
+Tested up to: 7.0.4
+WC tested up to: 11.0.1
+Stable tag: 4.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,7 +96,9 @@ Embrace the WooCommerce Extra Fees Plugin and give your store the flexibility it
 Upgrade to <a href ="https://bit.ly/3qiftwQ" target="_blank">Extra Fees Plugin PRO</a> to get all the advanced features.
 
 <ul>
-<li>Toggle Extra Fees (Enable/Disable)</li>
+<li>🆕 <a href ="https://docs.thedotstore.com/article/1519-how-to-use-ai-suggested-fee-in-woocommerce/" target="_blank">AI-Powered Smart Fee Recommendations</a> – Analyzes your WooCommerce store data and suggests relevant fee opportunities based on orders, products, and purchasing patterns.</li>
+<li>🆕 Data-Driven Fee Setup & Revenue Estimates – Recommends fee amounts and conditions with confidence scores and estimated additional revenue potential.</li>
+<li>🆕 One-Click Fee Draft Creation – Turn AI recommendations into pre-configured draft fee rules, ready for review and activation.</li>
 <li><a href ="https://www.thedotstore.com/how-to-add-multiple-extra-fees-for-woocommerce-order/" target="_blank">Manage Multiple WooCommerce Extra Fees</a></li>
 <li>Create or Remove Extra Fees from the Backend</li>
 <li>Flexible Charging: Fixed or Percentage</li>
@@ -293,6 +295,10 @@ Automatic updates should work great for you.  As always, though, we recommend ba
 16.
 
 == Changelog ==
+= 4.4.0 - 17-08-2026 =
+* [Enhancement] - Compatible with WooCommerce 11.x
+* [Enhancement] - Compatible with WordPress 7.x
+
 = 4.3.4 - 16-04-2026 =
 * [Enhancement] - Security enhancement
 

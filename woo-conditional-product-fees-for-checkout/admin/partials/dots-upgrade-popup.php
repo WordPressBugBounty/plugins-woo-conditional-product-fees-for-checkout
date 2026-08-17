@@ -29,48 +29,22 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
     
     $discount_number = isset( $final_discount['discount'] ) ? $final_discount['discount'] : '';
     $discount_coupon = isset( $final_discount['coupon'] ) ? $final_discount['coupon'] : '';
+    $discount_expiry = isset( $final_discount['expiry'] ) ? $final_discount['expiry'] : '';
+
+    // If the expiry has already passed, don't show a dead discount at all.
+    if ( ! empty( $discount_expiry ) ) {
+        $expiry_timestamp = strtotime( $discount_expiry . ' 23:59:59 UTC' );
+
+        if ( $expiry_timestamp !== false && $expiry_timestamp < current_time( 'timestamp', true ) ) {
+            $discount_number = 0;
+            $discount_coupon = '';
+            $discount_expiry = '';
+        }
+    }
 }
 ?>
 <!-- Upgrade to pro plugin popup -->
 <input type="hidden" class="upgrade-to-pro-discount-code" value="<?php echo esc_attr( $discount_coupon ); ?>" >
-<!-- <div class="upgrade-to-pro-modal-main">
-    <div class="upgrade-to-pro-modal-outer">
-        <div class="pro-modal-inner">
-            <div class="pro-modal-wrapper">
-                <div class="pro-modal-header">
-                    <img src="<?php echo esc_url( WCPFC_PRO_PLUGIN_URL . 'admin/images/premium-upgrade-img/upgrade-rocket-img.png' ); ?>" alt="<?php esc_attr_e( 'Upgrade to Pro', 'woocommerce-conditional-product-fees-for-checkout' ); ?>">
-                    <span class="dashicons dashicons-no-alt modal-close-btn"></span>
-                </div>
-                <div class="pro-modal-body">
-                    <?php 
-                    if ( ! empty( $discount_number ) ) {
-                        ?>
-                        <h3 class="pro-feature-title"><?php 
-                        /* translators: %d: number of percentage discount */
-                        echo sprintf( esc_html__( 'Unlock Premium Features with a %s%% Discount!', 'woocommerce-conditional-product-fees-for-checkout' ), esc_html( $discount_number ) ); 
-                        ?></h3>
-                        <?php
-                    } else {
-                        ?>
-                        <h3 class="pro-feature-title"><?php echo esc_html__( 'Unlock Premium Features Today!', 'woocommerce-conditional-product-fees-for-checkout' ); ?></h3>
-                        <?php
-                    }
-                    ?>
-                    <p><?php esc_html_e( 'Unlock a world of possibilities for your WooCommerce store with our Premium Extra Fees plugin!', 'woocommerce-conditional-product-fees-for-checkout' ); ?></p>
-                    <ul class="pro-feature-list">
-                        <li><?php esc_html_e( 'Set up unlimited conditional dynamic fees and increase revenue.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
-                        <li><?php esc_html_e( 'Create advanced fee rules by product, cart subtotal, and more.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
-                        <li><?php esc_html_e( 'Set the dynamic fee at checkout based on state, postal code, etc.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
-                        <li><?php esc_html_e( 'Develop a revenue strategy by analyzing top fees with pie charts.', 'woocommerce-conditional-product-fees-for-checkout' ); ?></li>
-                    </ul>
-                </div>
-                <div class="pro-modal-footer">
-                    <a class="pro-feature-trial-btn upgrade-now" target="_blank" href="javascript:void(0);"><?php esc_html_e( 'Upgrade Now', 'woocommerce-conditional-product-fees-for-checkout' ); ?></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <div class="upgrade-to-pro-modal-main upgrade-to-pro-modal-new">
     <div class="upgrade-to-pro-modal-outer">
@@ -78,6 +52,13 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
             <div class="pro-modal-wrapper">
                 <div class="pro-modal-header">
                     <?php 
+                    if ( ! empty( $discount_expiry ) ) {
+                        ?>
+                        <div class="pro-modal-expiry-wrapper">
+                            <span class="pro-modal-expiry-label"><?php echo esc_html__( '⚡ Limited-time Offer', 'woocommerce-conditional-product-fees-for-checkout' ); ?></span>
+                        </div>
+                        <?php
+                    }
                     if ( ! empty( $discount_number ) ) {
                         ?>
                         <h3 class="pro-feature-title"><?php 
@@ -113,7 +94,18 @@ if ( ! is_wp_error( $get_discounts ) && ( 200 === wp_remote_retrieve_response_co
                     </div>
                 </div>
                 <div class="pro-modal-content-footer">
-                    <span class="modal-close-btn"><?php esc_html_e( 'No thanks, I\'m not interested', 'woocommerce-conditional-product-fees-for-checkout' ); ?></span>
+                     <?php if ( ! empty( $discount_expiry ) ) { ?>
+                        <div class="pro-modal-expiry-wrapper">
+                            <p class="pro-modal-expiry-text">
+                                <strong><?php echo esc_html__( '⏱️ Offer ends on:', 'woocommerce-conditional-product-fees-for-checkout' ); ?></strong> <?php echo esc_html( gmdate( 'F j, Y', strtotime( $discount_expiry ) ) ); ?>
+                            </p>
+                        </div>
+                    <?php } else {
+                        ?><div class="pro-modal-expiry-wrapper"></div><?php
+                    } ?>
+                    <div class="footer-close-btn">
+                        <span class="modal-close-btn"><?php esc_html_e( 'No thanks, I\'m not interested', 'woocommerce-conditional-product-fees-for-checkout' ); ?></span>
+                    </div>
                 </div>
             </div>
         </div>

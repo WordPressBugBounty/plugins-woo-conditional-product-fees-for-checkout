@@ -4,7 +4,7 @@
  * Plugin Name:         Extra Fees for WooCommerce
  * Plugin URI:          https://www.thedotstore.com/woocommerce-conditional-product-fees-checkout/
  * Description:         With this plugin, you can create and manage complex fee rules in WooCommerce store without the help of a developer.
- * Version:             4.3.4
+ * Version:             4.4.0
  * Author:              theDotstore
  * Author URI:          https://www.thedotstore.com/
  * License:             GPL-2.0+
@@ -15,8 +15,8 @@
  *
  * 
  * WC requires at least:5.0
- * WP tested up to:     6.9
- * WC tested up to:     10.4.3
+ * WP tested up to:     7.0
+ * WC tested up to:     11.0.1
  * Requires PHP:        7.2
  * Requires at least:   5.0
  */
@@ -54,7 +54,7 @@ if ( function_exists( 'wcpffc_fs' ) ) {
                     'has_affiliation'  => 'selected',
                     'menu'             => array(
                         'slug'       => 'wcpfc-pro-list',
-                        'first-path' => 'admin.php?page=wcpfc-pro-list',
+                        'first-path' => 'admin.php?page=wcpfc-pro-list&send-wizard-data=true',
                         'contact'    => false,
                         'support'    => false,
                         'network'    => true,
@@ -79,7 +79,7 @@ if ( !defined( 'WCPFC_PRO_PLUGIN_BASENAME' ) ) {
     define( 'WCPFC_PRO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
 if ( !defined( 'WCPFC_PRO_PLUGIN_VERSION' ) ) {
-    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.3.4' );
+    define( 'WCPFC_PRO_PLUGIN_VERSION', '4.4.0' );
 }
 /**
  * Hide freemius account tab
@@ -347,3 +347,6 @@ add_action( 'before_woocommerce_init', function () {
         \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
     }
 } );
+if ( function_exists( 'wcpfc_is_bestfit_ai_available' ) ) {
+    wcpfc_is_bestfit_ai_available();
+}

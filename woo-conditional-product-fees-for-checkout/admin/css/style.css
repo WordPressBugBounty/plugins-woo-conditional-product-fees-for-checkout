@@ -322,7 +322,11 @@ ul.tabs li.current{background:#ededed;color:#222;}
 /** Cost on per weight CSS start */
 .wcpfc_custom_weight_base,.wcpfc_custom_qty_base{margin-bottom:25px;}
 .wcpfc_custom_weight_base .title,.wcpfc_custom_qty_base .title{float:left;margin-right:10px;font-weight:600;min-width:110px;}
-.wcpfc-section-left .product-fee-table tr td input[type=checkbox]{width:18px!important;height:18px;}
+.wcpfc-section-left tr td input[type=checkbox]{width:18px!important;height:18px;background: #fff;}
+.wcpfc-section-left tr td input[type=checkbox]:checked{border-color: #27ae60;}
+
+.wcpfc-section-left tr td input[type=radio] { width: 18px!important; height: 18px; background: #fff;}
+.wcpfc-section-left tr td input[type=radio]:checked { border-color: #27ae60;}
 .wcpfc-new-feture{vertical-align:middle;color:red;font-weight:700;}
 #dotsstoremain .notice,#dotsstoremain #message{margin:0 0 24px;}
 /** Cost on per weight CSS end */
@@ -412,7 +416,7 @@ a.dotstore-upgrade:hover{background:#87c852;transform:scale(1.1);}
 .dotstore_plugin_sidebar .content_box h3{margin:20px 0;}
 .dotstore_plugin_sidebar .content_box{text-align:center;padding:0 14px;}
 .dotstore_plugin_sidebar .content_box a.btn_style{background-color:#0085ba;PADDING:10px;border-radius:4px;margin-bottom:10px;display:inline-block;color:#fff;font-weight:600;}
-
+.wcpfc-main-table select { line-height: 2;}
 /* star rating css */
 .et-star-rating{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse;font-size:1.5em;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:0 .2em;text-align:center;}
 .et-star-rating-lnk{color:#23282d;}

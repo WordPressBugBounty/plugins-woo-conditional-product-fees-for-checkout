@@ -887,15 +887,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         if ( !empty( $order->get_fees() ) ) {
             $extra_fee_arr = array();
             foreach ( $order->get_fees() as $fee_detail ) {
-                $fees_id = ( $fee_detail instanceof \WC_Order_Item_Fee ? $fee_detail->get_name() : $fee_detail->name );
-                if ( !is_numeric( $fees_id ) ) {
-                    $fee_obj = get_page_by_path( $fees_id, OBJECT, 'wc_conditional_fee' );
-                    // phpcs:ignore
-                    if ( !empty( $fee_obj ) && isset( $fee_obj->ID ) && $fee_obj->ID > 0 ) {
-                        $fees_id = $fee_obj->ID;
-                    }
-                }
-                $fees_id = ( !empty( $fees_id ) ? intval( $fees_id ) : 0 );
+                $fee_name = ( $fee_detail instanceof \WC_Order_Item_Fee ? $fee_detail->get_name() : $fee_detail->name );
+                $fees_id = $this->wcpfc_fee_id_from_name( $fee_name );
                 $fee_amount = 0;
                 wc_get_logger()->info( 'ORDER: Fee ID: ' . $fees_id . ' for Order ID:' . $order->get_id() );
                 if ( $fees_id > 0 ) {
@@ -944,14 +937,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
                 $extra_fee_arr = array();
                 foreach ( $order->get_fees() as $fee_detail ) {
                     $fees_name = ( !empty( $fee_detail->get_name() ) ? $fee_detail->get_name() : '' );
-                    $fees_id = 0;
-                    if ( !empty( $fees_name ) ) {
-                        $fee_obj = get_page_by_title( $fees_name, OBJECT, 'wc_conditional_fee' );
-                        // phpcs:ignore
-                        if ( !empty( $fee_obj ) && isset( $fee_obj->ID ) && $fee_obj->ID > 0 ) {
-                            $fees_id = $fee_obj->ID;
-                        }
-                    }
+                    $fees_id = $this->wcpfc_fee_id_from_name( $fees_name );
                     $fee_amount = 0;
                     if ( $fees_id > 0 ) {
                         $fee_revenue = ( get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) ? get_post_meta( $fees_id, '_wcpfc_fee_revenue', true ) : 0 );
@@ -2899,25 +2885,41 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Public {
         if ( empty( $fee_name ) ) {
             return 0;
         }
-        // This will return latest fee if fond same fee name found
-        $fee_args = new WP_Query(array(
-            'post_type'              => 'wc_conditional_fee',
-            'title'                  => $fee_name,
-            'post_status'            => 'publish',
-            'posts_per_page'         => 1,
-            'no_found_rows'          => true,
-            'ignore_sticky_posts'    => true,
-            'update_post_term_cache' => false,
-            'update_post_meta_cache' => false,
-            'orderby'                => 'post_date',
-            'order'                  => 'DESC',
-        ));
-        $fee_object = null;
-        if ( !empty( $fee_args->post ) ) {
-            $fee_object = $fee_args->post;
+        if ( is_numeric( $fee_name ) ) {
+            return absint( $fee_name );
         }
-        $fee_id = ( (int) isset( $fee_object->ID ) && !empty( $fee_object->ID ) ? $fee_object->ID : 0 );
-        return $fee_id;
+        $fee_name = wp_strip_all_tags( (string) $fee_name );
+        $candidates = array($fee_name);
+        $decoded = html_entity_decode( $fee_name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        if ( $decoded !== $fee_name ) {
+            $candidates[] = $decoded;
+        }
+        $candidates = array_unique( array_filter( array_map( 'trim', $candidates ) ) );
+        foreach ( $candidates as $candidate_name ) {
+            // Match by post title (order fee items store the fee title, not the slug).
+            $fee_args = new WP_Query(array(
+                'post_type'              => 'wc_conditional_fee',
+                'title'                  => $candidate_name,
+                'post_status'            => array('publish', 'draft'),
+                'posts_per_page'         => 1,
+                'no_found_rows'          => true,
+                'ignore_sticky_posts'    => true,
+                'update_post_term_cache' => false,
+                'update_post_meta_cache' => false,
+                'orderby'                => 'post_date',
+                'order'                  => 'DESC',
+            ));
+            if ( !empty( $fee_args->post ) && !empty( $fee_args->post->ID ) ) {
+                return (int) $fee_args->post->ID;
+            }
+            // Fallback: sanitized slug lookup (get_page_by_path expects post_name).
+            $fee_by_path = get_page_by_path( sanitize_title( $candidate_name ), OBJECT, 'wc_conditional_fee' );
+            // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_path_get_page_by_path
+            if ( !empty( $fee_by_path ) && !empty( $fee_by_path->ID ) ) {
+                return (int) $fee_by_path->ID;
+            }
+        }
+        return 0;
     }
 
     /**

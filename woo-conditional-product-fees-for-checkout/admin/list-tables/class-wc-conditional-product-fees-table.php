@@ -320,9 +320,25 @@ if ( ! class_exists( 'WC_Conditional_product_Fees_Table' ) ) {
 				'id'   => $item->ID,
 			), admin_url( 'admin.php' ) );
 
-			$method_name = '<strong>
-                            <a href="' . esc_url( $editurl ) . '" class="row-title">' . esc_html( $item->post_title ) . '</a>
-                        </strong>';
+			$method_name = '<span class="wcpfc-fee-title-wrap"><strong>' .
+				'<a href="' . esc_url( $editurl ) . '" class="row-title">' . esc_html( $item->post_title ) . '</a>';
+
+			if ( function_exists( 'wcpfc_is_bestfit_fee' ) && wcpfc_is_bestfit_fee( $item->ID ) ) {
+				$method_name .= sprintf(
+					' <span class="wcpfc-bestfit-tag" title="%1$s">' .
+						'<span class="wcpfc-bestfit-tag-label">%2$s</span>' .
+						'<button type="button" class="wcpfc-bestfit-tag-remove" data-fee-id="%3$d" title="%4$s" aria-label="%4$s">' .
+							'<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>' .
+						'</button>' .
+					'</span>',
+					esc_attr__( 'This fee was suggested by AI Suggested Fee.', 'woocommerce-conditional-product-fees-for-checkout' ),
+					esc_html__( '✨ AI Suggested', 'woocommerce-conditional-product-fees-for-checkout' ),
+					(int) $item->ID,
+					esc_attr__( 'Remove AI tag', 'woocommerce-conditional-product-fees-for-checkout' )
+				);
+			}
+
+			$method_name .= '</strong></span>';
 
 			return wp_kses( $method_name, self::$wcpfc_object->allowed_html_tags() );
 		}

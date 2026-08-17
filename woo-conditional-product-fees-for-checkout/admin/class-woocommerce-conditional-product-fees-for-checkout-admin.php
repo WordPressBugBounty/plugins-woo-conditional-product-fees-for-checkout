@@ -141,10 +141,23 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             );
             wp_enqueue_script(
                 $this->plugin_name . '-freemius_pro',
-                'https://checkout.freemius.com/js/v1/',
+                'https://checkout.freemius.com/js/v1/checkout.global.js',
                 array('jquery'),
-                $this->version,
+                null,
                 true
+            );
+            wp_enqueue_script(
+                $this->plugin_name . '-freemius-checkout',
+                plugin_dir_url( __FILE__ ) . 'js/wcpfc-freemius-checkout.js',
+                array('jquery', $this->plugin_name . '-freemius_pro'),
+                filemtime( plugin_dir_path( __FILE__ ) . 'js/wcpfc-freemius-checkout.js' ),
+                true
+            );
+            add_filter(
+                'script_loader_tag',
+                array($this, 'wcpfc_freemius_checkout_script_tag'),
+                10,
+                3
             );
             wp_enqueue_script(
                 $this->plugin_name . '-help-scout-beacon-js',
@@ -161,11 +174,116 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                     'jquery-ui-dialog',
                     'jquery-ui-accordion',
                     'jquery-ui-sortable',
-                    'select2'
+                    'select2',
+                    $this->plugin_name . '-freemius-checkout'
                 ),
-                $this->version,
-                false
+                filemtime( plugin_dir_path( __FILE__ ) . 'js/woocommerce-conditional-product-fees-for-checkout-admin.js' ),
+                true
             );
+            $bestfit_supported = function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported();
+            if ( $bestfit_supported && (false !== strpos( $hook, 'wcpfc-pro-list' ) || false !== strpos( $hook, 'wcpfc-pro-dashboard' )) ) {
+                wp_enqueue_style(
+                    $this->plugin_name . '-bestfit-fees',
+                    plugin_dir_url( __FILE__ ) . 'css/wcpfc-bestfit-fees.css',
+                    array(),
+                    $this->version
+                );
+            }
+            if ( $bestfit_supported && false !== strpos( $hook, 'wcpfc-pro-list' ) ) {
+                wp_enqueue_script( 'wp-api-fetch' );
+                wp_enqueue_script(
+                    $this->plugin_name . '-bestfit-fees',
+                    plugin_dir_url( __FILE__ ) . 'js/wcpfc-bestfit-fees.js',
+                    array(
+                        'jquery',
+                        'jquery-ui-dialog',
+                        'wp-api-fetch',
+                        $this->plugin_name . '-freemius-checkout'
+                    ),
+                    $this->version,
+                    true
+                );
+                wp_localize_script( $this->plugin_name . '-bestfit-fees', 'wcpfcBestfit', array(
+                    'canUseBestFit'  => function_exists( 'wcpfc_can_use_best_fit' ) && wcpfc_can_use_best_fit(),
+                    'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+                    'removeTagNonce' => wp_create_nonce( 'wcpfc_remove_bestfit_tag' ),
+                    'abilities'      => array(
+                        'scan'    => WCPFC_Bestfit_Abilities::ABILITY_SCAN,
+                        'suggest' => WCPFC_Bestfit_Abilities::ABILITY_SUGGEST,
+                        'drafts'  => WCPFC_Bestfit_Abilities::ABILITY_DRAFTS,
+                    ),
+                    'i18n'           => array(
+                        'close'                    => esc_html__( 'Close', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'error'                    => esc_html__( 'Could not analyze the store. To use the AI Suggested Fee new feature, please make sure to configure any one AI Providers.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'noSuggestions'            => esc_html__( 'No suggestions could be generated.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'amount'                   => esc_html__( 'Amount', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'type'                     => esc_html__( 'Type', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'match'                    => esc_html__( 'Match', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'fixed'                    => esc_html__( 'Fixed', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'percentage'               => esc_html__( 'Percentage', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'feesLabel'                => esc_html__( 'Fees', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'badgePoweredByAI'         => esc_html__( 'AI suggested fee', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'badgeBasedOnStoreData'    => esc_html__( 'Based on your store data', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'aiCachedNote'             => esc_html__( 'AI suggestions are cached for today.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'ordersCount'              => esc_html__( '%d orders', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'daysPeriod'               => esc_html__( '90 days', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'summaryMixed'             => esc_html__( 'We found %1$d suggestions from your analyzed store data and %2$d from AI research (based on %3$s in the last %4$s).', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'summaryMixedNoOrders'     => esc_html__( 'We found %1$d suggestions from your analyzed store data and %2$d from AI research (no recent orders—catalog and checkout patterns were used).', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'summaryStoreOnly'         => esc_html__( 'We found %1$d suggestions from your analyzed store data (based on %2$s in the last %3$s).', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'summaryStoreOnlyNoOrders' => esc_html__( 'We found %1$d suggestions from your analyzed store data (no recent orders—catalog and checkout patterns were used).', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'summaryEmpty'             => esc_html__( 'No fee suggestions are available right now.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'whenLabel'                => esc_html__( 'When:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'defaultWhen'              => esc_html__( 'conditions below are met', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'matchAny'                 => esc_html__( 'Any', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'matchAll'                 => esc_html__( 'All', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'estUplift'                => esc_html__( 'Est. 3-month uplift:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'confidence'               => esc_html__( 'Confidence', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'reason'                   => esc_html__( 'Reason', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'additionalRevenue'        => esc_html__( 'Additional revenue', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'revenueMonthlyLabel'      => esc_html__( 'Est. monthly revenue:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'revenueThreeMonthLabel'   => esc_html__( 'Est. 3-month revenue:', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'moreInfo'                 => esc_html__( 'More info', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'addFeeShort'              => esc_html__( '+ Add fee', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'skipShort'                => esc_html__( 'Skip', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'addingFee'                => esc_html__( 'Adding fee…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'addedFee'                 => esc_html__( 'Fee added successfully', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'skippingFee'              => esc_html__( 'Skipping fee…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'skippedFee'               => esc_html__( 'Fee skipped successfully', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'allHandled'               => esc_html__( 'You have reviewed all suggestions.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftSingleError'         => esc_html__( 'Could not create this draft fee. Please try again.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'confirmDraftAll'          => esc_html__( 'Create draft fees for all remaining suggestions?', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftAllFee'              => esc_html__( 'Draft all fee', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftingAllFees'          => esc_html__( 'Creating drafts…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftsCreatedSuccess'     => esc_html__( 'Drafts created', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftsCreated'            => esc_html__( '%d draft fees created.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'draftsError'              => esc_html__( 'Could not create draft fees. Please try again.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'removeTagError'           => esc_html__( 'Could not remove the AI tag. Please try again.', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionCartSubtotal'    => esc_html__( 'Cart subtotal', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionCartQuantity'    => esc_html__( 'Cart quantity', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionProductQuantity' => esc_html__( 'Product quantity', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionCountry'         => esc_html__( 'Country', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionProduct'         => esc_html__( 'Product', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionCategory'        => esc_html__( 'Category', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionPayment'         => esc_html__( 'Payment method', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionIs'              => esc_html__( 'is', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'conditionIsNot'           => esc_html__( 'is not', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanStatusDefault'        => esc_html__( 'Preparing store analysis…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanFinalize'             => esc_html__( 'Finalizing the fee structure…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanReadingOrders'        => esc_html__( 'Reading orders from the last %d months…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanOrders'               => esc_html__( 'Analyzed %d orders…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanReadingCatalog'       => esc_html__( 'Reading your product catalog…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanCategories'           => esc_html__( 'Mapped %d product categories…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanProducts'             => esc_html__( 'Reviewed %d products…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanPatterns'             => esc_html__( 'Detecting checkout patterns…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanScoring'              => esc_html__( 'Scoring fee opportunities…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanCompetitor'           => esc_html__( 'Researching industry fee benchmarks…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanProjection'           => esc_html__( 'Projecting revenue impact…', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanStatOrders'           => esc_html__( '%d orders', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanStatProducts'         => esc_html__( '%d products', 'woocommerce-conditional-product-fees-for-checkout' ),
+                        'scanStatCategories'       => esc_html__( '%d categories', 'woocommerce-conditional-product-fees-for-checkout' ),
+                    ),
+                ) );
+            }
             wp_enqueue_script( 'jquery-tiptip' );
             wp_enqueue_script( 'jquery-blockui' );
             wp_enqueue_script(
@@ -288,6 +406,25 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             // Pass the combined data to the script
             wp_localize_script( 'wc-custom-fees-search', 'wc_custom_fees_search_params', $localized_data );
         }
+    }
+
+    /**
+     * Keep Freemius checkout as a classic blocking script so Checkout stays a constructor.
+     *
+     * @param string $tag    Script HTML from wp_enqueue_script.
+     * @param string $handle Script handle.
+     * @param string $src    Script URL.
+     * @return string
+     */
+    public function wcpfc_freemius_checkout_script_tag( $tag, $handle, $src ) {
+        unset($src);
+        if ( $this->plugin_name . '-freemius_pro' !== $handle ) {
+            return $tag;
+        }
+        $tag = preg_replace( '/\\s+type=(["\'])module\\1/i', '', $tag );
+        $tag = preg_replace( '/\\s+async(?:\\s*=\\s*(["\'])async\\1|\\b)/i', '', $tag );
+        $tag = preg_replace( '/\\s+defer(?:\\s*=\\s*(["\'])defer\\1|\\b)/i', '', $tag );
+        return $tag;
     }
 
     /**
@@ -674,6 +811,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         if ( 'edit' === $action ) {
             $post_in = $selected;
             $posts_per_page = -1;
+            //phpcs:ignore
         } else {
             $post_in = '';
             $posts_per_page = 10;
@@ -896,6 +1034,7 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
         if ( 'edit' === $action ) {
             $user_in = $selected;
             $posts_per_page = -1;
+            //phpcs:ignore
         } else {
             $user_in = '';
             $posts_per_page = 10;
@@ -945,6 +1084,19 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                 $html = esc_html__( 'Fees data has been updated successfully.', 'woocommerce-conditional-product-fees-for-checkout' );
             }
         }
+        // Rebuild per-fee revenue meta from order history so Top 10 / Revenue Breakdown stay accurate.
+        $fee_array = $this->wcpfc_get_fee_data_from_date_range();
+        if ( !empty( $fee_array ) && is_array( $fee_array ) ) {
+            foreach ( $fee_array as $fee_id => $fee_data ) {
+                $fee_id = absint( $fee_id );
+                if ( $fee_id > 0 && false !== get_post_status( $fee_id ) ) {
+                    $revenue = ( isset( $fee_data['fee_revenue'] ) ? floatval( $fee_data['fee_revenue'] ) : 0 );
+                    update_post_meta( $fee_id, '_wcpfc_fee_revenue', $revenue );
+                }
+            }
+            set_transient( 'get_all_dashboard_fees', $fee_array, 15 * MINUTE_IN_SECONDS );
+            $html = esc_html__( 'Fees data has been updated successfully.', 'woocommerce-conditional-product-fees-for-checkout' );
+        }
         echo esc_html( $html );
         wp_die();
     }
@@ -960,6 +1112,54 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             delete_transient( 'get_all_fees' );
             delete_transient( 'get_all_dashboard_fees' );
         }
+    }
+
+    /**
+     * Resolve a conditional fee post ID from an order/cart fee name.
+     *
+     * Order fee items store the fee title (sometimes HTML-encoded), not the post slug.
+     *
+     * @param string $fee_name Fee display name from the order/cart.
+     * @return int
+     * @since 4.4.0
+     */
+    public function wcpfc_get_fee_id_by_name( $fee_name ) {
+        if ( empty( $fee_name ) ) {
+            return 0;
+        }
+        if ( is_numeric( $fee_name ) ) {
+            return absint( $fee_name );
+        }
+        $fee_name = wp_strip_all_tags( (string) $fee_name );
+        $candidates = array($fee_name);
+        $decoded = html_entity_decode( $fee_name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        if ( $decoded !== $fee_name ) {
+            $candidates[] = $decoded;
+        }
+        $candidates = array_unique( array_filter( array_map( 'trim', $candidates ) ) );
+        foreach ( $candidates as $candidate_name ) {
+            $fee_query = new WP_Query(array(
+                'post_type'              => self::wcpfc_post_type,
+                'title'                  => $candidate_name,
+                'post_status'            => array('publish', 'draft'),
+                'posts_per_page'         => 1,
+                'no_found_rows'          => true,
+                'ignore_sticky_posts'    => true,
+                'update_post_term_cache' => false,
+                'update_post_meta_cache' => false,
+                'orderby'                => 'post_date',
+                'order'                  => 'DESC',
+            ));
+            if ( !empty( $fee_query->post ) && !empty( $fee_query->post->ID ) ) {
+                return (int) $fee_query->post->ID;
+            }
+            $fee_by_path = get_page_by_path( sanitize_title( $candidate_name ), OBJECT, self::wcpfc_post_type );
+            // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_path_get_page_by_path
+            if ( !empty( $fee_by_path ) && !empty( $fee_by_path->ID ) ) {
+                return (int) $fee_by_path->ID;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -1095,13 +1295,8 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
                         $fee_name_to_id[$fee_name] = $fee_id;
                     } else {
                         if ( !empty( $fee_name ) ) {
-                            // Only perform WP query once per unique name
-                            $fee_obj_id = 0;
-                            $existing_fee = get_page_by_path( $fee_name, OBJECT, 'wc_conditional_fee' );
-                            if ( !empty( $existing_fee ) && isset( $existing_fee->ID ) && $existing_fee->ID > 0 ) {
-                                $fee_obj_id = $existing_fee->ID;
-                            }
-                            $fee_id = $fee_obj_id;
+                            // Match by fee title first (order items store titles, not slugs).
+                            $fee_id = $this->wcpfc_get_fee_id_by_name( $fee_name );
                             $fee_name_to_id[$fee_name] = $fee_id;
                         } else {
                             $fee_id = 0;
@@ -1666,6 +1861,34 @@ class Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Admin {
             }
         }
         return $html;
+    }
+
+    /**
+     * Remove AI Best Fit tag from a fee in the list table.
+     *
+     * @since 4.3.4
+     */
+    public function wcpfc_remove_bestfit_tag() {
+        check_ajax_referer( 'wcpfc_remove_bestfit_tag', 'security' );
+        if ( !current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array(
+                'message' => esc_html__( 'Unauthorized.', 'woocommerce-conditional-product-fees-for-checkout' ),
+            ), 403 );
+        }
+        $fee_id = filter_input( INPUT_POST, 'fee_id', FILTER_SANITIZE_NUMBER_INT );
+        $fee_id = absint( $fee_id );
+        if ( !$fee_id ) {
+            wp_send_json_error( array(
+                'message' => esc_html__( 'Invalid fee.', 'woocommerce-conditional-product-fees-for-checkout' ),
+            ), 400 );
+        }
+        if ( !function_exists( 'wcpfc_is_bestfit_fee' ) || !wcpfc_is_bestfit_fee( $fee_id ) ) {
+            wp_send_json_success();
+        }
+        if ( function_exists( 'wcpfc_remove_bestfit_tag' ) ) {
+            wcpfc_remove_bestfit_tag( $fee_id );
+        }
+        wp_send_json_success();
     }
 
     /**

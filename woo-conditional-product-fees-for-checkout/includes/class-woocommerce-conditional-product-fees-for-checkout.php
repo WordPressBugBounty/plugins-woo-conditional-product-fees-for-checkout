@@ -105,6 +105,7 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
          * @access   private
          */
         private function load_dependencies() {
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wcpfc-best-fit-functions.php';
             /**
              * The class responsible for orchestrating the actions and filters of the
              * core plugin.
@@ -124,7 +125,13 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
              * side of the site.
              */
             require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-woocommerce-conditional-product-fees-for-checkout-public.php';
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcpfc-published-product-count-ability.php';
             $this->loader = new Woocommerce_Conditional_Product_Fees_For_Checkout_Pro_Loader();
+            WCPFC_Published_Product_Count_Ability::init();
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcpfc-bestfit-abilities.php';
+            if ( function_exists( 'wcpfc_is_bestfit_wp_supported' ) && wcpfc_is_bestfit_wp_supported() ) {
+                WCPFC_Bestfit_Abilities::init();
+            }
             /**
              * The class responsible for defining all custom command for use in WP-CLI
              * of the site.
@@ -190,8 +197,11 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
             $this->loader->add_action( 'admin_init', $plugin_admin, 'wcpfc_pro_welcome_conditional_fee_screen_do_activation_redirect' );
             if ( !empty( $page ) && false !== strpos( $page, 'wcpfc' ) ) {
                 $this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'wcpfc_pro_admin_footer_review' );
+                remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+                remove_action( 'admin_print_styles', 'print_emoji_styles' );
             }
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_change_status_from_list_section', $plugin_admin, 'wcpfc_pro_change_status_from_list_section' );
+            $this->loader->add_action( 'wp_ajax_wcpfc_remove_bestfit_tag', $plugin_admin, 'wcpfc_remove_bestfit_tag' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_product_fees_conditions_varible_values_product_ajax', $plugin_admin, 'wcpfc_pro_product_fees_conditions_varible_values_product_ajax' );
             $this->loader->add_action( 'wp_ajax_wcpfc_pro_simple_and_variation_product_list_ajax', $plugin_admin, 'wcpfc_pro_simple_and_variation_product_list_ajax' );
             // Add custom fee button in add order items
@@ -376,9 +386,6 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
         }
 
         /**
-         * The name of the plugin used to uniquely identify it within the context of
-         * WordPress and to define internationalization functionality.
-         *
          * @return    string    The name of the plugin.
          * @since     1.0.0
          */
@@ -443,12 +450,13 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                     'style'    => array(),
                 ),
                 'input'    => array(
-                    'id'         => array(),
-                    'value'      => array(),
-                    'name'       => array(),
-                    'class'      => array(),
-                    'type'       => array(),
-                    'data-index' => array(),
+                    'id'          => array(),
+                    'value'       => array(),
+                    'name'        => array(),
+                    'class'       => array(),
+                    'type'        => array(),
+                    'data-index'  => array(),
+                    'data-fee-id' => array(),
                 ),
                 'textarea' => array(
                     'id'    => array(),
@@ -472,7 +480,10 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                     'class' => array(),
                 ),
                 'span'     => array(
-                    'class' => array(),
+                    'class'       => array(),
+                    'title'       => array(),
+                    'aria-hidden' => array(),
+                    'aria-label'  => array(),
                 ),
                 'small'    => array(
                     'class' => array(),
@@ -481,6 +492,13 @@ if ( !class_exists( 'Woocommerce_Conditional_Product_Fees_For_Checkout_Pro' ) ) 
                     'class' => array(),
                     'id'    => array(),
                     'for'   => array(),
+                ),
+                'button'   => array(
+                    'type'        => array(),
+                    'class'       => array(),
+                    'data-fee-id' => array(),
+                    'title'       => array(),
+                    'aria-label'  => array(),
                 ),
             );
             return $allowed_tags;
